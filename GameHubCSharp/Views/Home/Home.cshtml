@@ -1,0 +1,71 @@
+﻿
+
+<div id="pool" style="margin-bottom: 100px;width: 80%"
+      class="btn-container-style text-center mt-5 d-inline-block modal-dialog-scrollable">
+
+    <div class=" w-100 text-center ">
+
+        <div id="info-label">
+            <p style="color: greenyellow;font-size: 30px;" class="text-light">"Most popular game : @Model."</p>
+        </div>
+        <select onchange="reload(this.value)" class="browser-default " style="width: 15em;"
+                aria-placeholder="Filter"
+                id="category"
+                name="category">
+            <option value="All">All</option>
+            <option th:each="o : ${T(gamehub.demo.model.entity.GameName).values()}"
+                    th:text="${#strings.capitalize(#strings.toLowerCase(o))}"
+                    th:value="${#strings.capitalize(o.name())}">
+                One
+            </option>
+
+        </select>
+    </div>
+    <div id="container">
+
+    </div>
+
+</div>
+
+<script>
+    function reload(gameName) {
+        fetch('http://localhost:8000/resource/?game=' + gameName, {
+            method: 'GET', headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }).then(x => x.json()).then(x => {
+            var container = document.getElementById("container");
+            container.innerHTML = "";
+            for (var i = 0; i < x.length; i++) {
+
+                var element = `<div class=" d-inline-block text-left mt-5 container-style" id="event-div" style="width: 18rem;">
+            <img src="${x[i].game.imageUrl}"
+                 class="card-img-top" style="height: 200px;" alt="${x[i].game.imageUrl}"; title="${x[i].game.imageUrl}">
+            <div class="card-body">
+                <h5 class="card-title">Owner's nick : ${x[i].ownerName} </h5>
+                <p class="card-text">Devision : ${x[i].devision}</p>
+                <p  class="card-text">Players needed : ${x[i].takenPlaces}</p>
+                <p  class="card-text">Starts on : ${x[i].startDate}</p>
+                <a href="/game/detail/?id=${x[i].id}" class="btn btn-primary border-0 bg-dark btn-lg">Details</a>
+            </div>
+        </div>`
+                //console.log(x[i].id);
+                container.innerHTML += element;
+            }
+
+
+        })
+    }
+    reload("All");
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+

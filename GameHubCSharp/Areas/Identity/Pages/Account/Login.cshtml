@@ -1,0 +1,42 @@
+﻿@page
+@model LoginModel
+
+
+<div class="text-center" style="margin-top: 5%;">
+    <h1 class="text-light">Login</h1>
+</div>
+<div class=" d-block text-center">
+    <form class="d-inline-block" asp-action="Login" asp-controller="User" method="POST">
+        <div>
+            <div class="col-md-12 col-md-6 mb-3 d-inline-block" style="display: inline-block;">
+                <div>
+                    <span th:text="${#strings.replace(error,'_',' ')}" style="color: #ff0000;font-size:20px"></span>
+                </div>
+                <label style="color: white;" for="validationServer01">UserName</label>
+                <input th:field="*{userName}" type="text" name="userName" class="form-control " id="validationServer01" th:value="*{userName}" required>
+                <div style="color: white;" class="valid-feedback">
+                    <small th:each="e : ${#fields.errors('userName')}" th:text="${e}"
+                           style="color: #ff0000;font-size:15px">Looks good!</small>
+
+                </div>
+
+            </div>
+            <div class="col-md-12 col-md-6 mb-3 d-inline-block" style="display: inline-block;">
+                <label style="color: white;" for="validationServer02">Password</label>
+                <input type="password" name="password" class="form-control " id="validationServer02" required>
+                <div style="color: white;" class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+
+        </div>
+        <button class="btn btn-primary border-0 bg-dark btn-lg" type="submit">Login</button>
+    </form>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
