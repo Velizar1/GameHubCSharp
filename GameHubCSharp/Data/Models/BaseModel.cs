@@ -9,6 +9,6 @@ namespace GameHubCSharp.Data.Models
     public class BaseModel
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

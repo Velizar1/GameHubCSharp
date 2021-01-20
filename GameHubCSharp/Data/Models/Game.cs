@@ -1,12 +1,18 @@
-﻿namespace GameHubCSharp.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GameHubCSharp.Data.Models
 {
     public class Game : BaseModel
     {
 
-        private GameName gameName;
+        private string gameName;
         private string imageUrl;
 
-        public GameName GameName { get => gameName; set => gameName = value; }
+        [Required]
+        [MinLength(1),MaxLength(20)]
+        public string GameName { get => gameName; set => gameName = value; }
+        [Required]
+        [Url]
         public string ImageUrl { get => imageUrl; set => imageUrl = value; }
     }
 }

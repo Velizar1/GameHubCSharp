@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.Data.Models
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<Guid>
     {
         private Boolean deleted;
-
         public bool Deleted { get => deleted; set => deleted = value; }
     }
 }
