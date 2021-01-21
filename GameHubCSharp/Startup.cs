@@ -35,6 +35,18 @@ namespace GameHubCSharp
                 .UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Allow",
+                                  builder =>
+                                  {
+                                      builder.
+                                      AllowAnyOrigin()
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader();
+                                  });
+            });
+           
 
             services.AddDefaultIdentity<User>(options =>
             {
@@ -66,7 +78,7 @@ namespace GameHubCSharp
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseCors("Allow");
             app.UseAuthentication();
             app.UseAuthorization();
 

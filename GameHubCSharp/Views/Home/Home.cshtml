@@ -7,14 +7,16 @@
         <div id="info-label">
             <p style="color: greenyellow;font-size: 30px;" class="text-light">"Most popular game : @ViewData["mostPlayed"]"</p>
         </div>
-        <select onchange="reload(this.value)" class="browser-default " style="width: 15em;"
+        <select onchange="reload('Apex')" class="browser-default " style="width: 15em;"
                 aria-placeholder="Filter"
                 id="category"
                 name="category">
             <option value="All">All</option>
             @foreach (string name in (List<string>)ViewData["GameNames"])
             {
+       
                 <option text="@name" value="@name">
+                    @name
                 </option>
             }
 
@@ -29,7 +31,7 @@
 
 <script>
     function reload(gameName) {
-        fetch('http://localhost:8000/resource/?game=' + gameName, {
+        fetch('https://localhost:44348/resource?game=' + gameName, {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -40,8 +42,8 @@
             for (var i = 0; i < x.length; i++) {
 
                 var element = `<div class=" d-inline-block text-left mt-5 container-style" id="event-div" style="width: 18rem;">
-            <img src="${x[i].game.imageUrl}"
-                 class="card-img-top" style="height: 200px;" alt="${x[i].game.imageUrl}"; title="${x[i].game.imageUrl}">
+            <img src="${x[i].imageUrl}"
+                 class="card-img-top" style="height: 200px;" alt="${x[i].imageUrl}"; title="${x[i].imageUrl}">
             <div class="card-body">
                 <h5 class="card-title">Owner's nick : ${x[i].ownerName} </h5>
                 <p class="card-text">Devision : ${x[i].devision}</p>

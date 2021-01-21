@@ -1,0 +1,56 @@
+﻿@model GameHubCSharp.Data.Models.GameEvent
+
+<div style="margin-bottom: 100px;margin-top: 5%"
+     class="btn-container-style text-center d-inline-block modal-dialog-scrollable outside-div">
+    <div class="d-inline-block  text-left mt-5 container-style detail"
+         style="background-image:url(@Model.Game.ImageUrl);">
+        <div class="h-100 inside-el " style="opacity: 1;">
+            <div style="display: inline-block;width: 45%;height: 70%">
+                <h6 style="font-size: 25px" text="Owner's nick : @Model.OwnerId" class="card-title">Card title</h6>
+                <p text="Devision : @Model.Devision" class="card-text"></p>
+                <p text="Players needed : @(Model.NumberOfPlayers + 1 - Model.Players.Count)" class="card-text"></p>
+                <p text="Starts on : @Model.StartDate" class="card-text"></p>
+                <p text="Ends on : @Model.DueDate" class="card-text"></p>
+                <p text="Description : @Model.Description" class="card-text"></p>
+            </div>
+            <div style="display: inline-block;width: 45%;height: 70%;vertical-align:top;" class="text-left">
+                <h6 style="font-size: 25px" class="card-text">Players for this event:</h6>
+                <ul>
+                    @foreach (var player in Model.Players)
+                    {
+                        <li style="font-size: 20px;" text="@player.UsernameInGame" class="card-text ml-4"></li>
+                    }
+                </ul>
+
+            </div>
+            @if (Model.OwnerId == User.Identity.Name)
+            {
+
+                <div style="position:relative;" id="last">
+                    <a href="/game/delete?id=@Model.Id" class="btn btn-primary border-0 bg-danger btn-lg mt-5 ml-3"
+                       style="padding: 0.23em;margin-bottom: 4.5px">Delete</a>
+                </div>
+            }
+            else if(Model.NumberOfPlayers + 1 - Model.Players.Count > 0)
+            {
+                <div style="position:relative;" id="last">
+
+                    <form class="mt-5 text-left form-event" action="/game/add/player?id=@Model.Id" method="POST">
+                        <div th:if="${taken!=null}">
+                            <small th:text="${taken}" style="color: #ff0000;font-size:15px;margin-left: 5%"></small>
+                        </div>
+                        <div class="text-left">
+                            <p style="color: lawngreen; margin-left: 5%" class="card-text mb-3">Your nick name :</p>
+                        </div>
+                        <input style="margin-left: 5%;width: 70%; margin-bottom: 4%" type="text" name="userNick" id="username"
+                               class="form-control is-invalid d-inline-block"
+                               aria-describedby="validatedInputGroupPrepend"
+                               required>
+                        <button class="btn btn-primary border-0 mb-1 bg-dark mr-2 btn-lg ml-3" type="submit">I'm in</button>
+                    </form>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
