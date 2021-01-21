@@ -1,23 +1,23 @@
 ﻿
-
 <div id="pool" style="margin-bottom: 100px;width: 80%"
-      class="btn-container-style text-center mt-5 d-inline-block modal-dialog-scrollable">
+     class="btn-container-style text-center mt-5 d-inline-block modal-dialog-scrollable">
 
     <div class=" w-100 text-center ">
 
         <div id="info-label">
-            <p style="color: greenyellow;font-size: 30px;" class="text-light">"Most popular game : @Model."</p>
+            <p style="color: greenyellow;font-size: 30px;" class="text-light">"Most popular game : @ViewData["mostPlayed"]"</p>
         </div>
         <select onchange="reload(this.value)" class="browser-default " style="width: 15em;"
                 aria-placeholder="Filter"
                 id="category"
                 name="category">
             <option value="All">All</option>
-            <option th:each="o : ${T(gamehub.demo.model.entity.GameName).values()}"
-                    th:text="${#strings.capitalize(#strings.toLowerCase(o))}"
-                    th:value="${#strings.capitalize(o.name())}">
-                One
-            </option>
+            @foreach (string name in (List<string>)ViewData["GameNames"])
+            {
+                <option text="@name" value="@name">
+                </option>
+            }
+
 
         </select>
     </div>

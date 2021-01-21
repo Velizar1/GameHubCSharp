@@ -1,0 +1,37 @@
+﻿
+@model GameHubCSharp.Controllers.LoginViewModel
+
+<div class="text-center" style="margin-top: 5%;">
+    <h1 class="text-light">Login</h1>
+</div>
+<div class=" d-block text-center">
+    <form class="d-inline-block" id="account" method="POST">
+        <div>
+            <div class="col-md-12 col-md-6 mb-3 d-inline-block" style="display: inline-block;">
+                <div class="text-danger" asp-validation-summary="All"></div>
+                <label style="color: white;" for="validationServer01">UserName</label>
+                <div>
+                    <input asp-for="Username" class="form-control " required>
+
+                    <span class="text-danger" asp-validation-for="Username"></span>
+                    <div style="color: white;" class="valid-feedback">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-md-6 mb-3 d-inline-block" style="display: inline-block;">
+                <label style="color: white;">Password</label>
+                <input asp-for="Password" class="form-control " required>
+                <span class="text-danger" asp-validation-for="Password"></span>
+
+            </div>
+
+            <div class="col-md-12 col-md-6 mb-3 d-inline-block text-left mt-2" style="display: inline-block;">
+                <input asp-for="RememberMe" />
+                <label style="color: forestgreen;">Remember me</label>
+            </div>
+
+        </div>
+        <button class="btn btn-primary border-0 bg-dark btn-lg" type="submit">Login</button>
+    </form>
+</div>

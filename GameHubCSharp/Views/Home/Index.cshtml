@@ -1,8 +1,19 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="jumbotron w-75 main-div text-left"  style="background-color:#08101dce;">
+    <h1 class="display-4">Hello, gamer!</h1>
+    <p class="lead">This is the place where you can find your dream team.</p>
+    <hr class="my-4">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <p>But first, you need to navigate to one of the following pages.</p>
+        <a class="btn btn-primary border-0 bg-dark btn-lg" href="/login" role="button">Login</a>
+        <a class="btn btn-primary border-0 bg-dark btn-lg" href="/register" role="button">Register</a>
+    }
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>Dont waste time, check the events!</p>
+        <a class="btn btn-primary border-0 bg-dark btn-lg" style="color: lawngreen" href="/home" role="button">See Events</a>
+    }
 </div>

@@ -1,0 +1,46 @@
+﻿@model GameHubCSharp.Controllers.RegistartionViewModel
+
+<h1 class="text-light" style="margin-top:2em">Register</h1>
+
+<div class=" d-block text-center">
+    <form class="d-inline-block" asp-controller="User" asp-action="Registration" method="POST">
+
+        <div class="form-col">
+            <div class="col-md-12 mb-2">
+                <label style="color: white;">Username</label>
+                <input class="form-control" asp-for="UserName">
+
+                <div class="valid-feedback">
+                    <span asp-validation-for="UserName" style="color: red;font-size:15px"> Looks good!</span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-2">
+                <label style="color: white;">Email</label>
+                <input class="form-control" asp-for="Email">
+                <div>
+                    <span asp-validation-for="Email"
+                          style="color: red;font-size:15px"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label style="color: white;">Password</label>
+                <input asp-for="Password" class="form-control">
+
+                <div>
+                    <span asp-validation-for="Password"
+                          style="color: red;font-size:15px"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label style="color: white;">Confirm Password</label>
+                <input asp-for="ConfirmPassword" class="form-control">
+
+                <div>
+                    <span asp-validation-for="ConfirmPassword"
+                          style="color: red;font-size:15px"></span>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary border-0 bg-dark btn-lg" type="submit">Let's Go</button>
+    </form>
+</div>

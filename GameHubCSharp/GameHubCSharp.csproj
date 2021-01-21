@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Views\GameEvent\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
 
 </Project>

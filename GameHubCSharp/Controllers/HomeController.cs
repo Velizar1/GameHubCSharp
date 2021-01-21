@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -18,13 +19,13 @@ namespace GameHubCSharp.Controllers
         {
             _logger = logger;
         }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
         [HttpGet("/home")]
-        [Authorize]
+        
         public IActionResult Home()
         {
             return View();
