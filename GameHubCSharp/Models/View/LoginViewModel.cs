@@ -6,7 +6,7 @@ namespace GameHubCSharp.Controllers
     {
         [Required]
         [MinLength(1), MaxLength(20)]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [MinLength(1), MaxLength(20)]
