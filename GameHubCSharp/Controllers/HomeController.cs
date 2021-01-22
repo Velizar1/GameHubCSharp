@@ -40,6 +40,8 @@ namespace GameHubCSharp.Controllers
             }
             else
             {
+                // Chech logic 
+                ViewData["mostPlayed"] = games.Select(x => x.GameName).GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key;
                 ViewData["GameNames"] = games.Select(x => x.GameName).ToList() ;
             }
             

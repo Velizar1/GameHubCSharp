@@ -6,7 +6,7 @@
     <div class="d-inline-block  text-left mt-5 container-style detail"
          style="background-image:url(@Model.Game.ImageUrl);">
         <div class="h-100 inside-el " style="opacity: 1;">
-            <div style="display: inline-block;width: 45%;height: 70%">
+            <div style="display: inline-block;width: 45%;height:70%;min-height: 12em">
                 <h6 style="font-size: 25px" text="Owner's nick : @Model.OwnerId" class="card-title">Card title</h6>
                 <p text="Devision : @Model.Devision" class="card-text"></p>
                 <p text="Players needed : @(Model.NumberOfPlayers + 1 - Model.Players.Count)" class="card-text"></p>
@@ -34,6 +34,7 @@
             }
             else if (Model.NumberOfPlayers + 1 - Model.Players.Count > 0)
             {
+
                 <div style="position:relative;" id="last">
 
                     <form class="mt-5 text-left form-event" action="/game/add/player?id=@Model.Id" method="POST">
