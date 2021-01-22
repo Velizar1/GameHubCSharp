@@ -9,16 +9,24 @@ namespace GameHubCSharp.Services
 {
     public class PlayerService : IPlayerService
     {
-        private ApplicationDbContext dbContext;
+        private ApplicationDbContext db;
 
         public PlayerService(ApplicationDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            this.db = dbContext;
+        }
+
+        public Player Add(Player player)
+        {
+            db.Players.Add(player);
+            db.SaveChanges();
+
+            return player;
         }
 
         public Player FindPlayerById(string id)
         {
-            var player = dbContext.Players.Where(p => p.Id.ToString() == id).First();
+            var player = db.Players.FirstOrDefault(p => p.Id.ToString() == id);
             return player;
         }
     }

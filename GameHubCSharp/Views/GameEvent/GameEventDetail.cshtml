@@ -1,4 +1,5 @@
 ﻿@model GameHubCSharp.Data.Models.GameEvent
+@inject Microsoft.AspNetCore.Identity.UserManager<GameHubCSharp.Data.Models.User> manager 
 
 <div style="margin-bottom: 100px;margin-top: 5%"
      class="btn-container-style text-center d-inline-block modal-dialog-scrollable outside-div">
@@ -23,7 +24,7 @@
                 </ul>
 
             </div>
-            @if (Model.OwnerId == User.Identity.Name)
+            @if (Model.OwnerId == manager.GetUserId(User))
             {
 
                 <div style="position:relative;" id="last">

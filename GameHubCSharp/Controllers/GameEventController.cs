@@ -1,6 +1,9 @@
-﻿using GameHubCSharp.Data;
+﻿using AutoMapper;
+using GameHubCSharp.Data;
+using GameHubCSharp.Data.Models;
 using GameHubCSharp.Models.View;
 using GameHubCSharp.Services;
+using GameHubCSharp.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,13 +15,26 @@ namespace GameHubCSharp.Controllers
 {
     public class GameEventController : Controller
     {
-        private ApplicationDbContext applicationDb;
+        private ApplicationDbContext db;
         private IGameEventService gameEventService;
+        private readonly IMapper mapper;
+        private readonly IGameService gameService;
+        private readonly IPlayerService playerService;
+        private readonly IUserService userService;
 
-        public GameEventController(ApplicationDbContext applicationDb, IGameEventService gameEventService)
+        public GameEventController(ApplicationDbContext db, 
+            IGameEventService gameEventService,
+            IMapper mapper,
+            IGameService gameService,
+            IPlayerService playerService,
+            IUserService userService)
         {
-            this.applicationDb = applicationDb;
+            this.db = db;
             this.gameEventService = gameEventService;
+            this.mapper = mapper;
+            this.gameService = gameService;
+            this.playerService = playerService;
+            this.userService = userService;
         }
 
         [HttpGet("/game/detail/")]
@@ -27,16 +43,16 @@ namespace GameHubCSharp.Controllers
             var gameEvent = gameEventService.FindEventsById(id);
             if (gameEvent == null)
             {
-                return View("Error.cshtml");
+                return RedirectToAction("Error","Home");
             }
-            return View();
+            return View(gameEvent);
 
         }
 
         [HttpGet]
         public IActionResult GameEventAdd()
         {
-            ViewData["GameNames"] = new List<string>() { "Pesho", "Ivan" };
+            ViewData["GameNames"] = db.Games.Select(x => x.GameName).ToList(); ;
             return View();
         }
 
@@ -44,10 +60,15 @@ namespace GameHubCSharp.Controllers
         [HttpPost]
         public IActionResult GameEventAdd(GameEventAddViewModel gameEvent)
         {
+            var gameEve = mapper.Map<GameEvent>(gameEvent);
+            var game = gameService.FindGameByName(gameEvent.GameName);
+            gameEve.Game = game;
+            var player = playerService.Add(new Player() { User = userService.FindUserByName(User.Identity.Name),UsernameInGame = gameEvent.OwnerName});
+            gameEve.OwnerId = player.Id.ToString();
 
-           // gameEventService.Add();
-           
-            return View();
+            player.GameEvents.Add(gameEve);
+            db.SaveChanges();
+            return RedirectToAction("Home","Home");
         }
     }
 }

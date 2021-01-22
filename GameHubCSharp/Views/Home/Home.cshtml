@@ -7,7 +7,7 @@
         <div id="info-label">
             <p style="color: greenyellow;font-size: 30px;" class="text-light">"Most popular game : @ViewData["mostPlayed"]"</p>
         </div>
-        <select onchange="reload('Apex')" class="browser-default " style="width: 15em;"
+        <select onchange="reload(this.value)" class="browser-default " style="width: 15em;"
                 aria-placeholder="Filter"
                 id="category"
                 name="category">
@@ -37,6 +37,7 @@
                 'Accept': 'application/json'
             }
         }).then(x => x.json()).then(x => {
+            console.log(x)
             var container = document.getElementById("container");
             container.innerHTML = "";
             for (var i = 0; i < x.length; i++) {

@@ -1,4 +1,5 @@
-﻿using GameHubCSharp.Data;
+﻿using AutoMapper;
+using GameHubCSharp.Data;
 using GameHubCSharp.Models.View;
 using GameHubCSharp.Services;
 using Microsoft.AspNetCore.Http;
@@ -18,20 +19,38 @@ namespace GameHubCSharp.Controllers
         private ApplicationDbContext applicationDb;
         private IPlayerService playerService;
         private IGameEventService gameEventService;
+        private readonly IMapper mapper;
 
-        public RestController(ApplicationDbContext applicationDb, IPlayerService playerService, IGameEventService gameEventService)
+        public RestController(ApplicationDbContext applicationDb,
+            IPlayerService playerService,
+            IGameEventService gameEventService,
+            IMapper mapper)
         {
             this.applicationDb = applicationDb;
             this.playerService = playerService;
             this.gameEventService = gameEventService;
+            this.mapper = mapper;
         }
 
         [HttpGet("/resource")]
         public IActionResult FindGames(string game)
         {
+            if (game == "All")
+            {
+                var list = gameEventService.FindAll().ToList();
+                var list2 = list.Select(x => {
+                    var re = mapper.Map<HomeEventRestViewModel>(x);
+                    re.OwnerName = playerService.FindPlayerById(x.OwnerId.ToString()).UsernameInGame;
+                    re.ImageUrl = x.Game.ImageUrl;
+                    re.TakenPlaces = x.NumberOfPlayers;
+                    return re;
+                    })
+                    .ToList();
+                return Ok(list2);
+            }
             var events = gameEventService.FindEventsByGame(game);
             List<HomeEventRestViewModel> games = new List<HomeEventRestViewModel>();
-            if (games.Count == 0) return NotFound();
+            if (events.Count == 0) return NotFound();
             foreach (var el in events)
             {
                 HomeEventRestViewModel homeEventRestView = new HomeEventRestViewModel();

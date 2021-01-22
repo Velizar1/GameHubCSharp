@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace GameHubCSharp.Data.Models
 {
@@ -14,6 +15,7 @@ namespace GameHubCSharp.Data.Models
 
         private string ownerId;
         private Game game;
+        [JsonIgnore]
         private ICollection<Player> players;
 
         public string Description { get => description; set => description = value; }

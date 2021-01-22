@@ -1,6 +1,8 @@
+using AutoMapper;
 using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
 using GameHubCSharp.Services;
+using GameHubCSharp.Services.IServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -59,11 +61,14 @@ namespace GameHubCSharp
                 options.Password.RequireUppercase = true;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews();
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IGameEventService, GameEventService>();
             services.AddTransient<IPlayerService, PlayerService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IGameService, GameService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

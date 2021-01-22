@@ -10,28 +10,35 @@ namespace GameHubCSharp.Services
 
     public class GameEventService : IGameEventService
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ApplicationDbContext db;
         private readonly IPlayerService playerService;
 
         public GameEventService(ApplicationDbContext db, IPlayerService playerService)
         {
-            this.dbContext = db;
+            this.db = db;
             this.playerService = playerService;
         }
 
         public void Add(GameEvent gameEvent)
         {
-            throw new NotImplementedException();
+            db.GameEvents.Add(gameEvent);
+
+            db.SaveChanges();
+        }
+
+        public ICollection<GameEvent> FindAll()
+        {
+            return db.GameEvents.ToList();
         }
 
         public ICollection<GameEvent> FindEventsByGame(string game)
         {
-           return dbContext.GameEvents.Where(g => g.Game.GameName == game).ToList();
+           return db.GameEvents.Where(g => g.Game.GameName == game).ToList();
         }
 
         public GameEvent FindEventsById(string id)
         {
-            return dbContext.GameEvents.Where(g => g.Id.ToString() == id).First();
+            return db.GameEvents.FirstOrDefault(g => g.Id.ToString() == id);
         }
     }
 }

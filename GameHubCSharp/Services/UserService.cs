@@ -19,5 +19,12 @@ namespace GameHubCSharp.Services
 
             return user;
         }
+
+        public User FindUserByName(string userName)
+        {
+            var user = dbContext.Users.Where(x => x.UserName == userName).First();
+
+            return user;
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace GameHubCSharp.Controllers
             }
             else
             {
-                ViewData["GameNames"] = games.Select(x => x.GameName);
+                ViewData["GameNames"] = games.Select(x => x.GameName).ToList() ;
             }
             
             return View();
