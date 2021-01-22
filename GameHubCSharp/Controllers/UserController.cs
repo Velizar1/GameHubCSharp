@@ -64,7 +64,7 @@ namespace GameHubCSharp.Controllers
         [HttpPost("/login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            await _signManager.GetExternalAuthenticationSchemesAsync();
+           
             if (ModelState.IsValid)
             {
                 //var result = await _signManager.PasswordSignInAsync(model.UserName,

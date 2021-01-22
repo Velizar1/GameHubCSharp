@@ -1,4 +1,4 @@
-﻿@model GameHubCSharp.Data.Models.GameEvent 
+﻿@model GameHubCSharp.Data.Models.GameEvent
 
 <div style="margin-bottom: 100px;margin-top: 5%"
      class="btn-container-style text-center d-inline-block modal-dialog-scrollable outside-div">
@@ -31,7 +31,7 @@
                        style="padding: 0.23em;margin-bottom: 4.5px">Delete</a>
                 </div>
             }
-            else if(Model.NumberOfPlayers + 1 - Model.Players.Count > 0)
+            else if (Model.NumberOfPlayers + 1 - Model.Players.Count > 0)
             {
                 <div style="position:relative;" id="last">
 
@@ -54,3 +54,8 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

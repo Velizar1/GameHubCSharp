@@ -1,5 +1,6 @@
 using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
+using GameHubCSharp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,7 @@ namespace GameHubCSharp
                 .UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+           
             services.AddCors(options =>
             {
                 options.AddPolicy("Allow",
@@ -58,6 +60,10 @@ namespace GameHubCSharp
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddTransient<IHomeService, HomeService>();
+            services.AddTransient<IGameEventService, GameEventService>();
+            services.AddTransient<IPlayerService, PlayerService>();
+            services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

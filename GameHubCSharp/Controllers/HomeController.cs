@@ -1,5 +1,6 @@
 ﻿using GameHubCSharp.Data;
 using GameHubCSharp.Models;
+using GameHubCSharp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,13 +16,13 @@ namespace GameHubCSharp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext dbContext;
+        private IHomeService homeService;
 
-        public HomeController(ILogger<HomeController> logger,ApplicationDbContext dbContext)
+        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
         {
 
             _logger = logger;
-            this.dbContext = dbContext;
+            this.homeService = homeService;
         }
         [AllowAnonymous]
         public IActionResult Index()
@@ -29,10 +30,19 @@ namespace GameHubCSharp.Controllers
             return View();
         }
         [HttpGet("/home")]
-        
+
         public IActionResult Home()
         {
-            ViewData["GameNames"] = new List<string>() { "Apex" };
+            var games = homeService.FindAllGames();
+            if (games.Count == 0)
+            {
+                ViewData["GameNames"] = "";
+            }
+            else
+            {
+                ViewData["GameNames"] = games.Select(x => x.GameName);
+            }
+            
             return View();
         }
 

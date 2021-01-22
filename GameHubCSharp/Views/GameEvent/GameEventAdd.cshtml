@@ -1,0 +1,114 @@
+﻿@model GameHubCSharp.Models.View.GameEventAddViewModel
+<main class="text-center">
+    <form class="d-inline-block was-validated text-center add-form"
+          asp-controller="GameEvent" asp-action="GameEventAdd" method="POST" style="margin-bottom: 100px;">
+
+        <div class="text-center ">
+            <div class="w-75 mb-3 d-inline-block">
+                <label class="name">Game Event</label>
+                <select asp-for="GameName" class="custom-select" name="gameName" required>
+                    <option value="">Chose your game</option>
+                    @foreach (var gameName in (List<string>)ViewData["GameNames"])
+                    {
+                        <option value="@gameName">@gameName</option>
+                    }
+
+                </select>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="GameName" style="color: #ff0000;font-size:15px"></span>
+                </div>
+            </div>
+
+            <div class="d-inline-block mb-3 w-75">
+                <label class="float-left name-label">Enter your in-game username</label>
+                <div class="input-group mt-2 is-invalid">
+                    <input type="text" class="form-control is-invalid"
+                           asp-for="OwnerName" required>
+                </div>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="OwnerName" th:text="${e}"
+                          style="color: #ff0000;font-size:15px"></span>
+                </div>
+            </div>
+
+            <div class="d-inline-block mb-3 w-75">
+                <label class="float-left name-label">Enter needed devision</label>
+                <div class="input-group mt-2 is-invalid">
+                    <input type="text" class="form-control is-invalid"
+                           asp-for="Devision" required>
+                </div>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Devision"
+                          style="color: #ff0000;font-size:15px"></span>
+                </div>
+            </div>
+
+            <div class="d-inline-block mb-3 w-75">
+                <label class="float-left name-label">Enter number of players</label>
+                <div class="input-group mt-2 is-invalid">
+                    <input type="number" min="1" max="20" class="form-control is-invalid"
+                           asp-for="NumberOfPlayers" required>
+                </div>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="NumberOfPlayers"
+                          style="color: #ff0000;font-size:15px"></span>
+                </div>
+            </div>
+
+            <div class="w-100 mb-3 d-inline-block">
+                <div class="w-100">
+                    <label for="startDate" class="name-label ">Stars on</label>
+                </div>
+                <input id="startDate" type="datetime-local"
+                       asp-for="StartDate" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7 d-inline-block" data-large-mode="true" required />
+
+            </div>
+            <div class="d-inline-block input-group mb-3 justify-content-center">
+
+                <span asp-validation-for="StartDate"
+                      style="color: #ff0000;font-size:15px"></span>
+
+            </div>
+            <div class="d-inline-block w-100 mb-3 ">
+
+                <div class="w-100">
+                    <label for="dueDate" class="name-label">Due date</label>
+                </div>
+                <input id="dueDate" type="datetime-local"
+                       asp-for="DueDate" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7 d-inline-block" data-large-mode="true" />
+            </div>
+            <div class="input-group mb-3 justify-content-center">
+
+                <span asp-validation-for="DueDate"
+                      style="color: #ff0000;font-size:15px"></span>
+            </div>
+            <div class="d-inline-block mb-3 w-75">
+                <label class="float-left name-label">Discord Url</label>
+                <div class="input-group mt-2 is-invalid">
+                    <input type="text" class="form-control is-invalid"
+                           asp-for="DiscordUrl" >
+                </div>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="DiscordUrl" th:text="${e}"
+                          style="color: #ff0000;font-size:15px"></span>
+                </div>
+            </div>
+            <div class="d-inline-block mt-3 mb-3 w-75">
+                <label class="name-label float-left">Some more information</label>
+                <textarea class="form-control is-invalid" id="validationTextarea"
+                          asp-for="Description" placeholder="Required example textarea"></textarea>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Description"
+                          style="color: #ff0000;font-size:15px"></span>
+                </div>
+            </div>
+
+        </div>
+        <button class="btn btn-primary border-0 bg-dark btn-lg" type="submit">Add event</button>
+    </form>
+</main>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
