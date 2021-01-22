@@ -1,5 +1,6 @@
 ﻿using GameHubCSharp.Data;
 using GameHubCSharp.Models.View;
+using GameHubCSharp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,24 +16,29 @@ namespace GameHubCSharp.Controllers
     public class RestController : ControllerBase
     {
         private ApplicationDbContext applicationDb;
+        private PlayerService playerService;
+        private GameEventService gameEventService;
 
-        public RestController(ApplicationDbContext applicationDb)
+        public RestController(ApplicationDbContext applicationDb, PlayerService playerService, GameEventService gameEventService)
         {
             this.applicationDb = applicationDb;
+            this.playerService = playerService;
+            this.gameEventService = gameEventService;
         }
 
         [HttpGet("/resource")]
         public IActionResult FindGames(string game)
         {
-            var events = applicationDb.GameEvents.Include(x=>x.Game).Where(x => x.Game.GameName == game).ToList();
+            var events = gameEventService.FindEventsByGame(game);
             List<HomeEventRestViewModel> games = new List<HomeEventRestViewModel>();
-            foreach(var el in events)
+            if (games.Count == 0) return NotFound();
+            foreach (var el in events)
             {
                 HomeEventRestViewModel homeEventRestView = new HomeEventRestViewModel();
                 homeEventRestView.Devision = el.Devision;
                 homeEventRestView.ImageUrl = el.Game.ImageUrl;
                 homeEventRestView.Id = el.Id.ToString();
-                homeEventRestView.OwnerName = el.OwnerId;
+                homeEventRestView.OwnerName = playerService.FindPlayerById(el.OwnerId).UsernameInGame;
                 homeEventRestView.TakenPlaces = el.NumberOfPlayers;
                 games.Add(homeEventRestView);
             }

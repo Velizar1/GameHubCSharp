@@ -1,5 +1,4 @@
-﻿using GameHubCSharp.Models.Service;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 
@@ -13,7 +12,7 @@ namespace GameHubCSharp.Models.View
         private String devision;
         private DateTime startDate;
         private DateTime dueDate;
-        private GameServiceModel game;
+        private GameViewModel game;
         private PlayerViewModel owner;
         private ICollection<PlayerViewModel> players;
 
@@ -23,7 +22,7 @@ namespace GameHubCSharp.Models.View
         public string Devision { get => devision; set => devision = value; }
         public DateTime StartDate { get => startDate; set => startDate = value; }
         public DateTime DueDate { get => dueDate; set => dueDate = value; }
-        public GameServiceModel Game { get => game; set => game = value; }
+        public GameViewModel Game { get => game; set => game = value; }
         
         public ICollection<PlayerViewModel> Players { get => players; set => players = value; }
         public PlayerViewModel Owner { get => owner; set => owner = value; }

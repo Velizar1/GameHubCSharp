@@ -18,7 +18,7 @@
         @if (User.Identity.IsAuthenticated)
         {
             <li class="nav-item">
-                <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="Add" asp-controller="GameEvent">Add Event</a>
+                <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="GameEventAdd" asp-controller="GameEvent">Add Event</a>
             </li>
             <li class="nav-item">
                 <form   asp-action="Logout" asp-controller="User"
