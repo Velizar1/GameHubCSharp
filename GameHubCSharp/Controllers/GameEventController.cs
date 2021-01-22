@@ -21,11 +21,11 @@ namespace GameHubCSharp.Controllers
         [HttpGet("/game/detail/")]
         public IActionResult GameEventDetail(string id)
         {
-             var gameEvent=applicationDb.GameEvents.Include(x=>x.Game).Where(g => g.Id.Equals(id)).FirstOrDefault();
+             var gameEvent=applicationDb.GameEvents.Include(x=>x.Game).Where(g => g.Id.ToString().Equals(id)).FirstOrDefault();
 
            
             
-            return View(gameEvent);
+            return View();
 
         }
     }
