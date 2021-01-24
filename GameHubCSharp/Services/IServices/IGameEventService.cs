@@ -1,4 +1,5 @@
 ﻿using GameHubCSharp.Data.Models;
+using GameHubCSharp.Models.View;
 using System.Collections.Generic;
 
 namespace GameHubCSharp.Services
@@ -9,6 +10,6 @@ namespace GameHubCSharp.Services
         public GameEvent FindEventsById(string id);
         public void Add(GameEvent gameEvent);
         public ICollection<GameEvent> FindAll();
-
+        void DeleteEvent(GameEventViewModel gameEvent);
     }
 }

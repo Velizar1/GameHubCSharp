@@ -1,10 +1,11 @@
-﻿using System;
+﻿using GameHubCSharp.Data.Models;
+using System;
 using System.Collections.Generic;
 
 
 namespace GameHubCSharp.Models.View
 {
-    public class GameEventViewModel
+    public class GameEventViewModel 
     {
         private String id;
         private String description;
@@ -12,6 +13,7 @@ namespace GameHubCSharp.Models.View
         private String devision;
         private DateTime startDate;
         private DateTime dueDate;
+
         private GameViewModel game;
         private PlayerViewModel owner;
         private ICollection<PlayerViewModel> players;

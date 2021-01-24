@@ -56,9 +56,7 @@ namespace GameHubCSharp
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequiredLength = 6;
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
+                
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddAutoMapper(typeof(Startup));

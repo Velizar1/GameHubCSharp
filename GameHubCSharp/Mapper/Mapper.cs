@@ -21,6 +21,12 @@ namespace GameHubCSharp.Mapper
             CreateMap<GameEvent, HomeEventRestViewModel>();
             CreateMap<HomeEventRestViewModel, GameEvent>();
 
+            CreateMap<Game, GameViewModel>();
+            CreateMap<GameViewModel, Game>();
+            
+            CreateMap<Player, PlayerViewModel>();
+            CreateMap<PlayerViewModel, Player>();
+
         }
     }
 }

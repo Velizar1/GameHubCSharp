@@ -1,5 +1,7 @@
-﻿using GameHubCSharp.Data;
+﻿using AutoMapper;
+using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
+using GameHubCSharp.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +12,32 @@ namespace GameHubCSharp.Services
 
     public class GameEventService : IGameEventService
     {
+        private readonly IMapper mapper;
         private readonly ApplicationDbContext db;
         private readonly IPlayerService playerService;
 
-        public GameEventService(ApplicationDbContext db, IPlayerService playerService)
+        public GameEventService(ApplicationDbContext db, IPlayerService playerService, IMapper mapper = null)
         {
             this.db = db;
             this.playerService = playerService;
+            this.mapper = mapper;
         }
 
         public void Add(GameEvent gameEvent)
         {
             db.GameEvents.Add(gameEvent);
 
+            db.SaveChanges();
+        }
+
+        public void DeleteEvent(GameEventViewModel gameEvent)
+        {
+            var gameEve = mapper.Map<GameEvent>(gameEvent);
+            foreach (var player in gameEve.Players)
+            {
+                db.Remove(player);
+            }
+            db.Remove(gameEve);
             db.SaveChanges();
         }
 

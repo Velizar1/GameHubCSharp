@@ -45,7 +45,10 @@ namespace GameHubCSharp.Controllers
             {
                 return RedirectToAction("Error","Home");
             }
-            return View(gameEvent);
+            var gameEve = mapper.Map<GameEventViewModel>(gameEvent);
+            gameEve.Owner = mapper.Map<PlayerViewModel>(playerService.FindPlayerById(gameEvent.OwnerId));
+            gameEve.Owner.Username = playerService.FindPlayerById(gameEve.Owner.Id).User.UserName;
+            return View(gameEve);
 
         }
 
@@ -69,6 +72,13 @@ namespace GameHubCSharp.Controllers
             player.GameEvents.Add(gameEve);
             db.SaveChanges();
             return RedirectToAction("Home","Home");
+        }
+
+        [HttpPost]
+        public IActionResult GameEventDelete(GameEventViewModel gameEvent)
+        {
+            gameEventService.DeleteEvent(gameEvent);
+            return RedirectToAction("Home", "Home");
         }
     }
 }
