@@ -6,5 +6,6 @@ namespace GameHubCSharp.Services
     {
         public Player FindPlayerById(string id);
         public Player Add(Player player);
+        public Player FindPlayerByNick(string userNick);
     }
 }

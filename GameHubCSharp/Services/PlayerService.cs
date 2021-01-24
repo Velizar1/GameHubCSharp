@@ -29,5 +29,10 @@ namespace GameHubCSharp.Services
             var player = db.Players.FirstOrDefault(p => p.Id.ToString() == id);
             return player;
         }
+
+        public Player FindPlayerByNick(string userNick)
+        {
+            return db.Players.Where(x => x.UsernameInGame == userNick).FirstOrDefault();
+        }
     }
 }

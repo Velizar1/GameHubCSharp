@@ -42,6 +42,5 @@ namespace GameHubCSharp.Data.Models
         {
             OwnerId = player;
         }
-
     }
 }

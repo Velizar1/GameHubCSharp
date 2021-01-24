@@ -30,9 +30,16 @@ namespace GameHubCSharp.Services
             db.SaveChanges();
         }
 
+        public void AddPlayer(Player playerNew, string gameEventId)
+        {
+            var gameEvent =  this.FindEventsById(gameEventId);
+            gameEvent.Players.Add(playerNew);
+            db.SaveChanges();
+        }
+
         public void DeleteEvent(GameEventViewModel gameEvent)
         {
-            var gameEve = mapper.Map<GameEvent>(gameEvent);
+            var gameEve = db.GameEvents.FirstOrDefault(g=>gameEvent.Id==g.Id.ToString());
             foreach (var player in gameEve.Players)
             {
                 db.Remove(player);
@@ -54,6 +61,11 @@ namespace GameHubCSharp.Services
         public GameEvent FindEventsById(string id)
         {
             return db.GameEvents.FirstOrDefault(g => g.Id.ToString() == id);
+        }
+
+        public Player FindPlayerByNick(string userNick, string gameEventId)
+        {
+            return db.GameEvents.Where(g => g.Id.ToString() == gameEventId).FirstOrDefault().Players.Where(p => p.UsernameInGame == userNick).FirstOrDefault();
         }
     }
 }

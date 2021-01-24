@@ -38,7 +38,7 @@ namespace GameHubCSharp.Controllers
         }
 
         [HttpGet("/game/detail/")]
-        public IActionResult GameEventDetail(string id)
+        public IActionResult GameEventDetail(string id, bool? valid=true)
         {
             var gameEvent = gameEventService.FindEventsById(id);
             if (gameEvent == null)
@@ -48,6 +48,7 @@ namespace GameHubCSharp.Controllers
             var gameEve = mapper.Map<GameEventViewModel>(gameEvent);
             gameEve.Owner = mapper.Map<PlayerViewModel>(playerService.FindPlayerById(gameEvent.OwnerId));
             gameEve.Owner.Username = playerService.FindPlayerById(gameEve.Owner.Id).User.UserName;
+            ViewData["valid"] = valid;
             return View(gameEve);
 
         }
@@ -79,6 +80,26 @@ namespace GameHubCSharp.Controllers
         {
             gameEventService.DeleteEvent(gameEvent);
             return RedirectToAction("Home", "Home");
+        }
+        [HttpPost]
+        public IActionResult GameEventAddPlayer(string userNick,string gameEventId)
+        {
+            object obj = new { id = gameEventId};
+            var playerInGameEvent = gameEventService.FindPlayerByNick(userNick,gameEventId);
+
+            if (playerInGameEvent == null)
+            {
+                Player playerNew = new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = userNick };
+                gameEventService.AddPlayer(playerNew, gameEventId);
+
+                return RedirectToAction("GameEventDetail", obj);
+            }
+            else
+            {
+                obj = new { id = gameEventId, valid = false };
+                return RedirectToAction("GameEventDetail", obj);
+            }
+           
         }
     }
 }

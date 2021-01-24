@@ -26,7 +26,7 @@
                            asp-for="OwnerName" required>
                 </div>
                 <div class="invalid-feedback">
-                    <span asp-validation-for="OwnerName" th:text="${e}"
+                    <span asp-validation-for="OwnerName"
                           style="color: #ff0000;font-size:15px"></span>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                 <label class="float-left name-label">Discord Url</label>
                 <div class="input-group mt-2 is-invalid">
                     <input type="text" class="form-control is-invalid"
-                           asp-for="DiscordUrl" >
+                           asp-for="DiscordUrl">
                 </div>
                 <div class="invalid-feedback">
                     <span asp-validation-for="DiscordUrl" th:text="${e}"
