@@ -1,28 +1,41 @@
 ﻿using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GameHubCSharp.Services
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ApplicationDbContext db;
 
         public UserService(ApplicationDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            this.db = dbContext;
+        }
+
+        public void Delete(string id)
+        {
+            var user = db.Users.FirstOrDefault(x => x.Id.ToString() == id);
+            db.Remove(user);
+            db.SaveChanges();
+        }
+
+        public List<User> FindAll()
+        {
+            return db.Users.ToList();
         }
 
         public User FindUserById(string userId)
         {
-            var user = dbContext.Users.Where(x => x.Id.ToString() == userId).First();
+            var user = db.Users.Where(x => x.Id.ToString() == userId).First();
 
             return user;
         }
 
         public User FindUserByName(string userName)
         {
-            var user = dbContext.Users.Where(x => x.UserName == userName).First();
+            var user = db.Users.Where(x => x.UserName == userName).First();
 
             return user;
         }

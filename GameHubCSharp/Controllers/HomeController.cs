@@ -17,12 +17,15 @@ namespace GameHubCSharp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private IHomeService homeService;
+        private readonly IGameEventService gameEventService;
 
-        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
+        public HomeController(ILogger<HomeController> logger, IHomeService homeService,
+            IGameEventService gameEventService)
         {
 
             _logger = logger;
             this.homeService = homeService;
+            this.gameEventService = gameEventService;
         }
         [AllowAnonymous]
         public IActionResult Index()
@@ -37,7 +40,7 @@ namespace GameHubCSharp.Controllers
 
         public IActionResult Home()
         {
-            var games = homeService.FindAllGames();
+            var games = gameEventService.FindAll();
             if (games.Count == 0)
             {
                 ViewData["GameNames"] = "";
@@ -45,8 +48,8 @@ namespace GameHubCSharp.Controllers
             else
             {
                 // Chech logic 
-                ViewData["mostPlayed"] = games.Select(x => x.GameName).GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key;
-                ViewData["GameNames"] = games.Select(x => x.GameName).ToList() ;
+                ViewData["mostPlayed"] = games.Select(x => x).GroupBy(x => x.Game.GameName).OrderByDescending(x => x.Count()).First().Key; ;
+                ViewData["GameNames"] = games.Select(x => x.Game.GameName).ToList() ;
             }
             
             return View();

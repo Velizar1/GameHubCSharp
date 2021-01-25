@@ -15,5 +15,7 @@ namespace GameHubCSharp.Models.View
         public ICollection<User> Users { get => users; set => users = value; }
         public ICollection<Post> Posts { get => posts; set => posts = value; }
         public User Admin { get => admin; set => admin = value; }
+        public List<GameEvent> GameEvents { get; set; }
+        public GameViewModel GameViewModel { get; set; }
     }
 }

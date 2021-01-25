@@ -15,5 +15,6 @@ namespace GameHubCSharp.Services.IServices
         public Post AddPost(Post post);
         public void RemovePost(Post post);
         public void RemovePostById(string id);
+        public List<Post> FindAll();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GameHubCSharp.Data.Models;
+using System.Collections.Generic;
 
 namespace GameHubCSharp.Services
 {
@@ -6,5 +7,7 @@ namespace GameHubCSharp.Services
     {
         public User FindUserById(string userId);
         public User FindUserByName(string userId);
+        public List<User> FindAll();
+        public void Delete(string id);
     }
 }

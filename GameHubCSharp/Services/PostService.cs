@@ -25,6 +25,11 @@ namespace GameHubCSharp.Services
             return post;
         }
 
+        public List<Post> FindAll()
+        {
+            return db.Posts.ToList();
+        }
+
         public Post FindPostById(string Id)
         {
             return db.Posts.FirstOrDefault(p => p.Id.ToString() == Id);
