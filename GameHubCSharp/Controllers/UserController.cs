@@ -12,21 +12,46 @@ namespace GameHubCSharp.Controllers
     public class UserController : Controller
     {
         private SignInManager<User> _signManager;
+        private RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext db;
         private UserManager<User> _userManager;
 
-        public UserController(UserManager<User> userManager, SignInManager<User> signManager,ApplicationDbContext db)
+        public UserController(UserManager<User> userManager, SignInManager<User> signManager, ApplicationDbContext db, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signManager = signManager;
             this.db = db;
+            _roleManager = roleManager;
         }
         [HttpPost("/register")]
         public async Task<IActionResult> Registration(RegistartionViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.UserName, Email=model.Email };
+                var user = new User { UserName = model.UserName, Email = model.Email };
+
+
+                bool x = await _roleManager.RoleExistsAsync("Admin");
+                if (!x)
+                {
+                    // create Admin rool    
+                    var role = new IdentityRole();
+                    role.Name = "Admin";
+                    await _roleManager.CreateAsync(role);
+
+
+                }
+                x = await _roleManager.RoleExistsAsync("User");
+                if (!x)
+                {
+                    // create User rool    
+                    var role = new IdentityRole();
+                    role.Name = "User";
+                    await _roleManager.CreateAsync(role);
+
+                }
+
+                var result1 = await _userManager.AddToRoleAsync(user, "User");
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
@@ -39,7 +64,7 @@ namespace GameHubCSharp.Controllers
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError("creatUser", error.Description);
-                   
+
                     }
                 }
             }
@@ -64,14 +89,14 @@ namespace GameHubCSharp.Controllers
         [HttpPost("/login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-           
+
             if (ModelState.IsValid)
             {
                 //var result = await _signManager.PasswordSignInAsync(model.UserName,
                 //   model.Password, model.RememberMe,false);
                 var user = db.Users.FirstOrDefault(x => x.UserName == model.UserName);
 
-                var check = await _userManager.CheckPasswordAsync(user,model.Password);
+                var check = await _userManager.CheckPasswordAsync(user, model.Password);
 
                 if (check)
                 {

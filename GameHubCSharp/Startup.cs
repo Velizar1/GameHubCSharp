@@ -38,7 +38,8 @@ namespace GameHubCSharp
                 .UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-           
+
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("Allow",
@@ -56,9 +57,16 @@ namespace GameHubCSharp
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequiredLength = 6;
-                
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+               
             })
+
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+           
+            services.AddIdentity<User, string>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllersWithViews();
@@ -67,6 +75,8 @@ namespace GameHubCSharp
             services.AddTransient<IPlayerService, PlayerService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IGameService, GameService>();
+            services.AddTransient<IPostService, PostService>();
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

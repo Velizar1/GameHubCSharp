@@ -13,6 +13,7 @@ namespace GameHubCSharp.Data
         public DbSet<Game> Games { get; set; }
         public DbSet<GameEvent> GameEvents { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -26,14 +27,9 @@ namespace GameHubCSharp.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-                
-
             builder.Entity<Player>()
                 .HasMany(x => x.GameEvents)
                 .WithMany(x => x.Players);
-
-            
-
 
             base.OnModelCreating(builder);
         }

@@ -1,5 +1,5 @@
 ﻿<div class="float-left" style="float:left;display: inline-block">
-    <a style="color:rgb(255, 255, 255);padding: 0;margin-left: 10%" asp-action="Home" asp-controller="Home" 
+    <a style="color:rgb(255, 255, 255);padding: 0;margin-left: 10%" asp-action="Home" asp-controller="Home"
        class="nav-link text-light">
         <img style="height: 2em;width: 9em" src="/img/output-onlinepngtools.png">
     </a>
@@ -9,27 +9,37 @@
     @if (!User.Identity.IsAuthenticated)
     {
         <li class="nav-item">
-            <a class="nav-link" style="color:rgb(255, 255, 255);"  asp-controller="User" asp-action="Login">Login</a>
+            <a class="nav-link" style="color:rgb(255, 255, 255);" asp-controller="User" asp-action="Login">Login</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" style="color:rgb(255, 255, 255);"  asp-controller="User" asp-action="Registration">Register</a>
+            <a class="nav-link" style="color:rgb(255, 255, 255);" asp-controller="User" asp-action="Registration">Register</a>
         </li>
     }
-        @if (User.Identity.IsAuthenticated)
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("Admin"))
         {
             <li class="nav-item">
-                <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="GameEventAdd" asp-controller="GameEvent">Add Event</a>
-            </li>
-            <li class="nav-item">
-                <form   asp-action="Logout" asp-controller="User"
-                      method="post" id="logout">
-                    <button id="logout-button" type="submit" class="nav-link" style="color:rgb(255, 255, 255);">
-                        Log
-                        out
-                    </button>
-                </form>
-
+                <p class="card-text">Admin : @User.Identity.Name</p>
+                <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="AdminHome" asp-controller="Admin">Admin Home</a>
             </li>
         }
+        <li class="nav-item">
+            <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="News" asp-controller="Admin">News</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="GameEventAdd" asp-controller="GameEvent">Add Event</a>
+        </li>
+        <li class="nav-item">
+            <form asp-action="Logout" asp-controller="User"
+                  method="post" id="logout">
+                <button id="logout-button" type="submit" class="nav-link" style="color:rgb(255, 255, 255);">
+                    Log
+                    out
+                </button>
+            </form>
 
-    </ul>
+        </li>
+    }
+
+</ul>
