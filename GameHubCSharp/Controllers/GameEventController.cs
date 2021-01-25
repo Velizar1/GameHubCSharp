@@ -64,6 +64,7 @@ namespace GameHubCSharp.Controllers
         [HttpPost]
         public IActionResult GameEventAdd(GameEventAddViewModel gameEvent)
         {
+
             var gameEve = mapper.Map<GameEvent>(gameEvent);
             var game = gameService.FindGameByName(gameEvent.GameName);
             gameEve.Game = game;
@@ -71,7 +72,7 @@ namespace GameHubCSharp.Controllers
             gameEve.OwnerId = player.Id.ToString();
 
             player.GameEvents.Add(gameEve);
-            db.SaveChanges();
+            gameEventService.Add(gameEve);
             return RedirectToAction("Home","Home");
         }
 

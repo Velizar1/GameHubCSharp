@@ -62,11 +62,11 @@ namespace GameHubCSharp
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                
-            })
+            }).AddRoles<IdentityRole<Guid>>()
 
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-           
-            services.AddIdentity<User, string>().AddEntityFrameworkStores<ApplicationDbContext>();
+           //TODO exception in roles 
+           // services.AddIdentity<User, string>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllersWithViews();

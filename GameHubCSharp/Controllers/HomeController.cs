@@ -27,6 +27,10 @@ namespace GameHubCSharp.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Home", "Home");
+            }
             return View();
         }
         [HttpGet("/home")]
@@ -48,6 +52,10 @@ namespace GameHubCSharp.Controllers
             return View();
         }
 
+        public IActionResult News()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

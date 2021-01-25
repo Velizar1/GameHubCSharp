@@ -28,12 +28,8 @@ namespace GameHubCSharp.Controllers
             this.postService = postService;
         }
 
-        [Authorize(Roles ="User")]
-        public IActionResult News()
-        {
-            return View();
-        }
-        [HttpGet("/home")]
+       
+        
 
         public IActionResult AdminHome()
         {

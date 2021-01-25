@@ -12,11 +12,11 @@ namespace GameHubCSharp.Controllers
     public class UserController : Controller
     {
         private SignInManager<User> _signManager;
-        private RoleManager<IdentityRole> _roleManager;
+        private RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly ApplicationDbContext db;
         private UserManager<User> _userManager;
 
-        public UserController(UserManager<User> userManager, SignInManager<User> signManager, ApplicationDbContext db, RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<User> userManager, SignInManager<User> signManager, ApplicationDbContext db, RoleManager<IdentityRole<Guid>> roleManager)
         {
             _userManager = userManager;
             _signManager = signManager;
@@ -35,7 +35,7 @@ namespace GameHubCSharp.Controllers
                 if (!x)
                 {
                     // create Admin rool    
-                    var role = new IdentityRole();
+                    var role = new IdentityRole<Guid>();
                     role.Name = "Admin";
                     await _roleManager.CreateAsync(role);
 
@@ -45,15 +45,16 @@ namespace GameHubCSharp.Controllers
                 if (!x)
                 {
                     // create User rool    
-                    var role = new IdentityRole();
+                    var role = new IdentityRole<Guid>();
                     role.Name = "User";
                     await _roleManager.CreateAsync(role);
 
                 }
 
-                var result1 = await _userManager.AddToRoleAsync(user, "User");
+               
                 var result = await _userManager.CreateAsync(user, model.Password);
 
+                var result1 = await _userManager.AddToRoleAsync(user, "User");
                 if (result.Succeeded)
                 {
                     await _signManager.SignInAsync(user, false);
