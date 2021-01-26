@@ -45,9 +45,6 @@ namespace GameHubCSharp.Controllers
                     var res = await _userManager.CreateAsync(userAdmin, "admin123");
                     var res1 = await _userManager.AddToRoleAsync(userAdmin, "Admin");
 
-                    
-
-
                 }
                 x = await _roleManager.RoleExistsAsync("User");
                 if (!x)
