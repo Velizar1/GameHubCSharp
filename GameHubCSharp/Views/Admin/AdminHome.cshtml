@@ -1,8 +1,19 @@
 ﻿@using GameHubCSharp.Models.View
 @model AdminHomeViewModel
 
+    <select class="browser-default " style="width: 15em;"
+            aria-placeholder="Filter"
+            id="category"
+            name="category"
+            onchange="filter2(this.value)">
+
+        <option text="Game" value="Game">Game</option>
+        <option text="Post" value="Post">Post</option>
+
+
+    </select>
 <div class=" d-block text-center">
-    <form class="d-inline-block mb-2" id="account" method="POST" asp-action="AddGame" asp-controller="Admin">
+    <form class="mb-2" style="display:inline-block" id="game" method="POST" asp-action="AddGame" asp-controller="Admin">
         <div>
             <div class="col-md-12 col-md-6 mb-3 d-inline-block" style="display: inline-block;">
                 <div class="text-danger" asp-validation-summary="All"></div>
@@ -21,7 +32,7 @@
 </div>
 
 <div class=" d-block text-center">
-    <form class="d-inline-block mb-2" id="account" method="POST" asp-action="AddPost" asp-controller="Admin">
+    <form class="mb-2" style="display:inline-block" id="post" method="POST" asp-action="AddPost" asp-controller="Admin">
         <div>
             <div class="col-md-12 col-md-6 mb-3 d-inline-block" style="display: inline-block;">
                 <div class="text-danger" asp-validation-summary="All"></div>
@@ -60,79 +71,80 @@
 
 
 </select>
-<table id="u" class="table table-dark container mt-4" style="">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">id</th>
-            <th scope="col">name</th>
-            <th scope="col">function</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 0; i < Model.Users.ToList().Count; i++)
-        {
-            var cur = Model.Users.ToList()[i];
-
+<section class="mb-4">
+    <table id="u" class="table table-dark container mt-4 mb-4" style="">
+        <thead>
             <tr>
-                <th scope="row">@i</th>
-                <td>@cur.Id</td>
-                <td>@cur.UserName</td>
-                <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteUser/@cur.Id'">Delete</button></td>
-
+                <th scope="col">#</th>
+                <th scope="col">id</th>
+                <th scope="col">name</th>
+                <th scope="col">function</th>
             </tr>
-        }
-    </tbody>
-</table>
-<table id="ge" class="table table-dark container mt-4" style="">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">id</th>
-            <th scope="col">Event game name</th>
-            <th scope="col">function</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 0; i < Model.GameEvents.ToList().Count; i++)
-        {
-            var cur = Model.GameEvents.ToList()[i];
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Users.ToList().Count; i++)
+            {
+                var cur = Model.Users.ToList()[i];
 
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@cur.Id</td>
+                    <td>@cur.UserName</td>
+                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteUser/@cur.Id'">Delete</button></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table id="ge" class="table table-dark container mt-4" style="">
+        <thead>
             <tr>
-                <th scope="row">@i</th>
-                <td>@cur.Id</td>
-                <td>@cur.Game.GameName</td>
-                <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteEvent/@cur.Id'">Delete</button></td>
-
+                <th scope="col">#</th>
+                <th scope="col">id</th>
+                <th scope="col">Event game name</th>
+                <th scope="col">function</th>
             </tr>
-        }
-    </tbody>
-</table>
-<table id="g" class="table table-dark container mt-4" style="">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">id</th>
-            <th scope="col">name</th>
-            <th scope="col">function</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 0; i < Model.Games.ToList().Count; i++)
-        {
-            var cur = Model.Games.ToList()[i];
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.GameEvents.ToList().Count; i++)
+            {
+                var cur = Model.GameEvents.ToList()[i];
 
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@cur.Id</td>
+                    <td>@cur.Game.GameName</td>
+                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteEvent/@cur.Id'">Delete</button></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table id="g" class="table table-dark container mt-4" style="">
+        <thead>
             <tr>
-                <th scope="row">@i</th>
-                <td>@cur.Id</td>
-                <td>@cur.GameName</td>
-                <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteGame/@cur.Id'">Delete</button></td>
-
+                <th scope="col">#</th>
+                <th scope="col">id</th>
+                <th scope="col">name</th>
+                <th scope="col">function</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Games.ToList().Count; i++)
+            {
+                var cur = Model.Games.ToList()[i];
 
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@cur.Id</td>
+                    <td>@cur.GameName</td>
+                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteGame/@cur.Id'">Delete</button></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
 <script>
 
     function filter(val) {
@@ -155,5 +167,18 @@
             document.getElementById("u").style.display = "none";
         }
     }
+    function filter2(val) {
+        console.log(val)
+        if (val == "Game") {
+            document.getElementById("game").style.display = "inline-block";
+            document.getElementById("post").style.display = "none";
+        }
+
+        if (val == "Post") {
+            document.getElementById("game").style.display = "none";
+            document.getElementById("post").style.display = "inline-block";
+        }
+    }
     filter("User")
+    filter2("Game")
 </script>
