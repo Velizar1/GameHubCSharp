@@ -81,8 +81,10 @@ form{
 
 #back-to-top {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073;
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top:0.6rem;
+    padding-bottom:0.6rem;
     border-radius: 50px;
     background-color: #060c1a;
     border: 3px solid #401544a3;
