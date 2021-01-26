@@ -1,4 +1,5 @@
 ﻿@using GameHubCSharp.Models.View
+@model List<PostViewModel>
 <div class="container">
 
     <div class="row">
@@ -12,17 +13,17 @@
             </h1>
 
             <!-- Blog Post -->
-            @foreach (PostViewModel post in (List<PostViewModel>)ViewData["Posts"])
+            @foreach (PostViewModel post in Model)
             {
                 <div class="card mb-4">
-                    <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.ImageUrl">
+                    <img class="card-img-top" src="@post.ImageUrl" alt="@post.ImageUrl">
                     <div class="card-body">
-                        <h2 class="card-title">@Model.Topic</h2>
-                        <p class="card-text">@Model.Text</p>
-                        <a href="#" class="btn btn-primary">Read More →</a>
+                        <h2 class="card-title">@post.Topic</h2>
+                        <p class="card-text">@post.Text</p>
+                        <a href="@post.Link" class="btn btn-primary">Read More →</a>
                     </div>
                     <div class="card-footer text-muted">
-                        @Model.CreatedAt
+                        @post.CreatedAt
                         <a href="#">Start Bootstrap</a>
                     </div>
                 </div>

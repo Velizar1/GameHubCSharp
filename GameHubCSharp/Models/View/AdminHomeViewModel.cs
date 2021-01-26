@@ -17,5 +17,7 @@ namespace GameHubCSharp.Models.View
         public User Admin { get => admin; set => admin = value; }
         public List<GameEvent> GameEvents { get; set; }
         public GameViewModel GameViewModel { get; set; }
+        public List<Game> Games { get; set; }
+        public Post Post { get; set; }
     }
 }

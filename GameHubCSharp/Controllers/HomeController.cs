@@ -73,8 +73,8 @@ namespace GameHubCSharp.Controllers
         [HttpGet]
         public IActionResult News()
         {
-            ViewData["Posts"] = postService.FindAll().Select(p=> mapper.Map<PostViewModel>(p)).ToList();
-            return View();
+            List<PostViewModel> model = postService.FindAll().Select(p=> mapper.Map<PostViewModel>(p)).ToList();
+            return View(model);
         }
         public IActionResult Privacy()
         {
