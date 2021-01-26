@@ -23,6 +23,11 @@ namespace GameHubCSharp.Services
             db.SaveChanges();
         }
 
+        public List<Game> FindAll()
+        {
+            return db.Games.ToList();
+        }
+
         public Game FindGameByName(string name)
         {
             return db.Games.FirstOrDefault(x => x.GameName == name);

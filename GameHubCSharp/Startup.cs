@@ -23,6 +23,7 @@ namespace GameHubCSharp
     {
         public Startup(IConfiguration configuration)
         {
+
             Configuration = configuration;
         }
 

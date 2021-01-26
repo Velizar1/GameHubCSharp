@@ -1,6 +1,9 @@
-﻿using GameHubCSharp.Data;
+﻿using AutoMapper;
+using GameHubCSharp.Data;
 using GameHubCSharp.Models;
+using GameHubCSharp.Models.View;
 using GameHubCSharp.Services;
+using GameHubCSharp.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,14 +21,20 @@ namespace GameHubCSharp.Controllers
         private readonly ILogger<HomeController> _logger;
         private IHomeService homeService;
         private readonly IGameEventService gameEventService;
+        private readonly IGameService gameService;
+        private readonly IPostService postService;
+        private readonly IMapper mapper;
 
         public HomeController(ILogger<HomeController> logger, IHomeService homeService,
-            IGameEventService gameEventService)
+            IGameEventService gameEventService, IGameService gameService, IPostService postService, IMapper mapper)
         {
 
             _logger = logger;
             this.homeService = homeService;
             this.gameEventService = gameEventService;
+            this.gameService = gameService;
+            this.postService = postService;
+            this.mapper = mapper;
         }
         [AllowAnonymous]
         public IActionResult Index()
@@ -40,23 +49,31 @@ namespace GameHubCSharp.Controllers
 
         public IActionResult Home()
         {
-            var games = gameEventService.FindAll();
+            var gameEvents = gameEventService.FindAll();
+            var games = gameService.FindAll();
             if (games.Count == 0)
             {
-                ViewData["GameNames"] = "";
+                ViewData["GameNames"] = new List<string>();
+            }
+            else if(gameEvents.Count!=0)
+            {
+                // Chech logic 
+                ViewData["mostPlayed"] = gameEvents.Select(x => x).GroupBy(x => x.Game.GameName).OrderByDescending(x => x.Count()).First().Key; ;
+                ViewData["GameNames"] = games.Select(x => x.GameName).ToList() ;
             }
             else
             {
-                // Chech logic 
-                ViewData["mostPlayed"] = games.Select(x => x).GroupBy(x => x.Game.GameName).OrderByDescending(x => x.Count()).First().Key; ;
-                ViewData["GameNames"] = games.Select(x => x.Game.GameName).ToList() ;
+                ViewData["mostPlayed"] = "No games found";
+                ViewData["GameNames"] = games.Select(x => x.GameName).ToList();
             }
             
             return View();
         }
 
+        [HttpGet]
         public IActionResult News()
         {
+            ViewData["Posts"] = postService.FindAll().Select(p=> mapper.Map<PostViewModel>(p)).ToList();
             return View();
         }
         public IActionResult Privacy()

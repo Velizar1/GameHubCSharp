@@ -27,6 +27,10 @@ namespace GameHubCSharp.Mapper
             CreateMap<Player, PlayerViewModel>();
             CreateMap<PlayerViewModel, Player>();
 
+            CreateMap<Post, PostViewModel>();
+            CreateMap<PostViewModel, Post>();
+
+
         }
     }
 }

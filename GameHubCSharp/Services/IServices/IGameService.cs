@@ -11,5 +11,7 @@ namespace GameHubCSharp.Services.IServices
         public Game FindGameByName(string name);
         public void Add(Game game);
 
+        public List<Game> FindAll();
+
     }
 }

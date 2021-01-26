@@ -32,12 +32,20 @@ namespace GameHubCSharp.Controllers
 
 
                 bool x = await _roleManager.RoleExistsAsync("Admin");
+
                 if (!x)
                 {
-                    // create Admin rool    
+
                     var role = new IdentityRole<Guid>();
                     role.Name = "Admin";
+
                     await _roleManager.CreateAsync(role);
+                    // create Admin rool    
+                    User userAdmin = new User { UserName = "adminFirst", Email = "game_hub@gmail.com" };
+                    var res = await _userManager.CreateAsync(userAdmin, "admin123");
+                    var res1 = await _userManager.AddToRoleAsync(userAdmin, "Admin");
+
+                    
 
 
                 }

@@ -78,6 +78,20 @@ form{
     padding-top: 0.7em;
 
 }
+
+#back-to-top {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073;
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+    border-radius: 50px;
+    background-color: #060c1a;
+    border: 3px solid #401544a3;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: none;
+    margin-bottom: 5rem;
+}
 .footer {
   position: absolute;
   bottom: 0;
