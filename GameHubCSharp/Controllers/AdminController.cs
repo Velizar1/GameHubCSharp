@@ -93,6 +93,11 @@ namespace GameHubCSharp.Controllers
             return Redirect("/home");
         }
 
+    
+        public IActionResult RedirectTo(string url)
+        {
+            return RedirectPermanent(url);
+        }
 
     }
 }
