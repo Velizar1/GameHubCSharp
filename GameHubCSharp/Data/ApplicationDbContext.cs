@@ -31,6 +31,11 @@ namespace GameHubCSharp.Data
                 .HasMany(x => x.GameEvents)
                 .WithMany(x => x.Players);
 
+            builder.Entity<User>()
+             .HasOne(a => a.Category)
+             .WithOne(b => b.User)
+             .HasForeignKey<Category>(b => b.UserId);
+
             base.OnModelCreating(builder);
         }
 
