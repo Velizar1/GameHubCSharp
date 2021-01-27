@@ -24,6 +24,7 @@ namespace GameHubCSharp.Controllers
         private readonly IGameService gameService;
         private readonly IPostService postService;
         private readonly IMapper mapper;
+        private readonly int pageSize = 4;
 
         public HomeController(ILogger<HomeController> logger, IHomeService homeService,
             IGameEventService gameEventService, IGameService gameService, IPostService postService, IMapper mapper)
@@ -35,6 +36,7 @@ namespace GameHubCSharp.Controllers
             this.gameService = gameService;
             this.postService = postService;
             this.mapper = mapper;
+            
         }
         [AllowAnonymous]
         public IActionResult Index()
@@ -55,25 +57,30 @@ namespace GameHubCSharp.Controllers
             {
                 ViewData["GameNames"] = new List<string>();
             }
-            else if(gameEvents.Count!=0)
+            else if (gameEvents.Count != 0)
             {
                 // Chech logic 
                 ViewData["mostPlayed"] = gameEvents.Select(x => x).GroupBy(x => x.Game.GameName).OrderByDescending(x => x.Count()).First().Key; ;
-                ViewData["GameNames"] = games.Select(x => x.GameName).ToList() ;
+                ViewData["GameNames"] = games.Select(x => x.GameName).ToList();
             }
             else
             {
                 ViewData["mostPlayed"] = "No games found";
                 ViewData["GameNames"] = games.Select(x => x.GameName).ToList();
             }
-            
+
             return View();
         }
-
+         
         [HttpGet]
-        public IActionResult News()
+        public IActionResult News(int? pageNumber,string sortOrder, string currentFilter,string searchString)
         {
-            List<PostViewModel> model = postService.FindAll().Select(p=> mapper.Map<PostViewModel>(p)).ToList();
+            var count = postService.Count();
+            List<PostViewModel> model = postService.FindAll(pageNumber??1,pageSize).Select(p => mapper.Map<PostViewModel>(p)).ToList();
+            ViewData["PageNumber"] = pageNumber ?? 1;
+            var totalPages = (int)Math.Ceiling(count / (double)pageSize);
+            ViewData["HasNext"] = (pageNumber??1) < totalPages ? "": "disabled";
+            ViewData["HasPrev"] = (pageNumber?? 1) > 1 ? "" : "disabled";
             return View(model);
         }
         public IActionResult Privacy()

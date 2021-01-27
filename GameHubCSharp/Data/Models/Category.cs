@@ -7,8 +7,9 @@ namespace GameHubCSharp.Data.Models
 {
     public class Category : BaseModel
     {
+       
+        private ICollection<Post> posts;
         public string Type { get; set; }
-        public Guid UserId { get; set; }
-        public virtual User User { get; set; }
+        public virtual ICollection<Post> Posts { get => posts; set => posts = value; }
     }
 }

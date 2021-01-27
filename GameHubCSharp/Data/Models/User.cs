@@ -8,9 +8,9 @@ namespace GameHubCSharp.Data.Models
 {
     public class User : IdentityUser<Guid>
     {
+        private int rating;
         private Boolean deleted;
         public bool Deleted { get => deleted; set => deleted = value; }
-        public Guid CategoryId { get; set; }
-        public virtual Category Category { get; set; }
+        public int Rating { get => rating; set => rating = value; }
     }
 }

@@ -25,6 +25,16 @@ namespace GameHubCSharp.Services
             return post;
         }
 
+        public int Count()
+        {
+            return db.Posts.Count();
+        }
+
+        public List<Post> FindAll(int index,int size)
+        {
+            return db.Posts.Skip((index - 1) * size).Take(size).ToList();
+        }
+
         public List<Post> FindAll()
         {
             return db.Posts.ToList();
@@ -45,10 +55,6 @@ namespace GameHubCSharp.Services
             return db.Posts.Where(p => p.Creator.Id == creator.Id).ToList();
         }
 
-        public ICollection<Post> GetAllPosts()
-        {
-            return db.Posts.ToList();
-        }
 
         public void RemovePost(Post post)
         {

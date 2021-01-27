@@ -15,7 +15,7 @@
             <!-- Blog Post -->
             @foreach (PostViewModel post in Model)
             {
-                <div class="mb-4" id="news-card-div" >
+                <div class="mb-4" id="news-card-div">
                     <div style="width:100%;margin-bottom:2rem;height:auto">
                         <div style="position:relative;display:inline-block;width:45%;vertical-align:top;padding:1%;right:2%;">
                             <img style="width: 90%; height: 10rem;border-radius:5px" src="@post.ImageUrl" alt="@post.ImageUrl">
@@ -23,9 +23,9 @@
                         <div style="position:relative;display:inline-block;width:50%;left:2%">
                             <div class="text-left">
                                 <h2 style="color:white" class="card-title">@post.Topic</h2>
-
-                                <p style="color:white" class="card-text">@post.Text</p>
-
+                                <div style="word-wrap: break-word;">
+                                    <p style="color:white" class="card-text">@post.Text</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -40,14 +40,18 @@
             }
 
             <!-- Pagination -->
-            <ul class="pagination justify-content-center mb-4">
-                <li class="page-item">
-                    <a class="page-link" style="background-color: #0e3a88be;;color:white" href="#">← Older</a>
-                </li>
-                <li class="page-item disabled">
-                    <a class="page-link" style="background-color: #0e3a88be;color:white" href="#">Newer →</a>
-                </li>
-            </ul>
+            @{
+                var prev = (string)ViewData["HasPrev"];
+                var next = (string)ViewData["HasNext"];
+                <ul class="pagination justify-content-center mb-4">
+                    <li class="page-item @prev">
+                        <a class="page-link" asp-action="News" asp-controller="Home" asp-route-pageNumber="@((int)ViewData["PageNumber"] - 1)" style="background-color: #0e3a88be;color:white" >← Older</a>
+                    </li>
+                    <li class="page-item @next">
+                        <a class="page-link" asp-action="News" asp-controller="Home" asp-route-pageNumber="@((int)ViewData["PageNumber"] + 1)" style="background-color: #0e3a88be;color:white" >Newer →</a>
+                    </li>
+                </ul>
+            }
 
         </div>
 

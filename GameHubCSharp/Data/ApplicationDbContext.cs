@@ -32,10 +32,9 @@ namespace GameHubCSharp.Data
                 .HasMany(x => x.GameEvents)
                 .WithMany(x => x.Players);
 
-            builder.Entity<User>()
+            builder.Entity<Post>()
              .HasOne(a => a.Category)
-             .WithOne(b => b.User)
-             .HasForeignKey<Category>(b => b.UserId);
+             .WithMany(b => b.Posts);
 
             base.OnModelCreating(builder);
         }

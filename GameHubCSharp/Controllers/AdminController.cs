@@ -87,6 +87,8 @@ namespace GameHubCSharp.Controllers
         [HttpPost]
         public IActionResult AddPost(AdminHomeViewModel model)
         {
+
+            model.Post.Category = new Category() { Type = "Apex", Posts = new List<Post>() };
             model.Post.Creator = userService.FindUserByName(User.Identity.Name);
             model.Post.CreatedAt = DateTime.Now;
             postService.AddPost(model.Post);
