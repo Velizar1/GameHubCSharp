@@ -6,6 +6,7 @@ using GameHubCSharp.Services;
 using GameHubCSharp.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -24,10 +25,12 @@ namespace GameHubCSharp.Controllers
         private readonly IGameService gameService;
         private readonly IPostService postService;
         private readonly IMapper mapper;
+        private readonly ICategoryService categorySevice;
+        private IMemoryCache _cache;
         private readonly int pageSize = 4;
 
         public HomeController(ILogger<HomeController> logger, IHomeService homeService,
-            IGameEventService gameEventService, IGameService gameService, IPostService postService, IMapper mapper)
+            IGameEventService gameEventService, IGameService gameService, IPostService postService, IMapper mapper, ICategoryService categorySevice, IMemoryCache cache)
         {
 
             _logger = logger;
@@ -36,7 +39,8 @@ namespace GameHubCSharp.Controllers
             this.gameService = gameService;
             this.postService = postService;
             this.mapper = mapper;
-            
+            this.categorySevice = categorySevice;
+            _cache = cache;
         }
         [AllowAnonymous]
         public IActionResult Index()
@@ -71,18 +75,31 @@ namespace GameHubCSharp.Controllers
 
             return View();
         }
-         
+
         [HttpGet]
-        public IActionResult News(int? pageNumber,string sortOrder, string currentFilter,string searchString)
+        public IActionResult News(int? pageNumber, string categoryName, string currentFilter, string searchString)
         {
-            var count = postService.Count();
-            List<PostViewModel> model = postService.FindAll(pageNumber??1,pageSize).Select(p => mapper.Map<PostViewModel>(p)).ToList();
+            var count = postService.Count(categoryName??"");
+            List<PostViewModel> model;
+            ViewData["Category"] = categoryName;
+            model = postService.FindAll(pageNumber ?? 1, pageSize, (categoryName??"")).Select(p =>
+            {
+                var viewCat = mapper.Map<PostViewModel>(p);
+                viewCat.Category = p.Category.Type;
+                return viewCat;
+            }).ToList();
+
+
+
             ViewData["PageNumber"] = pageNumber ?? 1;
             var totalPages = (int)Math.Ceiling(count / (double)pageSize);
-            ViewData["HasNext"] = (pageNumber??1) < totalPages ? "": "disabled";
-            ViewData["HasPrev"] = (pageNumber?? 1) > 1 ? "" : "disabled";
+            ViewData["HasNext"] = (pageNumber ?? 1) < totalPages ? "" : "disabled";
+            ViewData["HasPrev"] = (pageNumber ?? 1) > 1 ? "" : "disabled";
+            ViewData["Categories"] = categorySevice.FindAll();
+           
             return View(model);
         }
+
         public IActionResult Privacy()
         {
             return View();

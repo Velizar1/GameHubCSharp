@@ -30,8 +30,21 @@ namespace GameHubCSharp.Services
             return db.Posts.Count();
         }
 
-        public List<Post> FindAll(int index,int size)
+        public int Count(string category)
         {
+            if (category == "")
+            {
+                return Count();
+            }
+            return db.Posts.Where(p=>p.Category.Type==category).Count();
+        }
+
+        public List<Post> FindAll(int index,int size,string category)
+        {
+            if (category != "")
+            {
+                return db.Posts.Where(p=>p.Category.Type==category).Skip((index - 1) * size).Take(size).ToList();
+            }
             return db.Posts.Skip((index - 1) * size).Take(size).ToList();
         }
 

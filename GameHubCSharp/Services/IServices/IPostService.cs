@@ -17,6 +17,7 @@ namespace GameHubCSharp.Services.IServices
         public void RemovePostById(string id);
         public List<Post> FindAll();
         public int Count();
-        public List<Post> FindAll(int index,int pagesize);
+        public int Count(string category);
+        public List<Post> FindAll(int index,int pagesize,string category);
     }
 }
