@@ -77,7 +77,8 @@ namespace GameHubCSharp
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IGameService, GameService>();
             services.AddTransient<IPostService, PostService>();
-        
+            services.AddTransient<ICategoryService, CategoryService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
