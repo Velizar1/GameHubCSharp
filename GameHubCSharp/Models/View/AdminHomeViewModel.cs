@@ -19,5 +19,7 @@ namespace GameHubCSharp.Models.View
         public GameViewModel GameViewModel { get; set; }
         public List<Game> Games { get; set; }
         public Post Post { get; set; }
+        public Category Category { get; set; }
+        public List<Category> Categories { get; internal set; }
     }
 }

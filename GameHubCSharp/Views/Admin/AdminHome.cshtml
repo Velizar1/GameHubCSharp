@@ -1,17 +1,19 @@
 ﻿@using GameHubCSharp.Models.View
 @model AdminHomeViewModel
 
-    <select class="browser-default mt-2" style="width: 15em;"
-            aria-placeholder="Filter"
-            id="category"
-            name="category"
-            onchange="filter2(this.value)">
+<h1 class="text-white">Choose What To Add :</h1>
+<select class="browser-default mt-2" style="width: 15em;"
+        aria-placeholder="Filter"
+        id="category"
+        name="category"
+        onchange="filter2(this.value)">
 
-        <option text="Game" value="Game">Game</option>
-        <option text="Post" value="Post">Post</option>
+    <option text="Game" value="Game">Game</option>
+    <option text="Post" value="Post">Post</option>
+    <option text="Category" value="Category">Category</option>
 
 
-    </select>
+</select>
 <div class=" d-block text-center">
     <form class="mb-2" style="display:inline-block" id="game" method="POST" asp-action="AddGame" asp-controller="Admin">
         <div>
@@ -31,11 +33,20 @@
     </form>
 </div>
 
+
 <div class=" d-block text-center">
     <form class="mb-2" style="display:inline-block" id="post" method="POST" asp-action="AddPost" asp-controller="Admin">
         <div>
             <div class="col-md-12 col-md-6 mb-3 d-inline-block" style="display: inline-block;">
                 <div class="text-danger" asp-validation-summary="All"></div>
+
+                <label class="text-white" asp-for="Category"></label>
+                <select class="custom-select d-block"   name="SetCat">
+                    @for (int i = 0; i < Model.Categories.Count; i++)
+                    {
+                        <option>@Model.Categories[i].Type</option>
+                    }
+                </select>
                 <label asp-for="Post.Topic" style="color: white;"></label>
                 <div>
                     <input asp-for="Post.Topic" class="form-control ">
@@ -58,6 +69,20 @@
         <button class="btn btn-primary border-0 bg-dark btn-lg" type="submit">AddPost</button>
     </form>
 </div>
+<div class=" d-block text-center">
+    <form class="mb-2" style="display:inline-block" id="cat" method="POST" asp-action="AddCategory" asp-controller="Admin">
+        <div>
+            <div class="col-md-12 col-md-6 mb-3 d-inline-block" style="display: inline-block;">
+                <div class="text-danger" asp-validation-summary="All"></div>
+                <label asp-for="Category.Type" style="color: white;"></label>
+                <div>
+                    <input asp-for="Category.Type" class="form-control ">
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary border-0 bg-dark btn-lg" type="submit">AddCategory</button>
+    </form>
+</div>
 
 <select class="browser-default " style="width: 15em;"
         aria-placeholder="Filter"
@@ -68,6 +93,7 @@
     <option text="User" value="User">User</option>
     <option text="GameEvent" value="GameEvent">GameEvent</option>
     <option text="Game" value="Game">Game</option>
+    <option text="Category" value="Category">Category</option>
 
 
 </select>
@@ -144,6 +170,30 @@
             }
         </tbody>
     </table>
+    <table id="c" class="table table-dark container mt-4" style="">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">id</th>
+                <th scope="col">type</th>
+                <th scope="col">function</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Categories.ToList().Count; i++)
+            {
+                var cur = Model.Categories.ToList()[i];
+
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@cur.Id</td>
+                    <td>@cur.Type</td>
+                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteCategory/@cur.Id'">Delete</button></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
 </section>
 <script>
 
@@ -153,18 +203,28 @@
             document.getElementById("g").style.display = "none";
             document.getElementById("u").style.display = "table";
             document.getElementById("ge").style.display = "none";
+            document.getElementById("c").style.display = "none";
+
         }
 
         if (val == "GameEvent") {
             document.getElementById("g").style.display = "none";
             document.getElementById("ge").style.display = "table";
             document.getElementById("u").style.display = "none";
+            document.getElementById("c").style.display = "none";
         }
 
         if (val == "Game") {
             document.getElementById("g").style.display = "table";
             document.getElementById("ge").style.display = "none";
             document.getElementById("u").style.display = "none";
+            document.getElementById("c").style.display = "none";
+        }
+        if (val == "Category") {
+            document.getElementById("g").style.display = "none";
+            document.getElementById("ge").style.display = "none";
+            document.getElementById("u").style.display = "none";
+            document.getElementById("c").style.display = "table";
         }
     }
     function filter2(val) {
@@ -172,11 +232,19 @@
         if (val == "Game") {
             document.getElementById("game").style.display = "inline-block";
             document.getElementById("post").style.display = "none";
+            document.getElementById("cat").style.display = "none";
         }
 
         if (val == "Post") {
             document.getElementById("game").style.display = "none";
             document.getElementById("post").style.display = "inline-block";
+            document.getElementById("cat").style.display = "none";
+        }
+
+        if (val == "Category") {
+            document.getElementById("game").style.display = "none";
+            document.getElementById("post").style.display = "none";
+            document.getElementById("cat").style.display = "inline-block";
         }
     }
     filter("User")
