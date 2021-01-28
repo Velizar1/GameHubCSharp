@@ -19,9 +19,7 @@
     }
     @if (User.Identity.IsAuthenticated)
     {
-        <li>
-            <i style="color:white;padding-top:0.8rem;" class="nav-link active far fa-bell fa-lg"></i>
-        </li>
+
         if (User.IsInRole("Admin"))
         {
 
@@ -34,7 +32,9 @@
                 <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="AdminHome" asp-controller="Admin">Admin Home</a>
             </li>
         }
-
+        <li class="nav-item">
+            <i style="color:white;padding-top:0.8rem;" class="nav-link active far fa-bell fa-lg"></i>
+        </li>
         <li class="nav-item">
             <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="News" asp-controller="Home">News</a>
         </li>

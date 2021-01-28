@@ -16,7 +16,7 @@ namespace GameHubCSharp.Data.Models
         private string topic;
         private DateTime createdAt;
         private Category category;
-        private Guid categoryId;
+        //private Guid categoryId;
 
         [Required]
         public virtual User Creator { get => creator; set => creator = value; }
@@ -28,6 +28,6 @@ namespace GameHubCSharp.Data.Models
         public string Topic { get => topic; set => topic = value; }
         public DateTime CreatedAt { get => createdAt; set => createdAt = value; }
         public virtual Category Category { get => category; set => category = value; }
-        public Guid CategoryId { get => categoryId; set => categoryId = value; }
+      //  public virtual Guid CategoryId { get => categoryId; set => categoryId = value; }
     }
 }

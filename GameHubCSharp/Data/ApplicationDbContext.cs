@@ -34,7 +34,8 @@ namespace GameHubCSharp.Data
 
             builder.Entity<Post>()
              .HasOne(a => a.Category)
-             .WithMany(b => b.Posts);
+             .WithMany(b => b.Posts)
+             ;
 
             base.OnModelCreating(builder);
         }
