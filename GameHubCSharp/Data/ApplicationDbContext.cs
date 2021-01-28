@@ -28,9 +28,21 @@ namespace GameHubCSharp.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            builder.Entity<Player>()
-                .HasMany(x => x.GameEvents)
+            builder.Entity<Player>(p => {
+                p.HasMany(x => x.GameEvents)
                 .WithMany(x => x.Players);
+
+                p.HasOne(u => u.User)
+                .WithOne()
+                .HasForeignKey<Player>(x => x.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+
+
+            builder.Entity<Post>()
+             .HasOne(a => a.Category)
+             .WithMany(b => b.Posts)
+             .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Post>()
              .HasOne(a => a.Category)
