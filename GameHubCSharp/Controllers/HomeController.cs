@@ -49,6 +49,7 @@ namespace GameHubCSharp.Controllers
             {
                 return RedirectToAction("Home", "Home");
             }
+
             return View();
         }
         [HttpGet("/home")]
@@ -73,7 +74,7 @@ namespace GameHubCSharp.Controllers
                 ViewData["GameNames"] = games.Select(x => x.GameName).ToList();
             }
 
-            return View();
+            return View(ConnectionIdProvider.Ids);
         }
 
         [HttpGet]

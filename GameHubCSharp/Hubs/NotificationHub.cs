@@ -1,4 +1,5 @@
 ﻿using GameHubCSharp.Data;
+using GameHubCSharp.Models;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,22 @@ namespace GameHubCSharp.Hubs
         {
             this.db = db;
         }
-        public async Task SendNotificationTo(string user)
+        public async Task SendNotificationTo(string roomid)
         {
-            var a = Context.UserIdentifier;
-            await this.Clients.All.SendAsync("ReceiveNotfication",user);
-        
+            var owner = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == roomid).OwnerId;
+            var user = db.Users.FirstOrDefault(x => x.Id.ToString() == owner);
+                await this.Clients.User(ConnectionIdProvider.Ids[user.UserName]).SendAsync("ReceiveNotfication");
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            try
+            {
+                ConnectionIdProvider.Ids[Context.User.Identity.Name] = Context.UserIdentifier;
+            }
+            catch { }
+            
+            return base.OnConnectedAsync();
         }
     }
 }

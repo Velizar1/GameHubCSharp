@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
+using GameHubCSharp.Hubs;
 using GameHubCSharp.Models.View;
 using GameHubCSharp.Services;
 using GameHubCSharp.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,13 +23,15 @@ namespace GameHubCSharp.Controllers
         private readonly IGameService gameService;
         private readonly IPlayerService playerService;
         private readonly IUserService userService;
+        private readonly IHubContext<NotificationHub> hub;
 
         public GameEventController(ApplicationDbContext db, 
             IGameEventService gameEventService,
             IMapper mapper,
             IGameService gameService,
             IPlayerService playerService,
-            IUserService userService)
+            IUserService userService,
+            IHubContext<NotificationHub> hub)
         {
             this.db = db;
             this.gameEventService = gameEventService;
@@ -35,6 +39,7 @@ namespace GameHubCSharp.Controllers
             this.gameService = gameService;
             this.playerService = playerService;
             this.userService = userService;
+            this.hub = hub;
         }
 
         [HttpGet("/game/detail/")]
@@ -87,6 +92,8 @@ namespace GameHubCSharp.Controllers
         {
             object obj = new { id = gameEventId};
             var playerInGameEvent = gameEventService.FindPlayerByNick(userNick,gameEventId);
+
+      
 
             if (playerInGameEvent == null)
             {
