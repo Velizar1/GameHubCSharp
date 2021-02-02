@@ -12,5 +12,6 @@ namespace GameHubCSharp.Data.Models
         private Boolean deleted;
         public bool Deleted { get => deleted; set => deleted = value; }
         public int Rating { get => rating; set => rating = value; }
+        public virtual List<Notification> Notifications { get; set; }
     }
 }

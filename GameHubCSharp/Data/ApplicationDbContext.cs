@@ -15,6 +15,8 @@ namespace GameHubCSharp.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -28,7 +30,8 @@ namespace GameHubCSharp.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            builder.Entity<Player>(p => {
+            builder.Entity<Player>(p =>
+            {
                 p.HasMany(x => x.GameEvents)
                 .WithMany(x => x.Players);
 
@@ -48,6 +51,11 @@ namespace GameHubCSharp.Data
              .HasOne(a => a.Category)
              .WithMany(b => b.Posts)
              ;
+            builder.Entity<Notification>()
+            .HasOne(a => a.From)
+            .WithMany(b => b.Notifications);
+
+           
 
             base.OnModelCreating(builder);
         }
