@@ -15,14 +15,13 @@ connection.start().then(function () {
 });
 //............................................................
 
-connection.on("ReceiveNotfication", function (user) {
+connection.on("ReceiveNotfication", function () {
     console.log("im here");
     document.getElementById("counter").innerText = Number(document.getElementById("counter").innerText)+1;
 });
 
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    connection.invoke("SendNotificationTo", user).catch(function (err) {
+ function mafunc() {
+    connection.invoke("SendNotificationTo", roomid).catch(function (err) {
         return console.error(err.toString());
     });
-    event.preventDefault();
-});
+};

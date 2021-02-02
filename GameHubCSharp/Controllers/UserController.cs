@@ -1,7 +1,10 @@
 ﻿using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
+using GameHubCSharp.Hubs;
+using GameHubCSharp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +16,26 @@ namespace GameHubCSharp.Controllers
     {
         private SignInManager<User> _signManager;
         private RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly IHubContext<NotificationHub> hub;
         private readonly ApplicationDbContext db;
         private UserManager<User> _userManager;
 
-        public UserController(UserManager<User> userManager, SignInManager<User> signManager, ApplicationDbContext db, RoleManager<IdentityRole<Guid>> roleManager)
+        public UserController(UserManager<User> userManager,
+            SignInManager<User> signManager,
+            ApplicationDbContext db, 
+            RoleManager<IdentityRole<Guid>> roleManager,
+            IHubContext<NotificationHub> hub)
         {
             _userManager = userManager;
             _signManager = signManager;
             this.db = db;
             _roleManager = roleManager;
+            this.hub = hub;
         }
         [HttpPost("/register")]
         public async Task<IActionResult> Registration(RegistartionViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = model.UserName, Email = model.Email };

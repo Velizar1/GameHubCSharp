@@ -1,9 +1,13 @@
-﻿
+﻿@model Dictionary<string,string>
+@foreach (var item in Model)
+{
+    <div>@item.Key : @item.Value</div>
+}
 <div id="pool" style="margin-bottom: 100px;width: 80%"
      class="btn-container-style text-center mt-5 d-inline-block modal-dialog-scrollable">
 
     <div class=" w-100 text-center ">
-
+        
         <div id="info-label">
             <p style="color: greenyellow;font-size: 30px;" class="text-light">Most popular game : @ViewData["mostPlayed"]</p>
         </div>
@@ -14,7 +18,7 @@
             <option value="All">All</option>
             @foreach (string name in (List<string>)ViewData["GameNames"])
             {
-       
+
                 <option text="@name" value="@name">
                     @name
                 </option>
