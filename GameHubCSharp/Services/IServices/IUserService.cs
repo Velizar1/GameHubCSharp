@@ -9,5 +9,7 @@ namespace GameHubCSharp.Services
         public User FindUserByName(string userId);
         public List<User> FindAll();
         public void Delete(string id);
+
+        public List<Notification> FindAllNotifications();
     }
 }

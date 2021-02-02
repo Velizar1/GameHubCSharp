@@ -26,6 +26,16 @@ namespace GameHubCSharp.Services
             return db.Users.ToList();
         }
 
+        public List<Notification> FindAllNotifications(string id)
+        {
+            return db.Users.FirstOrDefault(u=>u.Id.ToString()==id).Notifications;
+        }
+
+        public List<Notification> FindAllNotifications()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public User FindUserById(string userId)
         {
             var user = db.Users.Where(x => x.Id.ToString() == userId).First();
