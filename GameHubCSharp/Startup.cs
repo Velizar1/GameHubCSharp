@@ -1,6 +1,7 @@
 using AutoMapper;
 using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
+using GameHubCSharp.Hubs;
 using GameHubCSharp.Services;
 using GameHubCSharp.Services.IServices;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace GameHubCSharp
 {
@@ -39,7 +41,7 @@ namespace GameHubCSharp
                 .UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-
+            services.AddSignalR();
             
             services.AddCors(options =>
             {
@@ -109,6 +111,7 @@ namespace GameHubCSharp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<NotificationHub>("/notificationhub");
             });
         }
     }
