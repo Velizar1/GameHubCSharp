@@ -19,7 +19,7 @@ namespace GameHubCSharp.Services
         public Player Add(Player player)
         {
             db.Players.Add(player);
-            db.SaveChanges();
+            //db.SaveChanges();
 
             return player;
         }

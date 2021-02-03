@@ -144,6 +144,10 @@ namespace GameHubCSharp.Migrations
             modelBuilder.Entity("GameHubCSharp.Data.Models.Player", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UsernameInGame")
@@ -152,6 +156,8 @@ namespace GameHubCSharp.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Players");
                 });
@@ -439,8 +445,8 @@ namespace GameHubCSharp.Migrations
             modelBuilder.Entity("GameHubCSharp.Data.Models.Player", b =>
                 {
                     b.HasOne("GameHubCSharp.Data.Models.User", "User")
-                        .WithOne()
-                        .HasForeignKey("GameHubCSharp.Data.Models.Player", "Id")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

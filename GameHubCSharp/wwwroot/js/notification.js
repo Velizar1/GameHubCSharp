@@ -15,9 +15,13 @@ connection.start().then(function () {
 });
 //............................................................
 
-connection.on("ReceiveNotfication", function () {
-    console.log("im here");
-    document.getElementById("counter").innerText = Number(document.getElementById("counter").innerText)+1;
+connection.on("ReceiveNotfication", function (notifications) {
+    console.log(notifications.length);
+    console.log(notifications);
+    document.getElementById("counter").innerText = notifications.length;
+    for (var i = 0; i < notifications.length; i++) {
+        document.getElementById("notification-div").innerHtml += `<a class="dropdown-item waves-effect waves-light" href="GameEven/GameEventDetail?id=${notifications[i].id}"><span class="badge badge-danger ml-2">${notifications[i].message}</span></a>`
+    }
 });
 
  function mafunc() {

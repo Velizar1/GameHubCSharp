@@ -80,6 +80,7 @@ namespace GameHubCSharp.Controllers
             gameEve.OwnerId = player.Id.ToString();
 
             player.GameEvents.Add(gameEve);
+          
             gameEventService.Add(gameEve);
             return RedirectToAction("Home","Home");
         }
@@ -114,7 +115,7 @@ namespace GameHubCSharp.Controllers
 
                 };
 
-                var curNotification = userService.AddNotification(notification, owner.Id.ToString());
+                var curNotification = userService.AddNotification(notification, owner.User.Id.ToString());
 
                 return RedirectToAction("GameEventDetail", obj);
             }

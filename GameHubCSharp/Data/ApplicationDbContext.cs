@@ -34,10 +34,10 @@ namespace GameHubCSharp.Data
             {
                 p.HasMany(x => x.GameEvents)
                 .WithMany(x => x.Players);
+                
 
                 p.HasOne(u => u.User)
-                .WithOne()
-                .HasForeignKey<Player>(x => x.Id)
+                .WithMany()
                 .OnDelete(DeleteBehavior.Cascade);
             });
 

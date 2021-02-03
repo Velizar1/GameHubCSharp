@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GameHubCSharp.Migrations
 {
-    public partial class notification : Migration
+    public partial class player_users : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -184,14 +184,15 @@ namespace GameHubCSharp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UsernameInGame = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Players_AspNetUsers_Id",
-                        column: x => x.Id,
+                        name: "FK_Players_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -362,6 +363,11 @@ namespace GameHubCSharp.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_UserId",
                 table: "Notifications",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Players_UserId",
+                table: "Players",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(

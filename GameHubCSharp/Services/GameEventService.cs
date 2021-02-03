@@ -2,6 +2,7 @@
 using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
 using GameHubCSharp.Models.View;
+using GameHubCSharp.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,14 @@ namespace GameHubCSharp.Services
         private readonly IMapper mapper;
         private readonly ApplicationDbContext db;
         private readonly IPlayerService playerService;
+        private readonly INotificationService notificationService;
 
-        public GameEventService(ApplicationDbContext db, IPlayerService playerService, IMapper mapper = null)
+        public GameEventService(ApplicationDbContext db, IPlayerService playerService, IMapper mapper = null, INotificationService notificationService = null)
         {
             this.db = db;
             this.playerService = playerService;
             this.mapper = mapper;
+            this.notificationService = notificationService;
         }
 
         public void Add(GameEvent gameEvent)
@@ -43,6 +46,11 @@ namespace GameHubCSharp.Services
             foreach (var player in gameEve.Players)
             {
                 db.Remove(player);
+            }
+            var notifications = this.notificationService.GetForEvent(gameEve);
+            foreach (var nott in notifications)
+            {
+                db.Remove(nott);
             }
             db.Remove(gameEve);
             db.SaveChanges();

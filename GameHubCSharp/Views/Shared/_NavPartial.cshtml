@@ -13,7 +13,7 @@
                     <span id="counter" class="badge badge-danger ml-2">@ConnectionIdProvider.notifications.Count(n=>n.IsRead==false)</span>
                     <i style="color:white;padding-top:0.8rem;" class="nav-link active far fa-bell fa-lg d-inline-block"></i>
                 </a>
-                <div class="dropdown-menu dropdown-menu-lg-left dropdown-secondary" style="background-color: #1a031d62;" aria-labelledby="navbarDropdownMenuLink-5">
+                <div class="dropdown-menu dropdown-menu-lg-left dropdown-secondary" id="notificaion-div" style="background-color: #1a031d62;" aria-labelledby="navbarDropdownMenuLink-5">
                     @foreach (var not in ConnectionIdProvider.notifications) {
                         <a class="dropdown-item waves-effect waves-light" asp-route-id="@not.GameEvent.Id" asp-controller="GameEvent" asp-action="GameEventDetail"><span class="badge badge-danger ml-2">@not.Message</span></a>
                     }
