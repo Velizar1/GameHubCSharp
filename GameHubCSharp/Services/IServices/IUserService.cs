@@ -10,6 +10,7 @@ namespace GameHubCSharp.Services
         public List<User> FindAll();
         public void Delete(string id);
 
-        public List<Notification> FindAllNotifications();
+        public List<Notification> FindAllNotifications(string userName);
+        public Notification AddNotification(Notification notification ,string userId);
     }
 }

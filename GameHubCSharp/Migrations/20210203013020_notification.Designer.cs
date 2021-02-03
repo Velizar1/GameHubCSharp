@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameHubCSharp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210127003112_category")]
-    partial class category
+    [Migration("20210203013020_notification")]
+    partial class notification
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,15 +45,9 @@ namespace GameHubCSharp.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("GameHubCSharp.Data.Models.Game", b =>
@@ -113,13 +107,45 @@ namespace GameHubCSharp.Migrations
                     b.ToTable("GameEvents");
                 });
 
-            modelBuilder.Entity("GameHubCSharp.Data.Models.Player", b =>
+            modelBuilder.Entity("GameHubCSharp.Data.Models.Notification", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("From")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("GameEventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("To")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameEventId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("GameHubCSharp.Data.Models.Player", b =>
+                {
+                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UsernameInGame")
@@ -129,8 +155,6 @@ namespace GameHubCSharp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Players");
                 });
 
@@ -138,6 +162,9 @@ namespace GameHubCSharp.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -162,6 +189,8 @@ namespace GameHubCSharp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Posts");
@@ -175,9 +204,6 @@ namespace GameHubCSharp.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -215,6 +241,9 @@ namespace GameHubCSharp.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -387,17 +416,6 @@ namespace GameHubCSharp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GameHubCSharp.Data.Models.Category", b =>
-                {
-                    b.HasOne("GameHubCSharp.Data.Models.User", "User")
-                        .WithOne("Category")
-                        .HasForeignKey("GameHubCSharp.Data.Models.Category", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("GameHubCSharp.Data.Models.GameEvent", b =>
                 {
                     b.HasOne("GameHubCSharp.Data.Models.Game", "Game")
@@ -407,20 +425,42 @@ namespace GameHubCSharp.Migrations
                     b.Navigation("Game");
                 });
 
+            modelBuilder.Entity("GameHubCSharp.Data.Models.Notification", b =>
+                {
+                    b.HasOne("GameHubCSharp.Data.Models.GameEvent", "GameEvent")
+                        .WithMany()
+                        .HasForeignKey("GameEventId");
+
+                    b.HasOne("GameHubCSharp.Data.Models.User", null)
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("GameEvent");
+                });
+
             modelBuilder.Entity("GameHubCSharp.Data.Models.Player", b =>
                 {
                     b.HasOne("GameHubCSharp.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithOne()
+                        .HasForeignKey("GameHubCSharp.Data.Models.Player", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("GameHubCSharp.Data.Models.Post", b =>
                 {
+                    b.HasOne("GameHubCSharp.Data.Models.Category", "Category")
+                        .WithMany("Posts")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("GameHubCSharp.Data.Models.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId");
+
+                    b.Navigation("Category");
 
                     b.Navigation("Creator");
                 });
@@ -476,9 +516,14 @@ namespace GameHubCSharp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("GameHubCSharp.Data.Models.Category", b =>
+                {
+                    b.Navigation("Posts");
+                });
+
             modelBuilder.Entity("GameHubCSharp.Data.Models.User", b =>
                 {
-                    b.Navigation("Category");
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

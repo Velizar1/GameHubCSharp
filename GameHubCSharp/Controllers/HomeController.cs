@@ -26,11 +26,13 @@ namespace GameHubCSharp.Controllers
         private readonly IPostService postService;
         private readonly IMapper mapper;
         private readonly ICategoryService categorySevice;
+        private readonly INotificationService notificationService;
+        private readonly IUserService userService;
         private IMemoryCache _cache;
         private readonly int pageSize = 4;
 
         public HomeController(ILogger<HomeController> logger, IHomeService homeService,
-            IGameEventService gameEventService, IGameService gameService, IPostService postService, IMapper mapper, ICategoryService categorySevice, IMemoryCache cache)
+            IGameEventService gameEventService, IGameService gameService, IPostService postService, IMapper mapper, ICategoryService categorySevice, IMemoryCache cache, INotificationService notificationService, IUserService userService)
         {
 
             _logger = logger;
@@ -41,6 +43,8 @@ namespace GameHubCSharp.Controllers
             this.mapper = mapper;
             this.categorySevice = categorySevice;
             _cache = cache;
+            this.notificationService = notificationService;
+            this.userService = userService;
         }
         [AllowAnonymous]
         public IActionResult Index()
@@ -56,6 +60,13 @@ namespace GameHubCSharp.Controllers
 
         public IActionResult Home()
         {
+            try { 
+            ConnectionIdProvider.notifications = userService.FindAllNotifications(User.Identity.Name);
+            }
+            catch
+            {
+
+            }
             var gameEvents = gameEventService.FindAll();
             var games = gameService.FindAll();
             if (games.Count == 0)
@@ -74,7 +85,7 @@ namespace GameHubCSharp.Controllers
                 ViewData["GameNames"] = games.Select(x => x.GameName).ToList();
             }
 
-            return View(ConnectionIdProvider.Ids);
+            return View(ConnectionIdProvider.ids);
         }
 
         [HttpGet]

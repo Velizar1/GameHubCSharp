@@ -24,14 +24,16 @@ namespace GameHubCSharp.Controllers
         private readonly IPlayerService playerService;
         private readonly IUserService userService;
         private readonly IHubContext<NotificationHub> hub;
+        private readonly INotificationService notificationService;
 
-        public GameEventController(ApplicationDbContext db, 
+        public GameEventController(ApplicationDbContext db,
             IGameEventService gameEventService,
             IMapper mapper,
             IGameService gameService,
             IPlayerService playerService,
             IUserService userService,
-            IHubContext<NotificationHub> hub)
+            IHubContext<NotificationHub> hub, 
+            INotificationService notificationService)
         {
             this.db = db;
             this.gameEventService = gameEventService;
@@ -40,6 +42,7 @@ namespace GameHubCSharp.Controllers
             this.playerService = playerService;
             this.userService = userService;
             this.hub = hub;
+            this.notificationService = notificationService;
         }
 
         [HttpGet("/game/detail/")]
@@ -92,13 +95,26 @@ namespace GameHubCSharp.Controllers
         {
             object obj = new { id = gameEventId};
             var playerInGameEvent = gameEventService.FindPlayerByNick(userNick,gameEventId);
-
-      
-
+          
+            var gameEvent = gameEventService.FindEventsById(gameEventId);
+            var owner = playerService.FindPlayerById(gameEvent.OwnerId);
+           
             if (playerInGameEvent == null)
             {
                 Player playerNew = new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = userNick };
                 gameEventService.AddPlayer(playerNew, gameEventId);
+                var notification = new Notification()
+                {
+
+                    Message = "Player " + userNick + " wants to join your event.",
+                    From = playerNew.User.UserName,
+                    To = owner.User.UserName,
+                    GameEvent = gameEvent,
+                    IsRead = false
+
+                };
+
+                var curNotification = userService.AddNotification(notification, owner.Id.ToString());
 
                 return RedirectToAction("GameEventDetail", obj);
             }

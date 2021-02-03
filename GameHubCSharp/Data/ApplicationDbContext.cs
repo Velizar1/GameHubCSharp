@@ -51,11 +51,11 @@ namespace GameHubCSharp.Data
              .HasOne(a => a.Category)
              .WithMany(b => b.Posts)
              ;
-            builder.Entity<Notification>()
-            .HasOne(a => a.From)
-            .WithMany(b => b.Notifications);
 
-           
+            builder.Entity<User>()
+            .HasMany(n=>n.Notifications)
+             .WithOne();
+
 
             base.OnModelCreating(builder);
         }

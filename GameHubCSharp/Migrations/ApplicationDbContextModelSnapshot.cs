@@ -111,26 +111,32 @@ namespace GameHubCSharp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FromId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("From")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("GameEventId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ToId")
+                    b.Property<string>("To")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FromId");
-
                     b.HasIndex("GameEventId");
 
-                    b.HasIndex("ToId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
                 });
@@ -419,25 +425,15 @@ namespace GameHubCSharp.Migrations
 
             modelBuilder.Entity("GameHubCSharp.Data.Models.Notification", b =>
                 {
-                    b.HasOne("GameHubCSharp.Data.Models.User", "From")
-                        .WithMany("Notifications")
-                        .HasForeignKey("FromId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GameHubCSharp.Data.Models.GameEvent", "GameEvent")
                         .WithMany()
                         .HasForeignKey("GameEventId");
 
-                    b.HasOne("GameHubCSharp.Data.Models.User", "To")
-                        .WithMany()
-                        .HasForeignKey("ToId");
-
-                    b.Navigation("From");
+                    b.HasOne("GameHubCSharp.Data.Models.User", null)
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("GameEvent");
-
-                    b.Navigation("To");
                 });
 
             modelBuilder.Entity("GameHubCSharp.Data.Models.Player", b =>

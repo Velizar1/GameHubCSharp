@@ -14,6 +14,14 @@ namespace GameHubCSharp.Services
             this.db = dbContext;
         }
 
+        public Notification AddNotification(Notification notification,string userId)
+        {
+            var user = db.Users.Where(u => u.Id.ToString() == userId).First();
+            user.Notifications.Add(notification);
+            db.SaveChanges();
+            return notification;
+        }
+
         public void Delete(string id)
         {
             var user = db.Users.FirstOrDefault(x => x.Id.ToString() == id);
@@ -26,15 +34,11 @@ namespace GameHubCSharp.Services
             return db.Users.ToList();
         }
 
-        public List<Notification> FindAllNotifications(string id)
+        public List<Notification> FindAllNotifications(string userName)
         {
-            return db.Users.FirstOrDefault(u=>u.Id.ToString()==id).Notifications;
+            return db.Users.FirstOrDefault(u=>u.UserName==userName).Notifications;
         }
 
-        public List<Notification> FindAllNotifications()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public User FindUserById(string userId)
         {

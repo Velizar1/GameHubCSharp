@@ -20,14 +20,14 @@ namespace GameHubCSharp.Hubs
         {
             var owner = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == roomid).OwnerId;
             var user = db.Users.FirstOrDefault(x => x.Id.ToString() == owner);
-                await this.Clients.User(ConnectionIdProvider.Ids[user.UserName]).SendAsync("ReceiveNotfication");
+                await this.Clients.User(ConnectionIdProvider.ids[user.UserName]).SendAsync("ReceiveNotfication");
         }
 
         public override Task OnConnectedAsync()
         {
             try
             {
-                ConnectionIdProvider.Ids[Context.User.Identity.Name] = Context.UserIdentifier;
+                ConnectionIdProvider.ids[Context.User.Identity.Name] = Context.UserIdentifier;
             }
             catch { }
             

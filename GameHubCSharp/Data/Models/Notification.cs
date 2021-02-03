@@ -11,15 +11,17 @@ namespace GameHubCSharp.Data.Models
 
         private string message;
         private GameEvent gameEvent;
-        private User from;
-        private User to;
+        private string fromUser;
+        private bool isRead;
+        private string toUser;
 
         [Required]
         public string Message { get => message; set => message = value; }
         public virtual GameEvent GameEvent { get => gameEvent; set => gameEvent = value; }
         [Required]
-        public virtual User From{ get => from; set => from = value; }
+        public  string From{ get => fromUser; set => fromUser = value; }
         [Required]
-        public virtual User To { get => to; set => to = value; }
+        public  string To { get => toUser; set => toUser = value; }
+        public bool IsRead { get => isRead; set => isRead = value; }
     }
 }
