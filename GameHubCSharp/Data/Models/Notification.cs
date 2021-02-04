@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GameHubCSharp.Data.Models
@@ -17,6 +18,7 @@ namespace GameHubCSharp.Data.Models
 
         [Required]
         public string Message { get => message; set => message = value; }
+        [JsonIgnore]
         public virtual GameEvent GameEvent { get => gameEvent; set => gameEvent = value; }
         [Required]
         public  string From{ get => fromUser; set => fromUser = value; }

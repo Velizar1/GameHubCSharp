@@ -20,7 +20,7 @@ namespace GameHubCSharp.Hubs
         {
             var owner = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == id).OwnerId;
             var player = db.Players.FirstOrDefault(x => x.Id.ToString() == owner);
-                await this.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication",player.User.Notifications.ToArray());
+                await this.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication",new { Notifications = player.User.Notifications.ToArray() });
         }
 
         public override Task OnConnectedAsync()
