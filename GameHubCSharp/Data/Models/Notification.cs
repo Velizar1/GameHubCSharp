@@ -12,6 +12,7 @@ namespace GameHubCSharp.Data.Models
 
         private string message;
         private GameEvent gameEvent;
+        private Guid gameEventId;
         private string fromUser;
         private bool isRead;
         private string toUser;
@@ -25,5 +26,6 @@ namespace GameHubCSharp.Data.Models
         [Required]
         public  string To { get => toUser; set => toUser = value; }
         public bool IsRead { get => isRead; set => isRead = value; }
+        public Guid GameEventId { get => gameEventId; set => gameEventId = value; }
     }
 }

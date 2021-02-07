@@ -13,6 +13,7 @@ namespace GameHubCSharp.Models.View
         private String devision;
         private DateTime startDate;
         private DateTime dueDate;
+        private string discordUrl;
 
         private GameViewModel game;
         private PlayerViewModel owner;
@@ -28,5 +29,6 @@ namespace GameHubCSharp.Models.View
         
         public ICollection<PlayerViewModel> Players { get => players; set => players = value; }
         public PlayerViewModel Owner { get => owner; set => owner = value; }
+        public string DiscordUrl { get => discordUrl; set => discordUrl = value; }
     }
 }

@@ -5,18 +5,25 @@
         <img style="height: 2em;width: 9em" src="/img/output-onlinepngtools.png">
     </a>
 </div>
-<ul class="nav justify-content-end">
+<ul class="nav justify-content-end" style="user-select: none;">
     <li class="nav-item">
         <ul class="navbar-nav ml-auto ">
-            <li class="nav-item avatar dropdown" style="height:2.5rem">
-                <a class="nav-link waves-effect waves-light" id="navbarDropdownMenuLink-5" style="position:relative;top:-8px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <span id="counter" class="badge badge-danger ml-2">@ConnectionIdProvider.notifications.Count(n=>n.IsRead==false)</span>
-                    <i style="color:white;padding-top:0.8rem;" class="nav-link active far fa-bell fa-lg d-inline-block"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg-left dropdown-secondary" id="nott" style="background-color: #1a031d62;" aria-labelledby="navbarDropdownMenuLink-5">
-                    @foreach (var not in ConnectionIdProvider.notifications) {
-                        <a class="dropdown-item waves-effect waves-light" asp-route-id="@not.GameEvent.Id" asp-controller="GameEvent" asp-action="GameEventDetail"><span class="badge badge-danger ml-2">@not.Message</span></a>
-                    }
+            <li class="nav-item avatar dropdown" onclick="updateCount('@User.Identity.Name')" style="height:2.5rem; padding-right:1rem;">
+
+
+                <div class="btn-group" style="user-select: none;">
+                    <a unselectable="on" class="nav-link waves-effect waves-light" id="navbarDropdownMenuLink-5" style="position:relative;top:-8px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span unselectable="on" id="counter" class="badge badge-danger ml-2">@ConnectionIdProvider.notifications.Count(n => n.IsRead == false)</span>
+                        <i unselectable="on" style="color:white;padding-top:0.8rem;" class="nav-link active far fa-bell fa-lg d-inline-block"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg-left dropdown-secondary mt-1 " id="nott" style="background-color: #151226f7;user-select: none;" aria-labelledby="navbarDropdownMenuLink-5">
+                        @foreach (var not in ConnectionIdProvider.notifications)
+                        {
+                            <a class="dropdown-item waves-effect waves-light" href="/game/detail?id=@not.GameEvent.Id"><span class="badge badge-danger ml-2">@not.Message</span></a>
+                        }
+                    </div>
+
+
                 </div>
             </li>
         </ul>
@@ -52,15 +59,15 @@
 
 
 
+        <li class="nav-item">
+            <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="Home" asp-controller="Home"><i class="fas fa-igloo"></i></a>
+        </li>
+        <li class="nav-item">
 
-        <li class="nav-item">
-            <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="News" asp-controller="Home">News</a>
+            <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="News" asp-controller="Home"><i class="far fa-newspaper fa-lg"></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="Home" asp-controller="Home">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="GameEventAdd" asp-controller="GameEvent">Add Event</a>
+            <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="GameEventAdd" asp-controller="GameEvent"><i class="fas fa-plus fa-lg"></i></a>
         </li>
         <li class="nav-item">
             <form asp-action="Logout" asp-controller="User"

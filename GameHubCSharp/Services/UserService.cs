@@ -22,6 +22,15 @@ namespace GameHubCSharp.Services
             return notification;
         }
 
+        public List<Notification> ChangeStatus(string userName)
+        {
+           var user = db.Users.FirstOrDefault(u => u.UserName == userName);
+            var nots = user.Notifications;
+            user.Notifications.ForEach(n=>n.IsRead=true);
+            db.SaveChanges();
+            return nots;
+        }
+
         public void Delete(string id)
         {
             var user = db.Users.FirstOrDefault(x => x.Id.ToString() == id);

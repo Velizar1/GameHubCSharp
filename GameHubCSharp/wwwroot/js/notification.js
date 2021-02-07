@@ -18,7 +18,7 @@ connection.start().then(function () {
 connection.on("ReceiveNotfication", function (obj) {
 
     //console.log(obj)
-    document.getElementById("counter").innerText = obj.notifications.length;
+    document.getElementById("counter").innerText = obj.notCount;
     let not = obj.notifications;
     console.log(not)
     console.log(not.length)
@@ -26,11 +26,33 @@ connection.on("ReceiveNotfication", function (obj) {
     for (let i = 0; i < not.length; i++)
     {
         console.log("in loop")
-        document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<a class="dropdown-item waves-effect waves-light" href="GameEven/GameEventDetail?id=${not[i].id}"><span class="badge badge-danger ml-2">${not[i].message}</span></a>`)
-        console.log(`<a class="dropdown-item waves-effect waves-light" href="/GameEvent/GameEventDetail?id=${not[i].id}"><span class="badge badge-danger ml-2">${not[i].message}</span></a>`)
+        document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><span class="badge badge-danger ml-2">${not[i].message}</span></a>`)
+  
     }
     console.log("here")
 });
+
+
+connection.on("UpdateNotifications", function (obj) {
+
+    //console.log(obj)
+    document.getElementById("counter").innerText = 0;
+    let not = obj.notifications;
+    console.log(not)
+    console.log(not.length)
+    document.getElementById("nott").innerHTML = ""
+    for (let i = 0; i < not.length; i++) {
+        console.log("in loop")
+        document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><span class="badge badge-danger ml-2">${not[i].message}</span></a>`)
+        
+    }
+    console.log("here")
+});
+function updateCount(user) {
+    connection.invoke("NotificationCount", user).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
 
 function mafunc() {
     //$('#form1').submit(function () {
