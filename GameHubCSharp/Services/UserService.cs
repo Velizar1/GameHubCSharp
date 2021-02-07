@@ -45,7 +45,7 @@ namespace GameHubCSharp.Services
 
         public List<Notification> FindAllNotifications(string userName)
         {
-            return db.Users.FirstOrDefault(u=>u.UserName==userName).Notifications;
+            return db.Users.FirstOrDefault(u => u.UserName == userName).Notifications.OrderBy(x => x.CreatedAt).ToList();
         }
 
 

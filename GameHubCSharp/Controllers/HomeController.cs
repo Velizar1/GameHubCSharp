@@ -60,8 +60,8 @@ namespace GameHubCSharp.Controllers
 
         public IActionResult Home()
         {
-            try { 
-            ConnectionIdProvider.notifications = userService.FindAllNotifications(User.Identity.Name);
+            try {
+                ConnectionIdProvider.notifications = userService.FindAllNotifications(User.Identity.Name);
             }
             catch
             {

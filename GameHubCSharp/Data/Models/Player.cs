@@ -12,14 +12,15 @@ namespace GameHubCSharp.Data.Models
         private User user;
         private String usernameInGame;
         private ICollection<GameEvent> gameEvents;
+        private bool status;
 
         [Required]
         public virtual User User { get => user; set => user = value; }
         [Required]
         [MinLength(1),MaxLength(20)]
         public string UsernameInGame { get => usernameInGame; set => usernameInGame = value; }
-        
         public virtual ICollection<GameEvent> GameEvents { get => gameEvents; set => gameEvents = value; }
+        public bool Status { get => status; set => status = value; }
 
         public Player()
         {
