@@ -49,10 +49,10 @@ namespace GameHubCSharp.Controllers
         public IActionResult GameEventDetail(string id, bool? valid=true)
         {
             var gameEvent = gameEventService.FindEventsById(id);
-            /*if (gameEvent == null)
+            if (gameEvent == null)
             {
                 return RedirectToAction("Error","Home");
-            }*/
+            }
             var gameEve = mapper.Map<GameEventViewModel>(gameEvent);
             gameEve.Owner = mapper.Map<PlayerViewModel>(playerService.FindPlayerById(gameEvent.OwnerId));
             gameEve.Owner.Username = playerService.FindPlayerById(gameEve.Owner.Id).User.UserName;
