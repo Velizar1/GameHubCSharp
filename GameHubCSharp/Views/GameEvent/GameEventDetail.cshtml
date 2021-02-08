@@ -9,7 +9,7 @@
             <div style="display: inline-block;width: 45%;height:70%;min-height: 19em">
                 <h6 style="font-size: 25px" class="card-title">Owner's nick : @Model.Owner.UsernameInGame</h6>
                 <p class="card-text">Devision : @Model.Devision</p>
-                <p class="card-text">Players needed : @(Model.NumberOfPlayers + 1 - Model.Players.Count)</p>
+                <p class="card-text">Players needed : @(Model.NumberOfPlayers + 1 - Model.Players.Count(x=>x.Status == true))</p>
                 <p class="card-text">Starts on : @Model.StartDate</p>
                 <p class="card-text">Ends on : @Model.DueDate</p>
                 <p class="card-text">Discord link : @Model.DiscordUrl</p>
@@ -20,7 +20,26 @@
                 <ul>
                     @foreach (var player in Model.Players)
                     {
-                        <li style="font-size: 20px;" class="card-text ml-4">@player.UsernameInGame</li>
+                        if (!(User.Identity.Name == Model.Owner.Username))
+                        {
+                            if (player.Status)
+                            {
+                                <li style="font-size: 20px;" class="card-text ml-4">
+                                    @player.UsernameInGame
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li style="font-size: 20px;" class="card-text ml-4">
+                                @player.UsernameInGame
+                                    <div class="ml-sm-5 d-inline-block ">
+                                        <a asp-route-name="@player.UsernameInGame" asp-route-roomId="@Model.Id" asp-action="Accept" asp-controller="GameEvent"> <i class="far fa-check-circle fa-lg ml-2" style="color:green"></i></a>
+                                        <a asp-route-name="@player.UsernameInGame" asp-route-roomId="@Model.Id" asp-action="Decline" asp-controller="GameEvent"> <i class="far fa-times-circle fa-lg ml-2" style="color:red"></i></a>
+                                    </div>
+
+                            </li>
+                        }
                     }
                 </ul>
 
@@ -58,12 +77,11 @@
                         <button id="joinEvent" class="btn btn-primary border-0 mb-1 bg-dark mr-2 btn-lg ml-3">I'm in</button>
 
                         @if ((bool?)ViewData["valid"] != true)
-                         {
-                            <h1>Im HErEEEE</h1>
+                        {
                             <div class="invalid-feedback">
                                 <span style="color: #ff0000;font-size:15px;margin-left: 5%;">This nickname is already takken for this event.</span>
                             </div>
-                         }
+                        }
                     </form>
                 </div>
             }
@@ -73,6 +91,3 @@
 </div>
 <script>let roomid = "@Model.Id"</script>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

@@ -13,6 +13,7 @@ namespace GameHubCSharp.Data.Models
         private DateTime startDate;
         private DateTime dueDate;
 
+
         private string ownerId;
         private Game game;
         [JsonIgnore]

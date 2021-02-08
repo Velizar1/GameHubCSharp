@@ -24,6 +24,23 @@ namespace GameHubCSharp.Services
             return player;
         }
 
+        public Player ChangeStatus(string name, bool status)
+        {
+            var player = db.Players.FirstOrDefault(p => p.UsernameInGame == name);
+            player.Status = status;
+            db.SaveChanges();
+            return player;
+        }
+
+        public async Task<Player> ChangeStatusAsync(string name, bool status)
+        {
+            var player = db.Players.FirstOrDefault(p => p.UsernameInGame == name);
+            player.Status = status;
+
+            await db.SaveChangesAsync();
+            return player;
+        }
+
         public Player FindPlayerById(string id)
         {
             var player = db.Players.FirstOrDefault(p => p.Id.ToString() == id);

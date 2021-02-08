@@ -2,7 +2,7 @@
 
 <h1 class="text-light" style="margin-top:2em">Register</h1>
 
-<div class=" d-block text-center">
+<div class=" d-block text-center" style="height:35rem">
     <form class="d-inline-block" asp-controller="User" asp-action="Registration" method="POST">
 
         <div class="form-col">
@@ -41,7 +41,9 @@
                 </div>
             </div>
         </div>
+
         <button class="btn btn-primary border-0 bg-dark btn-lg" type="submit">Let's Go</button>
+        <div class="g-recaptcha mt-3" style="display:none" data-sitekey="your_site_key" ></div>
     </form>
 </div>
 

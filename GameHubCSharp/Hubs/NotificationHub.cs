@@ -23,8 +23,12 @@ namespace GameHubCSharp.Hubs
         {
             var owner = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == id).OwnerId;
             var player = db.Players.FirstOrDefault(x => x.Id.ToString() == owner);
-                await this.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication",new { Notifications = player.User.Notifications.ToArray() ,
-                    NotCount= player.User.Notifications.Count(n=>n.IsRead==false)});
+            var list = player.User.Notifications;
+            await this.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication", new
+            {
+                Notifications = list.ToArray(),
+                NotCount = player.User.Notifications.Count(n => n.IsRead == false)
+            }) ;
         }
 
         public async Task NotificationCount(string user)

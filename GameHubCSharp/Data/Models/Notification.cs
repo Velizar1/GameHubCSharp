@@ -16,6 +16,7 @@ namespace GameHubCSharp.Data.Models
         private string fromUser;
         private bool isRead;
         private string toUser;
+        private DateTime createdAt  = DateTime.Now;
 
         [Required]
         public string Message { get => message; set => message = value; }
@@ -27,5 +28,6 @@ namespace GameHubCSharp.Data.Models
         public  string To { get => toUser; set => toUser = value; }
         public bool IsRead { get => isRead; set => isRead = value; }
         public Guid GameEventId { get => gameEventId; set => gameEventId = value; }
+        public DateTime CreatedAt { get => createdAt; set => createdAt = value; }
     }
 }

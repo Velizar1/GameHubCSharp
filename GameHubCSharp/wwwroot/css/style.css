@@ -87,8 +87,8 @@ form{
 
 #back-to-top {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+   /* padding-left: 0.8rem;
+    padding-right: 0.8rem;*/
     padding-top:0.6rem;
     padding-bottom:0.6rem;
     border-radius: 50px;

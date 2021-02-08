@@ -32,7 +32,7 @@ namespace GameHubCSharp.Controllers
             IGameService gameService,
             IPlayerService playerService,
             IUserService userService,
-            IHubContext<NotificationHub> hub, 
+            IHubContext<NotificationHub> hub,
             INotificationService notificationService)
         {
             this.db = db;
@@ -46,7 +46,7 @@ namespace GameHubCSharp.Controllers
         }
 
         [HttpGet("/game/detail/")]
-        public IActionResult GameEventDetail(string id, bool? valid=true)
+        public IActionResult GameEventDetail(string id, bool? valid = true)
         {
             var gameEvent = gameEventService.FindEventsById(id);
             if (gameEvent == null)
@@ -64,7 +64,7 @@ namespace GameHubCSharp.Controllers
         [HttpGet]
         public IActionResult GameEventAdd()
         {
-            ViewData["GameNames"] = db.Games.Select(x => x.GameName).ToList(); ;
+            ViewData["GameNames"] = db.Games.Select(x => x.GameName).ToList(); 
             return View();
         }
 
@@ -76,13 +76,13 @@ namespace GameHubCSharp.Controllers
             var gameEve = mapper.Map<GameEvent>(gameEvent);
             var game = gameService.FindGameByName(gameEvent.GameName);
             gameEve.Game = game;
-            var player = playerService.Add(new Player() { User = userService.FindUserByName(User.Identity.Name),UsernameInGame = gameEvent.OwnerName});
+            var player = playerService.Add(new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = gameEvent.OwnerName });
             gameEve.OwnerId = player.Id.ToString();
 
             player.GameEvents.Add(gameEve);
-          
+
             gameEventService.Add(gameEve);
-            return RedirectToAction("Home","Home");
+            return RedirectToAction("Home", "Home");
         }
 
         [HttpPost]
@@ -92,14 +92,14 @@ namespace GameHubCSharp.Controllers
             return RedirectToAction("Home", "Home");
         }
         [HttpPost]
-        public IActionResult GameEventAddPlayer(string userNick,string gameEventId)
+        public IActionResult GameEventAddPlayer(string userNick, string gameEventId)
         {
-            object obj = new { id = gameEventId};
-            var playerInGameEvent = gameEventService.FindPlayerByNick(userNick,gameEventId);
-          
+            object obj = new { id = gameEventId };
+            var playerInGameEvent = gameEventService.FindPlayerByNick(userNick, gameEventId);
+
             var gameEvent = gameEventService.FindEventsById(gameEventId);
             var owner = playerService.FindPlayerById(gameEvent.OwnerId);
-           
+
             if (playerInGameEvent == null)
             {
                 Player playerNew = new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = userNick };
@@ -124,7 +124,19 @@ namespace GameHubCSharp.Controllers
                 obj = new { id = gameEventId, valid = false };
                 return RedirectToAction("GameEventDetail", obj);
             }
-           
+
+        }
+
+        public async Task<IActionResult> Accept(string name, string roomId)
+        {
+            await playerService.ChangeStatusAsync(name, true);
+            return RedirectToAction("GameEventDetail", new { Id = roomId});
+        }
+
+        public async Task<IActionResult> Decline(string name, string roomId)
+        {
+            await playerService.ChangeStatusAsync(name, false);
+            return RedirectToAction("GameEventDetail", new { Id = roomId });
         }
     }
 }

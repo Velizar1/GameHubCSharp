@@ -10,5 +10,6 @@ namespace GameHubCSharp.Models
     {
         public static Dictionary<string, string> ids = new Dictionary<string, string>();
         public static List<Notification> notifications = new List<Notification>();
+        public static List<GameEvent> events = new List<GameEvent>();
     }
 }
