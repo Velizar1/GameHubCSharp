@@ -17,9 +17,9 @@ namespace GameHubCSharp.Hubs
         private readonly IUserService userService;
         private readonly IGameEventService gameEventService;
         private readonly IMapper mapper;
-        private readonly PlayerService playerService;
+        private readonly IPlayerService playerService;
 
-        public EventHub(ApplicationDbContext db, IUserService userService, IGameEventService gameEventService, IMapper mapper, PlayerService playerService)
+        public EventHub(ApplicationDbContext db, IUserService userService, IGameEventService gameEventService, IMapper mapper, IPlayerService playerService)
         {
             this.db = db;
             this.userService = userService;

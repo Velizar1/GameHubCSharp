@@ -85,11 +85,26 @@ $("#form1").on('submit', function (e) {
         type: $(this).prop('method'),
         url: $(this).prop('action'),
         data: $(this).serialize()
-    }).done(function () {
+    }).done(function (obj) {
+        console.log(obj);
         connection.invoke("SendNotificationTo", roomid).catch(function (err) {
             return console.error(err.toString());
-            
+           
         });
-        location.reload();
+        
     });
+   /* fetch($(this).prop('action'), {
+        method: $(this).prop('method'),
+        data: $(this).serialize()
+
+    }).then(res => {
+        
+        connection.invoke("SendNotificationTo", roomid).catch(function (err) {
+            return console.error(err.toString());
+
+        });
+        
+        return res.json();
+        //window.location.replace(res.headers.get('url'));
+    }).then(data => console.log(data))*/
 });

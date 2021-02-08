@@ -112,7 +112,7 @@ namespace GameHubCSharp
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
                 endpoints.MapHub<NotificationHub>("/notificationhub");
-                endpoints.MapHub<EventHub>("/eventhub");
+               
             });
         }
     }
