@@ -6,29 +6,7 @@
     </a>
 </div>
 <ul class="nav justify-content-end" style="user-select: none;">
-    <li class="nav-item">
-        <ul class="navbar-nav ml-auto ">
-            <li class="nav-item avatar dropdown" style="height:2.5rem; padding-right:1rem;">
 
-
-                <div class="btn-group" style="user-select: none;">
-                    <a onclick="updateCount('@User.Identity.Name')"  unselectable="on" class="nav-link waves-effect waves-light" id="navbarDropdownMenuLink-5" style="position:relative;top:-8px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span unselectable="on" id="counter" class="badge badge-danger ml-2">@ConnectionIdProvider.notifications.Count(n => n.IsRead == false)</span>
-                        <i unselectable="on" style="color:white;padding-top:0.8rem;" class="nav-link active far fa-bell fa-lg d-inline-block"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg-left dropdown-secondary mt-1 " id="nott" style="background-color: #151226f7;user-select: none;" aria-labelledby="navbarDropdownMenuLink-5">
-                        
-                        @foreach (var not in ConnectionIdProvider.notifications.OrderBy(x=>x.CreatedAt))
-                        {
-                            <a class="dropdown-item waves-effect waves-light" href="/game/detail?id=@not.GameEvent.Id"><span class="badge badge-danger ml-2">@not.Message</span></a>
-                        }
-                    </div>
-
-
-                </div>
-            </li>
-        </ul>
-    </li>
     @if (!User.Identity.IsAuthenticated)
     {
         <li class="nav-item">
@@ -42,7 +20,29 @@
     }
     @if (User.Identity.IsAuthenticated)
     {
+        <li class="nav-item">
+            <ul class="navbar-nav ml-auto ">
+                <li class="nav-item avatar dropdown" style="height:2.5rem; padding-right:1rem;">
 
+
+                    <div class="btn-group" style="user-select: none;">
+                        <a onclick="updateCount('@User.Identity.Name')" unselectable="on" class="nav-link waves-effect waves-light" id="navbarDropdownMenuLink-5" style="position:relative;top:-8px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span unselectable="on" id="counter" class="badge badge-danger ml-2">@ConnectionIdProvider.notifications.Count(n => n.IsRead == false)</span>
+                            <i unselectable="on" style="color:white;padding-top:0.8rem;" class="nav-link active far fa-bell fa-lg d-inline-block"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg-left dropdown-secondary mt-1 " id="nott" style="background-color: #151226f7;user-select: none;" aria-labelledby="navbarDropdownMenuLink-5">
+
+                            @foreach (var not in ConnectionIdProvider.notifications.OrderBy(x => x.CreatedAt))
+                            {
+                                <a class="dropdown-item waves-effect waves-light" href="/game/detail?id=@not.GameEvent.Id"><span class="badge badge-danger ml-2">@not.Message</span></a>
+                            }
+                        </div>
+
+
+                    </div>
+                </li>
+            </ul>
+        </li>
         if (User.IsInRole("Admin"))
         {
 
