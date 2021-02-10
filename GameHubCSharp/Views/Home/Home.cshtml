@@ -64,13 +64,17 @@
             }
         }
     });
+    if (sessionStorage.getItem("game") === null)
+        sessionStorage.setItem("game", "All");
+
+    document.getElementById("category").value = sessionStorage.getItem("game")
 
     function reload(gameName) {
         
 
-        if (gamename !== gameName) {
+        if (sessionStorage.getItem("game") !== gameName) {
             document.getElementById("container").innerHTML = "";
-            gamename = gameName;
+            sessionStorage.setItem("game", gameName) ;
             pageIndex = 1;
         }
         $("#progress").show();
@@ -112,8 +116,14 @@
     }
     if (pageIndex == 1) {
       
-        reload(gamename);
+        reload(sessionStorage.getItem("game"));
     }
+    //if (sessionStorage.getItem("game") === "") {
+    //    reload(document.getElementById("category").value);
+    //}
+    //else {
+    //    reload(sessionStorage.getItem("game"));
+    //}
 </script>
 
 

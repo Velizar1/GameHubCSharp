@@ -2,7 +2,7 @@
 <div class="float-left" style="float:left;display: inline-block">
     <a style="color:rgb(255, 255, 255);padding: 0;margin-left: 10%" asp-action="Home" asp-controller="Home"
        class="nav-link text-light">
-        <img style="height: 2em;width: 9em" src="/img/output-onlinepngtools.png">
+        <img onclick="resetSession()" style="height: 2em;width: 9em" src="/img/output-onlinepngtools.png">
     </a>
 </div>
 <ul class="nav justify-content-end" style="user-select: none;">
@@ -61,7 +61,7 @@
 
 
         <li class="nav-item">
-            <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="Home" asp-controller="Home"><i class="fas fa-igloo"></i></a>
+            <a onclick="resetSession()" class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="Home" asp-controller="Home"><i class="fas fa-igloo"></i></a>
         </li>
         <li class="nav-item">
 
@@ -83,3 +83,10 @@
     }
 
 </ul>
+
+<script>
+    function resetSession()
+    {
+        sessionStorage.setItem("game", "All");
+    }
+</script>
