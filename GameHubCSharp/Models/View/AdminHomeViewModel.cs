@@ -21,5 +21,7 @@ namespace GameHubCSharp.Models.View
         public Post Post { get; set; }
         public Category Category { get; set; }
         public List<Category> Categories { get; internal set; }
+        public string Add { get; set; }
+        public string Delete { get; set; }
     }
 }

@@ -90,11 +90,42 @@
         name="category"
         onchange="filter(this.value)">
 
-    <option text="User" value="User">User</option>
-    <option text="GameEvent" value="GameEvent">GameEvent</option>
-    <option text="Game" value="Game">Game</option>
-    <option text="Category" value="Category">Category</option>
 
+    @if (Model.Delete == "User")
+    {
+        <option selected text="User" value="User">User</option>
+    }
+    else
+    {
+        <option text="User" value="User">User</option>
+    }
+
+    @if (Model.Delete == "GameEvent")
+    {
+        <option selected text="GameEvent" value="GameEvent">GameEvent</option>
+    }
+    else
+    {
+        <option text="GameEvent" value="GameEvent">GameEvent</option>
+    }
+
+    @if (Model.Delete == "Game")
+    {
+        <option selected text="Game" value="Game">Game</option>
+    }
+    else
+    {
+        <option text="Game" value="Game">Game</option>
+    }
+
+    @if (Model.Delete == "Category")
+    {
+        <option selected text="Category" value="Category">Category</option>
+    }
+    else
+    {
+        <option text="Category" value="Category">Category</option>
+    }
 
 </select>
 <section class="mb-4 pb-5">
@@ -116,7 +147,7 @@
                     <th scope="row">@i</th>
                     <td>@cur.Id</td>
                     <td>@cur.UserName</td>
-                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteUser/@cur.Id'">Delete</button></td>
+                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteUser/@cur.Id?deleteType=@cur.GetType().Name'">Delete</button></td>
 
                 </tr>
             }
@@ -140,7 +171,7 @@
                     <th scope="row">@i</th>
                     <td>@cur.Id</td>
                     <td>@cur.Game.GameName</td>
-                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteEvent/@cur.Id'">Delete</button></td>
+                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteEvent/@cur.Id?deleteType=@cur.GetType().Name'">Delete</button></td>
 
                 </tr>
             }
@@ -164,7 +195,7 @@
                     <th scope="row">@i</th>
                     <td>@cur.Id</td>
                     <td>@cur.GameName</td>
-                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteGame/@cur.Id'">Delete</button></td>
+                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteGame/@cur.Id?deleteType=@cur.GetType().Name'">Delete</button></td>
 
                 </tr>
             }
@@ -188,7 +219,7 @@
                     <th scope="row">@i</th>
                     <td>@cur.Id</td>
                     <td>@cur.Type</td>
-                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteCategory/@cur.Id'">Delete</button></td>
+                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteCategory/@cur.Id?deleteType=@cur.GetType().Name'">Delete</button></td>
 
                 </tr>
             }
@@ -199,7 +230,7 @@
 
     function filter(val) {
         console.log(val)
-        if (val == "User") {
+        if (val === "User") {
             document.getElementById("g").style.display = "none";
             document.getElementById("u").style.display = "table";
             document.getElementById("ge").style.display = "none";
@@ -207,20 +238,20 @@
 
         }
 
-        if (val == "GameEvent") {
+        if (val === "GameEvent") {
             document.getElementById("g").style.display = "none";
             document.getElementById("ge").style.display = "table";
             document.getElementById("u").style.display = "none";
             document.getElementById("c").style.display = "none";
         }
 
-        if (val == "Game") {
+        if (val === "Game") {
             document.getElementById("g").style.display = "table";
             document.getElementById("ge").style.display = "none";
             document.getElementById("u").style.display = "none";
             document.getElementById("c").style.display = "none";
         }
-        if (val == "Category") {
+        if (val === "Category") {
             document.getElementById("g").style.display = "none";
             document.getElementById("ge").style.display = "none";
             document.getElementById("u").style.display = "none";
@@ -229,24 +260,24 @@
     }
     function filter2(val) {
         console.log(val)
-        if (val == "Game") {
+        if (val === "Game") {
             document.getElementById("game").style.display = "inline-block";
             document.getElementById("post").style.display = "none";
             document.getElementById("cat").style.display = "none";
         }
 
-        if (val == "Post") {
+        if (val === "Post") {
             document.getElementById("game").style.display = "none";
             document.getElementById("post").style.display = "inline-block";
             document.getElementById("cat").style.display = "none";
         }
 
-        if (val == "Category") {
+        if (val === "Category") {
             document.getElementById("game").style.display = "none";
             document.getElementById("post").style.display = "none";
             document.getElementById("cat").style.display = "inline-block";
         }
     }
-    filter("User")
-    filter2("Game")
+    filter("@Model.Delete") // delete
+    filter2("@Model.Add") // add
 </script>

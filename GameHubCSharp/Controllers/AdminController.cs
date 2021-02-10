@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
 using GameHubCSharp.Models.View;
 using GameHubCSharp.Services;
@@ -27,12 +28,14 @@ namespace GameHubCSharp.Controllers
         private readonly IMapper mapper;
         private readonly ICategoryService categoryService;
         private readonly Microsoft.AspNetCore.Identity.UserManager<User> userManager;
+        private readonly ApplicationDbContext db;
 
         public AdminController(IUserService userService, IGameEventService gameEventService, IHomeService homeService, IPostService postService,
             IGameService gameService,
             IMapper mapper,
             ICategoryService categoryService,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            ApplicationDbContext db)
         {
             this.userService = userService;
             this.gameEventService = gameEventService;
@@ -42,8 +45,9 @@ namespace GameHubCSharp.Controllers
             this.mapper = mapper;
             this.categoryService = categoryService;
             this.userManager = userManager;
+            this.db = db;
         }
-        public IActionResult AdminHome()
+        public IActionResult AdminHome(string addType = "Game",string deleteType = "User")
         {
             var events = gameEventService.FindAll();
             var users = userService.FindAll();
@@ -52,39 +56,46 @@ namespace GameHubCSharp.Controllers
             var categories = categoryService.FindAll();
             var model = new AdminHomeViewModel() { Users = users, GameEvents = events.ToList(), Posts = posts, Games = games, Categories = categories };
 
+            model.Add = addType;
+            model.Delete = deleteType;
+
+
+
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult DeleteUser(string id)
+        public IActionResult DeleteUser(string id, string addType = "Game", string deleteType = "User")
         {
+            deleteType = deleteType.Split("Proxy")[0];
             userService.Delete(id);
             return RedirectToAction("AdminHome", "Admin");
         }
 
         [HttpGet]
-        public IActionResult DeleteCategory(string id)
+        public IActionResult DeleteCategory(string id, string addType = "Game", string deleteType = "User")
         {
+            deleteType = deleteType.Split("Proxy")[0];
             categoryService.Delete(id);
-            return RedirectToAction("AdminHome", "Admin");
+            return RedirectToAction("AdminHome", "Admin",new { AddType = addType , DeleteType = deleteType });
         }
 
         [HttpGet]
-        public IActionResult DeleteEvent(string id)
+        public IActionResult DeleteEvent(string id, string addType = "Game", string deleteType = "User")
         {
+            deleteType = deleteType.Split("Proxy")[0];
             var eventt = mapper.Map<GameEventViewModel>(gameEventService.FindEventsById(id));
             if (eventt != null && eventt.Id != null)
                 gameEventService.DeleteEvent(eventt);
-            return RedirectToAction("AdminHome", "Admin");
+            return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
         [HttpGet]
-        public IActionResult DeleteGame(string id)
+        public IActionResult DeleteGame(string id, string addType = "Game", string deleteType = "User")
         {
-            var eventt = mapper.Map<GameEventViewModel>(gameEventService.FindEventsById(id));
-            if (eventt != null && eventt.Id != null)
-                gameEventService.DeleteEvent(eventt);
-            return RedirectToAction("AdminHome", "Admin");
+            deleteType = deleteType.Split("Proxy")[0];
+            gameService.Delete(id);
+            return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
         [HttpPost]
