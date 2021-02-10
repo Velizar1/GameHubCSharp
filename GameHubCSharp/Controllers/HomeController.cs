@@ -69,6 +69,7 @@ namespace GameHubCSharp.Controllers
             }
             var gameEvents = gameEventService.FindAll();
             var games = gameService.FindAll();
+            ViewData["totalPages"] = gameEvents.Count;
             if (games.Count == 0)
             {
                 ViewData["GameNames"] = new List<string>();

@@ -61,9 +61,19 @@ namespace GameHubCSharp.Services
             return db.GameEvents.ToList();
         }
 
+        public ICollection<GameEvent> FindAll(int page, int pageSize)
+        {
+            return db.GameEvents.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        }
+
         public ICollection<GameEvent> FindEventsByGame(string game)
         {
            return db.GameEvents.Where(g => g.Game.GameName == game).ToList();
+        }
+
+        public ICollection<GameEvent> FindEventsByGame(string game, int page, int pageSize)
+        {
+            return db.GameEvents.Where(g => g.Game.GameName == game).Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public GameEvent FindEventsById(string id)

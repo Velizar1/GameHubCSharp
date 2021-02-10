@@ -33,11 +33,12 @@ namespace GameHubCSharp.Controllers
         }
 
         [HttpGet("/resource")]
-        public IActionResult FindGames(string game)
+        public IActionResult FindGames(string game,int page=1,int pageSize=9)
         {
+          
             if (game == "All")
             {
-                var list = gameEventService.FindAll().ToList();
+                var list = gameEventService.FindAll(page, pageSize).ToList();
                 var list2 = list.Select(x => {
                     var re = mapper.Map<HomeEventRestViewModel>(x);
                     re.OwnerName = playerService.FindPlayerById(x.OwnerId.ToString()).UsernameInGame;
@@ -48,7 +49,7 @@ namespace GameHubCSharp.Controllers
                     .ToList();
                 return Ok(list2);
             }
-            var events = gameEventService.FindEventsByGame(game);
+            var events = gameEventService.FindEventsByGame(game,page,pageSize);
             List<HomeEventRestViewModel> games = new List<HomeEventRestViewModel>();
             if (events.Count == 0) return NotFound();
             foreach (var el in events)

@@ -1,4 +1,4 @@
-﻿@model Dictionary<string,string>
+﻿@model Dictionary<string, string>
 
 
 
@@ -6,7 +6,7 @@
      class="btn-container-style text-center mt-5 d-inline-block modal-dialog-scrollable">
 
     <div class=" w-100 text-center ">
-        
+
         <div id="info-label">
             <p style="color: greenyellow;font-size: 30px;" class="text-light">Most popular game : @ViewData["mostPlayed"]</p>
         </div>
@@ -28,21 +28,69 @@
     </div>
     <div id="container">
 
+        
     </div>
-
+    <div id="progress" style="display:none;">
+        <img src="https://i.pinimg.com/originals/34/cc/62/34cc62d1df1c8328f56ae7a7acf2e83a.gif" alt="Loading" /> Loading more products...
+    </div>
+    <div id="progressmarker" style="height:5rem"></div>
 </div>
 <a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button"><i style="color:white" class="far fa-arrow-alt-circle-up fa-sm"></i></a>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 <script>
+    let pageIndex = 1;
+    let pages =  @ViewData["totalPages"];
+    let gamename = document.getElementById("category").value;
+    console.log(gamename);
+    $(window).scroll(function () {
+        var hT = $('#progressmarker').offset().top,
+            hH = $('#progressmarker').outerHeight(),
+            wH = $(window).height(),
+            wS = $(this).scrollTop();
+        if ((pages + 1) > pageIndex) {
+            if (wS > (hT + hH - wH)) {
+                //alert(document.getElementById("category").value);
+              @*  console.log(pages);
+                console.log(document.getElementById("category").value);*@
+                reload(document.getElementById("category").value);
+            }
+        }
+    });
+
     function reload(gameName) {
-        fetch('https://localhost:44348/resource?game=' + gameName, {
+        
+
+        if (gamename !== gameName) {
+            document.getElementById("container").innerHTML = "";
+            gamename = gameName;
+            pageIndex = 1;
+        }
+        $("#progress").show();
+
+        fetch('https://localhost:44348/resource?game=' + gameName + '&page=' + pageIndex + '&pageSize=6', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            }
-        }).then(x => x.json()).then(x => {
+            },
+            data: {
+                "page": pageIndex,
+                "pageSize": 6,
+            },
+        }).then(x => {
+            pageIndex++;
+            return x.json();
+        }).then(x => {
             console.log(x)
             var container = document.getElementById("container");
-            container.innerHTML = "";
+            //container.innerHTML = "";
             for (var i = 0; i < x.length; i++) {
 
                 var element = `<div class=" d-inline-block text-left mt-5 container-style" id="event-div" style="width: 18rem;">
@@ -59,19 +107,13 @@
                 //console.log(x[i].id);
                 container.innerHTML += element;
             }
-
-
         })
+        $("#progress").hide();
     }
-    reload("All");
+    if (pageIndex == 1) {
+      
+        reload(gamename);
+    }
 </script>
-@*<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>*@
+
 
