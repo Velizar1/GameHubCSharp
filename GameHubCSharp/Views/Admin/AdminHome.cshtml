@@ -41,7 +41,7 @@
                 <div class="text-danger" asp-validation-summary="All"></div>
 
                 <label class="text-white" asp-for="Category"></label>
-                <select class="custom-select d-block"   name="SetCat">
+                <select class="custom-select d-block" name="SetCat">
                     @for (int i = 0; i < Model.Categories.Count; i++)
                     {
                         <option>@Model.Categories[i].Type</option>
@@ -84,7 +84,7 @@
     </form>
 </div>
 
-<select class="browser-default " style="width: 15em;"
+<select class="browser-default d-inline-block " style="width: 15em;"
         aria-placeholder="Filter"
         id="category"
         name="category"
@@ -126,8 +126,29 @@
     {
         <option text="Category" value="Category">Category</option>
     }
+    @if (Model.Delete == "Post")
+    {
+        <option selected text="Post" value="Post">Post</option>
+    }
+    else
+    {
+        <option text="Post" value="Post">Post</option>
+    }
 
 </select>
+
+@*Search*@
+
+<div class=" d-inline-block" >
+    <input id="searchInput" type="search" class="form-control rounded d-inline-block" style=" width: 60%;" placeholder="Search" aria-label="Search"
+           aria-describedby="search-addon" />
+    <button onclick="searchedElement()" type="button" class="btn btn-outline-primary d-inline-block" style="color:greenyellow; border-color:greenyellow">search</button>
+</div>
+
+<div id="searched"></div>
+
+
+
 <section class="mb-4 pb-5">
     <table id="u" class="table table-dark container mt-4 mb-4" style="">
         <thead>
@@ -225,8 +246,61 @@
             }
         </tbody>
     </table>
+
+    @*Posts*@
+    <table id="p" class="table table-dark container mt-4" style="">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">id</th>
+                <th scope="col">type</th>
+                <th scope="col">function</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Posts.ToList().Count; i++)
+            {
+                var cur = Model.Posts.ToList()[i];
+
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@cur.Id</td>
+                    <td>@cur.Topic</td>
+                    <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeletePost/@cur.Id?deleteType=@cur.GetType().Name'">Delete</button></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
 </section>
 <script>
+
+
+    function searchedElement()
+    {
+        let type = document.getElementById("category").value;
+        let id = document.getElementById("searchInput").value;
+
+        fetch(`https://localhost:44348/findToDelete?id=${id}&type=${type}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                let url = `/Admin/DeletePost/${data.id}?deleteType=${type}`;
+                document.getElementById("searched").innerHTML = "<table class='table table - dark container mt - 4' >" +
+                    "<thead>"+
+                    "< tr >"+
+               " <th scope='col'>id</th>"+
+               " <th scope='col'>function</th>"+
+           " </tr >"+
+        "</thead >"+
+                    "< tbody > "+
+                "<tr>"+
+                   " <th scope='row'></th>"+
+                   " <td>data.id</td>"+
+                   ` <td><button id='logout-button' class='bg-danger text-white p-2' onclick='location.href =${url} '>Delete</button></td>`+
+               " </tr> </tbody></table>"
+            });
+    }
 
     function filter(val) {
         console.log(val)
@@ -235,6 +309,7 @@
             document.getElementById("u").style.display = "table";
             document.getElementById("ge").style.display = "none";
             document.getElementById("c").style.display = "none";
+            document.getElementById("p").style.display = "none";
 
         }
 
@@ -243,6 +318,7 @@
             document.getElementById("ge").style.display = "table";
             document.getElementById("u").style.display = "none";
             document.getElementById("c").style.display = "none";
+            document.getElementById("p").style.display = "none";
         }
 
         if (val === "Game") {
@@ -250,12 +326,21 @@
             document.getElementById("ge").style.display = "none";
             document.getElementById("u").style.display = "none";
             document.getElementById("c").style.display = "none";
+            document.getElementById("p").style.display = "none";
         }
         if (val === "Category") {
             document.getElementById("g").style.display = "none";
             document.getElementById("ge").style.display = "none";
             document.getElementById("u").style.display = "none";
             document.getElementById("c").style.display = "table";
+            document.getElementById("p").style.display = "none";
+        }
+        if (val === "Post") {
+            document.getElementById("g").style.display = "none";
+            document.getElementById("ge").style.display = "none";
+            document.getElementById("u").style.display = "none";
+            document.getElementById("c").style.display = "none";
+            document.getElementById("p").style.display = "table";
         }
     }
     function filter2(val) {

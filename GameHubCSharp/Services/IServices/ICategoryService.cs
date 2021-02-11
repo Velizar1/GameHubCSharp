@@ -12,5 +12,6 @@ namespace GameHubCSharp.Services.IServices
         public void Delete(string id);
         public List<Category> FindAll();
         public Category FindByName(string type);
+        public Category FindById(string id);
     }
 }

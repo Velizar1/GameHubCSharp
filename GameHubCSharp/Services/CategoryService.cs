@@ -34,6 +34,11 @@ namespace GameHubCSharp.Services
             return db.Categories.ToList();
         }
 
+        public Category FindById(string id)
+        {
+            return db.Categories.FirstOrDefault(x => x.Id.ToString() == id);
+        }
+
         public Category FindByName(string type)
         {
             return db.Categories.FirstOrDefault(x => x.Type == type);

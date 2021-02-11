@@ -2,6 +2,7 @@
 using GameHubCSharp.Data;
 using GameHubCSharp.Models.View;
 using GameHubCSharp.Services;
+using GameHubCSharp.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,17 +20,50 @@ namespace GameHubCSharp.Controllers
         private ApplicationDbContext applicationDb;
         private IPlayerService playerService;
         private IGameEventService gameEventService;
+        private readonly IPostService postService;
+        private readonly IUserService userService;
+        private readonly IGameService gameService;
+        private readonly ICategoryService categoryService;
         private readonly IMapper mapper;
 
         public RestController(ApplicationDbContext applicationDb,
             IPlayerService playerService,
             IGameEventService gameEventService,
+            IPostService postService,
+            IUserService userService,
+            IGameService gameService,
+            ICategoryService categoryService,
             IMapper mapper)
         {
             this.applicationDb = applicationDb;
             this.playerService = playerService;
             this.gameEventService = gameEventService;
+            this.postService = postService;
+            this.userService = userService;
+            this.gameService = gameService;
+            this.categoryService = categoryService;
             this.mapper = mapper;
+        }
+
+        [HttpGet("/findToDelete")]
+        public IActionResult Find(string id, string type)
+        {
+            if (type == "GameEvent")
+                return Ok(gameEventService.FindEventsById(id));
+
+            else if (type == "Game")
+                return Ok(gameService.FindGameById(id));
+
+            else if (type == "Post")
+                return Ok(postService.FindPostById(id));
+
+            else if (type == "Category")
+                return Ok(categoryService.FindById(id));
+
+            else if (type == "User")
+                return Ok(userService.FindUserById(id));
+
+            return NotFound();
         }
 
         [HttpGet("/resource")]

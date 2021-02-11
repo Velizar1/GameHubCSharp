@@ -98,6 +98,14 @@ namespace GameHubCSharp.Controllers
             return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
+        [HttpGet]
+        public IActionResult DeletePost(string id, string addType = "Game", string deleteType = "User")
+        {
+            deleteType = deleteType.Split("Proxy")[0];
+            postService.RemovePostById(id);
+            return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
+        }
+
         [HttpPost]
         public IActionResult AddCategory(AdminHomeViewModel model)
         {
