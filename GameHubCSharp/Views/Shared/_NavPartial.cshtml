@@ -30,7 +30,7 @@
                             <span unselectable="on" id="counter" class="badge badge-danger ml-2">@ConnectionIdProvider.notifications.Count(n => n.IsRead == false)</span>
                             <i unselectable="on" style="color:white;padding-top:0.8rem;" class="nav-link active far fa-bell fa-lg d-inline-block"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-lg-left dropdown-secondary mt-1 " id="nott" style="background-color: #151226f7;user-select: none;" aria-labelledby="navbarDropdownMenuLink-5">
+                        <div class="my-custom-scrollbar my-custom-scrollbar-primary dropdown-menu dropdown-menu-lg-left dropdown-secondary mt-1 " id="nott" style="background-color: #151226f7;user-select: none;overflow-y:scroll;max-height:200px" data-mdb-perefect-scrollbar data-mdb-suppress-scroll-x='true' aria-labelledby="navbarDropdownMenuLink-5">
 
                             @foreach (var not in ConnectionIdProvider.notifications.OrderBy(x => x.CreatedAt))
                             {
@@ -83,7 +83,24 @@
     }
 
 </ul>
+<style>
 
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+    ::-webkit-scrollbar-track {
+        background-color: #0d1626be;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: #19182c;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    }
+</style>
 <script>
     function resetSession()
     {

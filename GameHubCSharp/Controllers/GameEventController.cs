@@ -2,6 +2,7 @@
 using GameHubCSharp.Data;
 using GameHubCSharp.Data.Models;
 using GameHubCSharp.Hubs;
+using GameHubCSharp.Models;
 using GameHubCSharp.Models.View;
 using GameHubCSharp.Services;
 using GameHubCSharp.Services.IServices;
@@ -150,8 +151,16 @@ namespace GameHubCSharp.Controllers
                     GameEvent = gameEvent,
                     IsRead = false
                 };
-
                 var curNotification = userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
+
+                var list = playerInGameEvent.User.Notifications;
+                await hub.Clients.User(ConnectionIdProvider.ids[playerInGameEvent.User.UserName]).SendAsync("ReceiveNotfication", new
+                {
+                    Notifications = list.ToArray(),
+                    NotCount = playerInGameEvent.User.Notifications.Count(n => n.IsRead == false)
+                });
+
+                
 
                 return RedirectToAction("GameEventDetail", obj);
             }
@@ -186,7 +195,13 @@ namespace GameHubCSharp.Controllers
                     }; 
                      userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
                 }
-                 return RedirectToAction("GameEventDetail", obj);
+                var list = playerInGameEvent.User.Notifications;
+                await hub.Clients.User(ConnectionIdProvider.ids[playerInGameEvent.User.UserName]).SendAsync("ReceiveNotfication", new
+                {
+                    Notifications = list.ToArray(),
+                    NotCount = playerInGameEvent.User.Notifications.Count(n => n.IsRead == false)
+                });
+                return RedirectToAction("GameEventDetail", obj);
             }
             else
             {

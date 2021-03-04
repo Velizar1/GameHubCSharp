@@ -33,10 +33,13 @@
                         {
                             <li style="font-size: 20px;" class="card-text ml-4">
                                 @player.UsernameInGame
-                                    <div class="ml-sm-5 d-inline-block ">
+                                <div class="ml-sm-5 d-inline-block ">
+                                    @if (player.Status == false)
+                                    {
                                         <a asp-route-playerName="@player.UsernameInGame" asp-route-roomId="@Model.Id" asp-action="Accept" asp-controller="GameEvent"> <i class="far fa-check-circle fa-lg ml-2" style="color:green"></i></a>
-                                        <a asp-route-playerName="@player.UsernameInGame" asp-route-roomId="@Model.Id" asp-action="Decline" asp-controller="GameEvent"> <i class="far fa-times-circle fa-lg ml-2" style="color:red"></i></a>
-                                    </div>
+                                    }
+                                    <a asp-route-playerName="@player.UsernameInGame" asp-route-roomId="@Model.Id" asp-action="Decline" asp-controller="GameEvent"> <i class="far fa-times-circle fa-lg ml-2" style="color:red"></i></a>
+                                </div>
 
                             </li>
                         }
