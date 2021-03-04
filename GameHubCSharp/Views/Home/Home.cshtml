@@ -28,7 +28,7 @@
     </div>
     <div id="container">
 
-        
+
     </div>
     <div id="progress" style="display:none;">
         <img src="https://i.pinimg.com/originals/34/cc/62/34cc62d1df1c8328f56ae7a7acf2e83a.gif" alt="Loading" /> Loading more products...
@@ -36,15 +36,10 @@
     <div id="progressmarker" style="height:5rem"></div>
 </div>
 <a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button"><i style="color:white" class="far fa-arrow-alt-circle-up fa-sm"></i></a>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+
+@section Scripts {
+    
+
 <script>
     let pageIndex = 1;
     let pages =  @ViewData["totalPages"];
@@ -70,7 +65,7 @@
     document.getElementById("category").value = sessionStorage.getItem("game")
 
     function reload(gameName) {
-        
+
 
         if (sessionStorage.getItem("game") !== gameName) {
             document.getElementById("container").innerHTML = "";
@@ -115,7 +110,7 @@
         $("#progress").hide();
     }
     if (pageIndex == 1) {
-      
+
         reload(sessionStorage.getItem("game"));
     }
     //if (sessionStorage.getItem("game") === "") {
@@ -127,3 +122,4 @@
 </script>
 
 
+}
