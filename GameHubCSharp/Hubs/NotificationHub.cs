@@ -27,10 +27,10 @@ namespace GameHubCSharp.Hubs
             this.mapper = mapper;
             this.playerService = playerService;
         }
-        public async Task SendNotificationTo(string id)
+        public async Task SendNotificationTo(string roomId)
         {
-            var owner = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == id).OwnerId;
-            var player = db.Players.FirstOrDefault(x => x.Id.ToString() == owner);
+            var ownerId = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == roomId).OwnerId;
+            var player = db.Players.FirstOrDefault(x => x.Id.ToString() == ownerId);
             var list = player.User.Notifications;
             await this.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication", new
             {
@@ -38,7 +38,16 @@ namespace GameHubCSharp.Hubs
                 NotCount = player.User.Notifications.Count(n => n.IsRead == false)
             }) ;
         }
-
+        public async Task SendNotificationToUser(string userId)
+        {
+            var user = db.Users.FirstOrDefault(x => x.Id.ToString() == userId); 
+            var list =user.Notifications;
+            await this.Clients.User(ConnectionIdProvider.ids[user.UserName]).SendAsync("ReceiveNotfication", new
+            {
+                Notifications = list.ToArray(),
+                NotCount = user.Notifications.Count(n => n.IsRead == false)
+            });
+        }
         public async Task NotificationCount(string user)
         {
             var nots = userService.ChangeStatus(user);

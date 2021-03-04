@@ -41,6 +41,15 @@ namespace GameHubCSharp.Services
             return player;
         }
 
+        public Player DeletePlayer(string playerId)
+        {
+            var player = db.Players.FirstOrDefault(p => p.Id.ToString()==playerId);
+
+            db.Remove(player);
+            db.SaveChanges();
+            return player;
+        }
+
         public Player FindPlayerById(string id)
         {
             var player = db.Players.FirstOrDefault(p => p.Id.ToString() == id);

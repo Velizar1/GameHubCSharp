@@ -38,8 +38,8 @@ connection.on("UpdateNotifications", function (obj) {
     //console.log(obj)
     document.getElementById("counter").innerText = 0;
     let not = obj.notifications;
-    console.log(not)
-    console.log(not.length)
+    /*console.log(not)
+    console.log(not.length)*/
     document.getElementById("nott").innerHTML = ""
     for (let i = 0; i < not.length; i++) {
         console.log("in loop")
@@ -77,6 +77,7 @@ function mafunc() {
     });
    
 };
+
 
 
 $("#form1").on('submit', function (e) {

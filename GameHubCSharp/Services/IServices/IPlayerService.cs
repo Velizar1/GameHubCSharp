@@ -5,6 +5,7 @@ namespace GameHubCSharp.Services
 {
     public interface IPlayerService
     {
+        public Player DeletePlayer(string playerId);
         public Player FindPlayerById(string id);
         public Player Add(Player player);
         public Player FindPlayerByNick(string userNick);

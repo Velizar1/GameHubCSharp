@@ -51,7 +51,7 @@ namespace GameHubCSharp.Controllers
             var gameEvent = gameEventService.FindEventsById(id);
             if (gameEvent == null)
             {
-                return RedirectToAction("Error","Home");
+                return RedirectToAction("Error", "Home");
             }
             var gameEve = mapper.Map<GameEventViewModel>(gameEvent);
             gameEve.Owner = mapper.Map<PlayerViewModel>(playerService.FindPlayerById(gameEvent.OwnerId));
@@ -64,7 +64,7 @@ namespace GameHubCSharp.Controllers
         [HttpGet]
         public IActionResult GameEventAdd()
         {
-            ViewData["GameNames"] = db.Games.Select(x => x.GameName).ToList(); 
+            ViewData["GameNames"] = db.Games.Select(x => x.GameName).ToList();
             return View();
         }
 
@@ -91,6 +91,9 @@ namespace GameHubCSharp.Controllers
             gameEventService.DeleteEvent(gameEvent);
             return RedirectToAction("Home", "Home");
         }
+        [HttpPost]
+
+
         [HttpPost]
         public IActionResult GameEventAddPlayer(string userNick, string gameEventId)
         {
@@ -127,16 +130,69 @@ namespace GameHubCSharp.Controllers
 
         }
 
-        public async Task<IActionResult> Accept(string name, string roomId)
+        public async Task<IActionResult> Accept(string playerName, string roomId)
         {
-            await playerService.ChangeStatusAsync(name, true);
-            return RedirectToAction("GameEventDetail", new { Id = roomId});
+            object obj = new { id = roomId };
+            var playerInGameEvent = gameEventService.FindPlayerByNick(playerName, roomId);
+
+            var gameEvent = gameEventService.FindEventsById(roomId);
+            var owner = playerService.FindPlayerById(gameEvent.OwnerId);
+
+            if (playerInGameEvent != null)
+            {
+
+                await playerService.ChangeStatusAsync(playerName, true);
+                var notification = new Notification()
+                {
+                    Message = "Accepted by game event owner: " + owner.UsernameInGame,
+                    From = owner.User.UserName,
+                    To = playerInGameEvent.User.UserName,
+                    GameEvent = gameEvent,
+                    IsRead = false
+                };
+
+                var curNotification = userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
+
+                return RedirectToAction("GameEventDetail", obj);
+            }
+            else
+            {
+                obj = new { id = roomId, valid = false };
+                return RedirectToAction("GameEventDetail", obj);
+            }
+
         }
 
-        public async Task<IActionResult> Decline(string name, string roomId)
+        public async Task<IActionResult> Decline(string playerName, string roomId)
         {
-            await playerService.ChangeStatusAsync(name, false);
-            return RedirectToAction("GameEventDetail", new { Id = roomId });
+            object obj = new { id = roomId };
+            var playerInGameEvent = gameEventService.FindPlayerByNick(playerName, roomId);
+
+            var gameEvent = gameEventService.FindEventsById(roomId);
+            var owner = playerService.FindPlayerById(gameEvent.OwnerId);
+
+            if (playerInGameEvent != null)
+            {
+
+                if (gameEvent.Players.Remove(playerInGameEvent))
+                {
+                    var notification = new Notification()
+                    {
+                        Message = "Declined by game event owner: " + owner.UsernameInGame,
+                        From = owner.User.UserName,
+                        To = playerInGameEvent.User.UserName,
+                        GameEvent = gameEvent,
+                        IsRead = false
+                    }; 
+                    var curNotification = userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
+                }
+                 return RedirectToAction("GameEventDetail", obj);
+            }
+            else
+            {
+                obj = new { id = roomId, valid = false };
+                return RedirectToAction("GameEventDetail", obj);
+            }
         }
     }
 }
