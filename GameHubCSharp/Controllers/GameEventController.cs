@@ -184,7 +184,7 @@ namespace GameHubCSharp.Controllers
                         GameEvent = gameEvent,
                         IsRead = false
                     }; 
-                    var curNotification = userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
+                     userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
                 }
                  return RedirectToAction("GameEventDetail", obj);
             }
