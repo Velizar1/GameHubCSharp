@@ -1,28 +1,30 @@
 html {
     height: 100%;
     width: 100%;
-  }
+}
+
 body {
     position: relative;
-    min-height: 100%; 
+    min-height: 100%;
     background-image: url('https://img.wallpapersafari.com/desktop/1680/1050/34/17/kUoKmL.jpg');
     background-position: center;
     /* Center the image */
     background-repeat: no-repeat;
     /* Do not repeat the image */
     background-size: cover;
-
     background-attachment: fixed;
 }
+/**/
 
-
-#category{
+/**/
+#category {
     color: white;
     background-color: #0d1626be;
     border-radius: 12px;
     min-height: 2em;
 }
-.container-style{
+
+.container-style {
     margin-right: 4%;
     margin-left: 4%;
     width: 70%;
@@ -31,22 +33,23 @@ body {
     background-color: #0d1626be;
 }
 
-form{
+form {
     margin-top: 2%;
     width: 25em;
     text-align: center;
     padding-bottom: 20px;
     padding-top: 20px;
     border-radius: 12px;
-    border: 2px solid ;
+    border: 2px solid;
     background-color: #0d1626be;
 }
+
 #news-card-div {
     border-radius: 12px;
     border: 2px solid;
     background-color: #0d1626be;
-    
 }
+
 #logout {
     display: inline-block;
     margin: 0;
@@ -56,42 +59,46 @@ form{
     border: none;
     background-color: #a000008f;
 }
-#logout:hover{
-    background-color: rgba(253, 0, 0, 0.56);
-}
-#logout-button{
+
+    #logout:hover {
+        background-color: rgba(253, 0, 0, 0.56);
+    }
+
+#logout-button {
     background-color: rgba(26, 3, 29, -1);
     border: none;
 }
-*{
+
+* {
     padding: 0;
     margin: 0;
 }
-.inside-el{
+
+.inside-el {
     border-radius: 12px;
-    border: 2px solid ;
-    background-color:  #0d162696;
+    border: 2px solid;
+    background-color: #0d162696;
     min-height: 30em;
     padding: 2em;
 }
-#info-label{
+
+#info-label {
     position: relative;
     border-radius: 12px;
-    border: 2px solid ;
-    background-color:  #0d162696;
+    border: 2px solid;
+    background-color: #0d162696;
     margin-bottom: 2em;
     width: 60%;
     left: 20%;
     padding-top: 0.7em;
-
 }
 
 #back-to-top {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 20px #e60073;
-   /* padding-left: 0.8rem;
+    /* padding-left: 0.8rem;
     padding-right: 0.8rem;*/
-    padding-top:0.6rem;
-    padding-bottom:0.6rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
     border-radius: 50px;
     background-color: #060c1a;
     border: 3px solid #401544a3;
@@ -101,122 +108,149 @@ form{
     display: none;
     margin-bottom: 5rem;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
-.form-event{
+
+.form-event {
     width: 75%;
 }
-.add-form{
-    width: 50%;;
-}
-.name{
 
+.add-form {
+    width: 50%;
+    
+}
+
+.name {
     font-size: 30px;
     color: white;
     font-family: 'Courier New', Courier, monospace;
 }
-.name-label{
 
+.name-label {
     display: inline;
     font-size: 15px;
     color: white;
 }
-.detail{
+
+.detail {
     min-height: 30em;
-    background-size:contain;
-    background-repeat:no-repeat;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-size: 100% 100%;
     width: 70%;
 }
-#username{
+
+#username {
     width: 50%;
 }
-#last{
+
+#last {
     bottom: -25%;
 }
-#pool{
+
+#pool {
     width: 70%;
 }
-.outside-div{
+
+.outside-div {
     width: 70%;
 }
-#err-text{
+
+#err-text {
     font-size: 40px;
-    padding: 10px;border-radius: 12px;
-    background-color: #0d1626be ;
+    padding: 10px;
+    border-radius: 12px;
+    background-color: #0d1626be;
     color: white;
     font-family: 'Courier New', Courier, monospace;
 }
+
 @media screen and (max-width: 361px) {
-    #info-label{
+    #info-label {
         width: 100%;
         left: 0;
     }
-    .add-form{
+
+    .add-form {
         width: 90%;
     }
-    .form-event{
+
+    .form-event {
         width: 100%;
     }
-    .outside-div{
+
+    .outside-div {
         width: 90%;
     }
-    form{
+
+    form {
         width: 100%;
     }
+
     .detail {
-    height: auto;
+        height: auto;
     }
-    #pool{
+
+    #pool {
         width: 100%;
     }
+
     .container-style {
         margin-right: 0;
         margin-left: 0;
     }
-    .detail{
+
+    .detail {
         width: 100%;
         margin-left: 0;
         margin-right: 0;
-
     }
-    html{
+
+    html {
         width: 100%;
     }
-    #username{
+
+    #username {
         display: inline;
         width: 80%;
         margin-bottom: 10px;
     }
-    #last{
+
+    #last {
         bottom: -10%;
     }
 }
+
 @media screen and (max-width: 800px) {
-    #info-label{
+    
+    #info-label {
         width: 100%;
         left: 0;
     }
-    .add-form{
+
+    .add-form {
         width: 90%;
     }
-    .form-event{
+
+    .form-event {
         width: 100%;
     }
-    .outside-div{
+
+    .outside-div {
         width: 90%;
     }
-    .detail{
+
+    .detail {
         width: 100%;
         margin-left: 0;
         margin-right: 0;
-
     }
-    html{
+
+    html {
         width: 100%;
     }
-
 }

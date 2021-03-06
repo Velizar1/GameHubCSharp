@@ -57,20 +57,41 @@
         }
 
 
-
-
-
         <li class="nav-item">
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <a onclick="resetSession()" class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="Home" asp-controller="Home"><i class="fas fa-igloo fa-0.5x"></i> Home</a>
+                <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="News" asp-controller="Home"><i class="far fa-newspaper fa-0.5x"></i> News</a>
+                <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="GameEventAdd" asp-controller="GameEvent"><i class="fas fa-plus fa-0.5x"></i> Add Event</a>
+               
+                <div class="nav-link active" style="color:rgb(255, 255, 255);">
+                    <form asp-action="Logout" asp-controller="User"
+                          method="post" id="logout">
+                        <button id="logout-button" type="submit" class="nav-link" style="color:rgb(255, 255, 255);">
+                            Log
+                            out
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </li>
+        <li>
+            <span style="font-size:25px;cursor:pointer;color:white;" id="menuOpt" onclick="openNav()"><i class="fas fa-bars fa-sm"></i></span>\
+        </li>
+
+
+        <li class="nav-item" id="homeLi">
             <a onclick="resetSession()" class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="Home" asp-controller="Home"><i class="fas fa-igloo"></i></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" id="newsLi">
 
             <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="News" asp-controller="Home"><i class="far fa-newspaper fa-lg"></i></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" id="addLi">
             <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="GameEventAdd" asp-controller="GameEvent"><i class="fas fa-plus fa-lg"></i></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" id="logoutLi">
             <form asp-action="Logout" asp-controller="User"
                   method="post" id="logout">
                 <button id="logout-button" type="submit" class="nav-link" style="color:rgb(255, 255, 255);">
@@ -84,10 +105,47 @@
 
 </ul>
 <style>
+    #menuOpt {
+        display: none;
+    }
 
-::-webkit-scrollbar {
-    width: 12px;
-}
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #0d091b;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+            .sidenav a:hover {
+                color: #f1f1f1;
+            }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
 
     ::-webkit-scrollbar-track {
         background-color: #0d1626be;
@@ -100,10 +158,29 @@
         background: #19182c;
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
     }
+    @@media screen and (max-width: 800px) {
+        #menuOpt { 
+           display:inline;
+        }
+        #homeLi{
+            display:none;
+        }
+        #newsLi{
+            display:none;
+        }
+        #addLi{
+            display:none;
+        }
+        #logoutLi{
+            display:none;
+        }
+    }
+
 </style>
 <script>
-    function resetSession()
-    {
+
+    
+    function resetSession() {
         sessionStorage.setItem("game", "All");
     }
 </script>
