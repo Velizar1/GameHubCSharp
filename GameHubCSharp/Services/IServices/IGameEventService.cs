@@ -11,10 +11,10 @@ namespace GameHubCSharp.Services
         public GameEvent FindEventsById(string id);
         public void Add(GameEvent gameEvent);
         public ICollection<GameEvent> FindAll();
-
         public ICollection<GameEvent> FindAll(int page,int pageSize);
         public void DeleteEvent(GameEventViewModel gameEvent);
         public void AddPlayer(Player playerNew, string gameEventId);
         public Player FindPlayerByNick(string userNick, string gameEventId);
+        public void DeleteAllExpiredGameEvents();
     }
 }

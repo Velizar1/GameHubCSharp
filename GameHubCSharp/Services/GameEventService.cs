@@ -40,6 +40,14 @@ namespace GameHubCSharp.Services
             db.SaveChanges();
         }
 
+        public void DeleteAllExpiredGameEvents()
+        {
+            var now = DateTime.Now;
+            var list = db.GameEvents.Where(g => g.DueDate <= now);
+            db.GameEvents.RemoveRange(list);
+            db.SaveChanges();
+        }
+
         public void DeleteEvent(GameEventViewModel gameEvent)
         {
             var gameEve = db.GameEvents.FirstOrDefault(g=>gameEvent.Id==g.Id.ToString());

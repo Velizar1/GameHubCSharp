@@ -81,7 +81,7 @@ namespace GameHubCSharp.Controllers
                     return re;
                     })
                     .ToList();
-                return Ok(list2);
+                return Ok(list2.OrderByDescending(x=>x.StartDate));
             }
             var events = gameEventService.FindEventsByGame(game,page,pageSize);
             List<HomeEventRestViewModel> games = new List<HomeEventRestViewModel>();
@@ -94,9 +94,10 @@ namespace GameHubCSharp.Controllers
                 homeEventRestView.Id = el.Id.ToString();
                 homeEventRestView.OwnerName = playerService.FindPlayerById(el.OwnerId).UsernameInGame;
                 homeEventRestView.TakenPlaces = el.NumberOfPlayers;
+                homeEventRestView.StartDate = el.StartDate;
                 games.Add(homeEventRestView);
             }
-            return Ok(games);
+            return Ok(games.OrderByDescending(x => x.StartDate));
         }
     }
 }
