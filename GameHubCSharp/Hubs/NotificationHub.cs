@@ -34,7 +34,7 @@ namespace GameHubCSharp.Hubs
             var list = player.User.Notifications;
             await this.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication", new
             {
-                Notifications = list.ToArray(),
+                Notifications = list.OrderByDescending(x=>x.CreatedAt).ToArray(),
                 NotCount = player.User.Notifications.Count(n => n.IsRead == false)
             }) ;
         }
@@ -44,14 +44,14 @@ namespace GameHubCSharp.Hubs
             var list =user.Notifications;
             await this.Clients.User(ConnectionIdProvider.ids[user.UserName]).SendAsync("ReceiveNotfication", new
             {
-                Notifications = list.ToArray(),
+                Notifications = list.OrderByDescending(x=>x.CreatedAt).ToArray(),
                 NotCount = user.Notifications.Count(n => n.IsRead == false)
             });
         }
         public async Task NotificationCount(string user)
         {
             var nots = userService.ChangeStatus(user);
-            await this.Clients.User(ConnectionIdProvider.ids[user]).SendAsync("UpdateNotifications", new { Notifications = nots.ToArray() });
+            await this.Clients.User(ConnectionIdProvider.ids[user]).SendAsync("UpdateNotifications", new { Notifications = nots.OrderByDescending(x=>x.CreatedAt).ToArray() });
         }
         public override Task OnConnectedAsync()
         {

@@ -34,7 +34,7 @@
 
                             @foreach (var not in ConnectionIdProvider.notifications.OrderBy(x => x.CreatedAt))
                             {
-                                <a class="dropdown-item waves-effect waves-light" href="/game/detail?id=@not.GameEvent.Id"><span class="badge badge-danger ml-2">@not.Message</span></a>
+                                <a class="dropdown-item waves-effect waves-light" href="/game/detail?id=@not.GameEvent.Id"><span class="badge badge-danger ml-2">@not.Message @not.CreatedAt</span></a>
                             }
                         </div>
 
