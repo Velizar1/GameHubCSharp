@@ -25,7 +25,23 @@ connection.on("UpdateEventList", function (obj) {
 });
 
 
+
 $("#event-add").on('submit', function (e) {
+    e.preventDefault();
+    $.ajax({
+        type: $(this).prop('method'),
+        url: $(this).prop('action'),
+        data: $(this).serialize()
+    }).done(function () {
+        connection.invoke("UpdateEvents").catch(function (err) {
+            return console.error(err.toString());
+
+        });
+        window.location.replace("/");
+    });
+});
+
+$("#event-del").on('submit', function (e) {
     e.preventDefault();
     $.ajax({
         type: $(this).prop('method'),

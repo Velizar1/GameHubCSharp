@@ -81,7 +81,7 @@ namespace GameHubCSharp.Controllers
                     return re;
                     })
                     .ToList();
-                return Ok(list2.OrderByDescending(x=>x.StartDate));
+                return Ok(list2.OrderBy(x=>x.StartDate));
             }
             var events = gameEventService.FindEventsByGame(game,page,pageSize);
             List<HomeEventRestViewModel> games = new List<HomeEventRestViewModel>();
@@ -97,7 +97,7 @@ namespace GameHubCSharp.Controllers
                 homeEventRestView.StartDate = el.StartDate;
                 games.Add(homeEventRestView);
             }
-            return Ok(games.OrderByDescending(x => x.StartDate));
+            return Ok(games.OrderBy(x => x.StartDate));
         }
     }
 }

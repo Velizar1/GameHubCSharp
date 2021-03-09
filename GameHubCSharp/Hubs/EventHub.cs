@@ -41,7 +41,7 @@ namespace GameHubCSharp.Hubs
                 .ToList();
             await this.Clients.All.SendAsync("UpdateEventList", new
             {
-                GameEvents = list2.ToArray() 
+                GameEvents = list2.ToArray().OrderByDescending(x=>x.StartDate) 
             });
         }
     }

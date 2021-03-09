@@ -90,7 +90,6 @@ namespace GameHubCSharp.Controllers
         public IActionResult GameEventDelete(GameEventViewModel gameEvent)
         {
             gameEventService.DeleteEvent(gameEvent);
-            
             return RedirectToAction("Home", "Home");
         }
 

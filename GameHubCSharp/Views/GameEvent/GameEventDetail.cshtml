@@ -51,7 +51,11 @@
             {
 
                 <div style="position:relative;" id="last">
+<<<<<<< HEAD
                     <form style="width:auto;margin-top:10%;" asp-controller="GameEvent" asp-action="GameEventDelete" method="post">
+=======
+                    <form style="width:auto" id="event-del" asp-controller="GameEvent" asp-route-pesho="123" asp-action="GameEventDelete" method="post">
+>>>>>>> 2c131e86351872ec4f9189ec7e82e7c00d1f6679
                         <input type="text" class="form-control is-invalid"
                                asp-for="Id" value="@Model.Id" type="hidden" />
                         @*  <a href="/game/delete?id=@Model.Id" class="btn btn-primary border-0 bg-danger btn-lg mt-5 ml-3"
