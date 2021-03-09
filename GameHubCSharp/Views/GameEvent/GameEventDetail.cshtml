@@ -33,7 +33,7 @@
                         {
                             <li style="font-size: 20px;" class="card-text ml-4">
                                 @player.UsernameInGame
-                                <div class="ml-sm-5 d-inline-block ">
+                                <div class="ml-sm-5 d-inline-block float-right ">
                                     @if (player.Status == false)
                                     {
                                         <a asp-route-playerName="@player.UsernameInGame" asp-route-roomId="@Model.Id" asp-action="Accept" asp-controller="GameEvent"> <i class="far fa-check-circle fa-lg ml-2" style="color:green"></i></a>
@@ -51,7 +51,7 @@
             {
 
                 <div style="position:relative;" id="last">
-                    <form style="width:auto" asp-controller="GameEvent" asp-route-pesho="123" asp-action="GameEventDelete" method="post">
+                    <form style="width:auto;margin-top:10%;" asp-controller="GameEvent" asp-action="GameEventDelete" method="post">
                         <input type="text" class="form-control is-invalid"
                                asp-for="Id" value="@Model.Id" type="hidden" />
                         @*  <a href="/game/delete?id=@Model.Id" class="btn btn-primary border-0 bg-danger btn-lg mt-5 ml-3"

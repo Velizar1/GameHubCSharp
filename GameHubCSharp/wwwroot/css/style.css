@@ -157,7 +157,8 @@ form {
 }
 
 .outside-div {
-    width: 70%;
+    width: 90%;
+    height:90%;
 }
 
 #err-text {

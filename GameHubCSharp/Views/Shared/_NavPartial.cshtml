@@ -20,7 +20,7 @@
     }
     @if (User.Identity.IsAuthenticated)
     {
-        <li class="nav-item">
+        <li class="nav-item" style="left:-20%;display: inline-block">
             <ul class="navbar-nav ml-auto ">
                 <li class="nav-item avatar dropdown" style="height:2.5rem; padding-right:1rem;">
 
@@ -30,11 +30,11 @@
                             <span unselectable="on" id="counter" class="badge badge-danger ml-2">@ConnectionIdProvider.notifications.Count(n => n.IsRead == false)</span>
                             <i unselectable="on" style="color:white;padding-top:0.8rem;" class="nav-link active far fa-bell fa-lg d-inline-block"></i>
                         </a>
-                        <div class="my-custom-scrollbar my-custom-scrollbar-primary dropdown-menu dropdown-menu-lg-left dropdown-secondary mt-1 " id="nott" style="background-color: #151226f7;user-select: none;overflow-y:scroll;max-height:200px" data-mdb-perefect-scrollbar data-mdb-suppress-scroll-x='true' aria-labelledby="navbarDropdownMenuLink-5">
+                        <div class="my-custom-scrollbar my-custom-scrollbar-primary dropdown-menu dropdown-menu-lg-left dropdown-secondary mt-1 " id="nott" style="" data-mdb-perefect-scrollbar data-mdb-suppress-scroll-x='true' aria-labelledby="navbarDropdownMenuLink-5">
 
                             @foreach (var not in ConnectionIdProvider.notifications.OrderBy(x => x.CreatedAt))
                             {
-                                <a class="dropdown-item waves-effect waves-light" href="/game/detail?id=@not.GameEvent.Id"><span class="badge badge-danger ml-2">@not.Message @not.CreatedAt</span></a>
+                                <a class="dropdown-item waves-effect waves-light" href="/game/detail?id=@not.GameEvent.Id"><span>@not.Message @not.CreatedAt</span></a>
                             }
                         </div>
 
@@ -105,6 +105,16 @@
 
 </ul>
 <style>
+    #nott {
+        background-color: #151226f7;
+        width: 300px;
+        word-break: break-word;
+        overflow: hidden;
+        user-select: none;
+        overflow-y: scroll;
+        max-height: 280px;
+        left:0px;
+    }
     #menuOpt {
         display: none;
     }
@@ -159,6 +169,10 @@
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
     }
     @@media screen and (max-width: 800px) {
+        #nott{
+            left:-250px;
+
+        }
         #menuOpt { 
            display:inline;
         }

@@ -24,8 +24,12 @@ connection.on("ReceiveNotfication", function (obj) {
     console.log(not.length)
     document.getElementById("nott").innerHTML = ""
     for (let i = 0; i < not.length; i++) {
-        console.log(`<a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><span class="badge badge-danger ml-2">${not[i].message} ${not[i].createdAt}</span></a>`)
-        document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><span class="badge badge-danger ml-2">${not[i].message} ${not[i].createdAt}</span></a>`)
+        console.log(`<a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><span class="badge badge-danger ml-2" >${not[i].message} ${not[i].createdAt}</span></a>`)
+        document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<div style="word-wrap: break-word;">
+        <p class="badge ml-2" style="color:white;margin-bottom:0px">${getTime((Math.abs(new Date() - new Date(not[i].createdAt))))}</p>
+        <a style="text-decoration: none;" href="/game/detail?id=${not[i].gameEventId}"><p class="badge-danger ml-2" style=";border-radius: 3px;
+    width:95%;font-size:15px;
+    word-wrap:break-word;">${not[i].message}</p ></a ></div >`)
 
     }
     console.log("here1")
@@ -41,13 +45,34 @@ connection.on("UpdateNotifications", function (obj) {
     console.log(not.length)*/
     document.getElementById("nott").innerHTML = ""
     for (let i = 0; i < not.length; i++) {
-        console.log(`<a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><span class="badge badge-danger ml-2">${not[i].message} ${not[i].createdAt}</span></a>`)
-        document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><span class="badge badge-danger ml-2">${not[i].message} ${not[i].createdAt}</span></a>`)
+        console.log(`<div style="word-wrap: break-word;"><a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><p class="badge badge-danger ml-2" >${not[i].message} ${not[i].createdAt}</span></a></div>`)
+        document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<div style="word-wrap: break-word;">
+        <p class="badge ml-2" style="color:white;margin-bottom:0px">${getTime((Math.abs(new Date() - new Date(not[i].createdAt))))}</p>
+        <a style="text-decoration: none;" href="/game/detail?id=${not[i].gameEventId}"><p class="badge-danger ml-2" style=";border-radius: 3px;
+    width:95%;font-size:15px;
+    word-wrap:break-word;">${not[i].message}</p ></a ></div >`)
 
     }
     console.log("here2")
 });
 
+function getTime(millisec) {
+    var seconds = (millisec / 1000).toFixed(0);
+    var minutes = Math.floor(seconds / 60);
+    var hours = "";
+    if (minutes > 59) {
+        hours = Math.floor(minutes / 60);
+        
+        minutes = minutes - (hours * 60);
+       
+    }
+
+   
+    if (hours != "") {
+        return "before " + hours + " hours";
+    }
+    return "before " + minutes + " min";
+}
 function updateCount(user) {
     connection.invoke("NotificationCount", user).catch(function (err) {
         return console.error(err.toString());
