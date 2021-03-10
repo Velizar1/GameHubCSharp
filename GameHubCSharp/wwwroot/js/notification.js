@@ -100,20 +100,20 @@ function mafunc() {
 
 
 
-$("#form1").on('submit', function (e) {
-    e.preventDefault();
-    $.ajax({
-        type: $(this).prop('method'),
-        url: $(this).prop('action'),
-        data: $(this).serialize()
-    }).done(function (obj) {
-        console.log(obj);
-        connection.invoke("SendNotificationTo", roomid).catch(function (err) {
-            return console.error(err.toString());
+//$("#form1").on('submit', function (e) {
+//    e.preventDefault();
+//    $.ajax({
+//        type: $(this).prop('method'),
+//        url: $(this).prop('action'),
+//        data: $(this).serialize()
+//    }).done(function (obj) {
+//        console.log(obj);
+//        connection.invoke("SendNotificationTo", roomid).catch(function (err) {
+//            return console.error(err.toString());
 
-        });
+//        });
 
-    });
+//    });
     /* fetch($(this).prop('action'), {
          method: $(this).prop('method'),
          data: $(this).serialize()
@@ -128,4 +128,4 @@ $("#form1").on('submit', function (e) {
          return res.json();
          //window.location.replace(res.headers.get('url'));
      }).then(data => console.log(data))*/
-});
+//});

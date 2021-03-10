@@ -95,7 +95,7 @@ namespace GameHubCSharp.Controllers
 
 
         [HttpPost]
-        public IActionResult GameEventAddPlayer(string userNick, string gameEventId)
+        public async Task<IActionResult> GameEventAddPlayer(string userNick, string gameEventId)
         {
             object obj = new { id = gameEventId };
             var playerInGameEvent = gameEventService.FindPlayerByNick(userNick, gameEventId);
@@ -119,6 +119,17 @@ namespace GameHubCSharp.Controllers
                 };
 
                 var curNotification = userService.AddNotification(notification, owner.User.Id.ToString());
+
+                //------------------------------------------SendNotificationTo(roomid)
+                var ownerId = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == gameEventId).OwnerId;
+                var player = db.Players.FirstOrDefault(x => x.Id.ToString() == ownerId);
+                var list = player.User.Notifications;
+                await hub.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication", new
+                {
+                    Notifications = list.OrderByDescending(x => x.CreatedAt).ToArray(),
+                    NotCount = player.User.Notifications.Count(n => n.IsRead == false)
+                });
+                //----------------------------------------
 
                 return RedirectToAction("GameEventDetail", obj);
             }
