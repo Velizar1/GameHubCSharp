@@ -9,7 +9,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/notificationhub").
 
 connection.start().then(function () {
     console.log("connected")
-    //document.getElementById("sendButton").disabled = false;
+   
 }).catch(function (err) {
     return console.error(err.toString());
 });
@@ -17,43 +17,46 @@ connection.start().then(function () {
 
 connection.on("ReceiveNotfication", function (obj) {
 
-    //console.log(obj)
+  
     document.getElementById("counter").innerText = obj.notCount;
     let not = obj.notifications;
-    console.log(not)
-    console.log(not.length)
     document.getElementById("nott").innerHTML = ""
+    if (not.length == 0) {
+        
+        document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<p class="ml-2" style="color:white;margin-bottom:0">No notifications found</p>`)
+    }
     for (let i = 0; i < not.length; i++) {
-        console.log(`<a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><span class="badge badge-danger ml-2" >${not[i].message} ${not[i].createdAt}</span></a>`)
+       
         document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<div style="word-wrap: break-word;">
         <p class="badge ml-2" style="color:white;margin-bottom:0px">${getTime((Math.abs(new Date() - new Date(not[i].createdAt))))}</p>
         <a style="text-decoration: none;" href="/game/detail?id=${not[i].gameEventId}"><p class="badge-danger ml-2" style=";border-radius: 3px;
-    width:95%;font-size:15px;
+    width:97%;font-size:15px;
     word-wrap:break-word;">${not[i].message}</p ></a ></div >`)
 
     }
-    console.log("here1")
 });
 
 
 connection.on("UpdateNotifications", function (obj) {
 
-    //console.log(obj)
     document.getElementById("counter").innerText = 0;
     let not = obj.notifications;
-    /*console.log(not)
-    console.log(not.length)*/
+   
     document.getElementById("nott").innerHTML = ""
+    if (not.length == 0) {
+       
+        document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<p class="ml-2" style="color:white;margin-bottom:0">No notifications found</p>`)
+    }
     for (let i = 0; i < not.length; i++) {
-        console.log(`<div style="word-wrap: break-word;"><a class="dropdown-item waves-effect waves-light" href="/game/detail?id=${not[i].gameEventId}"><p class="badge badge-danger ml-2" >${not[i].message} ${not[i].createdAt}</span></a></div>`)
+        
         document.getElementById("nott").innerHTML = document.getElementById("nott").innerHTML.concat(`<div style="word-wrap: break-word;">
         <p class="badge ml-2" style="color:white;margin-bottom:0px">${getTime((Math.abs(new Date() - new Date(not[i].createdAt))))}</p>
         <a style="text-decoration: none;" href="/game/detail?id=${not[i].gameEventId}"><p class="badge-danger ml-2" style=";border-radius: 3px;
-    width:95%;font-size:15px;
+    width:97%;font-size:15px;
     word-wrap:break-word;">${not[i].message}</p ></a ></div >`)
 
     }
-    console.log("here2")
+   
 });
 
 function getTime(millisec) {
@@ -66,13 +69,12 @@ function getTime(millisec) {
         minutes = minutes - (hours * 60);
        
     }
-
-   
     if (hours != "") {
         return "before " + hours + " hours";
     }
     return "before " + minutes + " min";
 }
+
 function updateCount(user) {
     connection.invoke("NotificationCount", user).catch(function (err) {
         return console.error(err.toString());
@@ -80,14 +82,7 @@ function updateCount(user) {
 }
 
 function mafunc() {
-    //$('#form1').submit(function () {
-    //    this.submit();
-    //     connection.invoke("SendNotificationTo", roomid).catch(function (err) {
-    //    return console.error(err.toString());
-    //});
-    //    return false;
-    //});
-
+  
     $("#form1").on('submit', function (e) {
 
         $.ajax({

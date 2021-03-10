@@ -29,3 +29,11 @@ function openNav() {
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
+
+function openUserMenu(){
+    
+    document.getElementById("userSidenav").style.width = "250px";
+}
+function closeUserMenu() {
+    document.getElementById("userSidenav").style.width = "0";
+}

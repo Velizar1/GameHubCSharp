@@ -139,5 +139,10 @@ namespace GameHubCSharp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete()
+        {
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

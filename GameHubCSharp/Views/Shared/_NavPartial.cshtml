@@ -32,6 +32,10 @@
                         </a>
                         <div class="my-custom-scrollbar my-custom-scrollbar-primary dropdown-menu dropdown-menu-lg-left dropdown-secondary mt-1 " id="nott" style="" data-mdb-perefect-scrollbar data-mdb-suppress-scroll-x='true' aria-labelledby="navbarDropdownMenuLink-5">
 
+                            @if (ConnectionIdProvider.notifications.Count == 0)
+                            {
+                                <span>No notifications found</span>
+                            }
                             @foreach (var not in ConnectionIdProvider.notifications.OrderBy(x => x.CreatedAt))
                             {
                                 <a class="dropdown-item waves-effect waves-light" href="/game/detail?id=@not.GameEvent.Id"><span>@not.Message @not.CreatedAt</span></a>
@@ -63,7 +67,7 @@
                 <a onclick="resetSession()" class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="Home" asp-controller="Home"><i class="fas fa-igloo fa-0.5x"></i> Home</a>
                 <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="News" asp-controller="Home"><i class="far fa-newspaper fa-0.5x"></i> News</a>
                 <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="GameEventAdd" asp-controller="GameEvent"><i class="fas fa-plus fa-0.5x"></i> Add Event</a>
-               
+
                 <div class="nav-link active" style="color:rgb(255, 255, 255);">
                     <form asp-action="Logout" asp-controller="User"
                           method="post" id="logout">
@@ -73,11 +77,18 @@
                         </button>
                     </form>
                 </div>
-
+                <div class="nav-link active" style="color:rgb(255, 255, 255);">
+                    <form asp-action="Logout" asp-controller="User"
+                          method="post" id="delete-acc">
+                        <button id ="delete-acc-button" type="submit" class="nav-link" style="color:rgb(255, 255, 255);">
+                            Delete account
+                        </button>
+                    </form>
+                </div>
             </div>
         </li>
         <li>
-            <span style="font-size:25px;cursor:pointer;color:white;" id="menuOpt" onclick="openNav()"><i class="fas fa-bars fa-sm"></i></span>\
+            <span class="ml-2 mr-2" style="font-size:23px;cursor:pointer;color:white;" id="menuOpt" onclick="openNav()"><i class="fas fa-bars fa-sm"></i></span>\
         </li>
 
 
@@ -91,15 +102,32 @@
         <li class="nav-item" id="addLi">
             <a class="nav-link active" style="color:rgb(255, 255, 255);" asp-action="GameEventAdd" asp-controller="GameEvent"><i class="fas fa-plus fa-lg"></i></a>
         </li>
-        <li class="nav-item" id="logoutLi">
-            <form asp-action="Logout" asp-controller="User"
-                  method="post" id="logout">
-                <button id="logout-button" type="submit" class="nav-link" style="color:rgb(255, 255, 255);">
-                    Log
-                    out
-                </button>
-            </form>
 
+        <li class="nav-item">
+            <div id="userSidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeUserMenu()">&times;</a>
+
+                <div class="nav-link active" style="color:rgb(255, 255, 255);">
+                    <form asp-action="Logout" asp-controller="User"
+                          method="post" id="logout">
+                        <button id="logout-button" type="submit" class="nav-link" style="color:rgb(255, 255, 255);">
+                            Log
+                            out
+                        </button>
+                    </form>
+                </div>
+                <div class="nav-link active" style="color:rgb(255, 255, 255);">
+                    <form asp-action="Delete" asp-controller="User"
+                          method="post" id="delete-acc">
+                        <button type="submit" id ="delete-acc-button" class="nav-link" style="color:rgb(255, 255, 255);">
+                            Delete account
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </li>
+        <li>
+            <span  class="ml-2 mr-2" style="font-size:23px;cursor:pointer;color:white;" id="userMenu" onclick="openUserMenu()"><i class="fas fa-bars fa-sm"></i></span>\
         </li>
     }
 
@@ -107,7 +135,7 @@
 <style>
     #nott {
         background-color: #151226f7;
-        width: 300px;
+        width: 275px;
         word-break: break-word;
         overflow: hidden;
         user-select: none;
@@ -118,7 +146,9 @@
     #menuOpt {
         display: none;
     }
-
+    #userMenu{
+        display:inline;
+    }
     .sidenav {
         height: 100%;
         width: 0;
@@ -173,8 +203,11 @@
             left:-250px;
 
         }
-        #menuOpt { 
-           display:inline;
+        #userMenu{
+            display:none;
+        }
+        #menuOpt {
+            display: inline;
         }
         #homeLi{
             display:none;
@@ -193,7 +226,6 @@
 </style>
 <script>
 
-    
     function resetSession() {
         sessionStorage.setItem("game", "All");
     }
