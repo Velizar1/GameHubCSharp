@@ -24,7 +24,8 @@ namespace GameHubCSharp.Mapper
             CreateMap<Game, GameViewModel>();
             CreateMap<GameViewModel, Game>();
             
-            CreateMap<Player, PlayerViewModel>();
+            CreateMap<Player, PlayerViewModel>().ForMember(x => x.Username
+            , m => m.MapFrom(src => src.User.UserName));// with options for binding Username to User.UserNamep
             CreateMap<PlayerViewModel, Player>();
 
             CreateMap<Post, PostViewModel>();

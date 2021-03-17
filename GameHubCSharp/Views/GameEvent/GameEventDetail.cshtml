@@ -12,7 +12,20 @@
                 <p class="card-text">Players needed : @(Model.NumberOfPlayers + 1 - Model.Players.Count(x => x.Status == true))</p>
                 <p class="card-text">Starts on : @Model.StartDate</p>
                 <p class="card-text">Ends on : @Model.DueDate</p>
-                <p class="card-text">Discord link :@(Model.Players.Where(p => p.Username == User.Identity.Name).FirstOrDefault().Status == true ? Model.DiscordUrl : "")</p>
+                <p class="card-text">
+                    Discord link :
+                    @{
+                        string temp = "";
+
+                        var cur = Model.Players.Where(p => p.Username == User.Identity.Name);
+                        if(cur.Count() != 0 && cur.First().Status == true)
+                        {
+                            temp = Model.DiscordUrl;
+                        }
+
+                    }
+                    @temp
+                </p>
                 <p class="card-text" style="word-break:break-word">Description : @Model.Description</p>
             </div>
             <div style="display: inline-block;width: 45%;height: 70%;vertical-align:top;" class="text-left">
@@ -65,7 +78,7 @@
             else if (Model.NumberOfPlayers + 1 - Model.Players.Count(x => x.Status == true) > 0)
             {
                 var list = Model.Players.Where(p => p.Username == User.Identity.Name).ToList();
-                @if (list.Count== 0)
+                @if (list.Count == 0)
                 {
 
 
