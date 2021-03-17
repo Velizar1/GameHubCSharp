@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 namespace GameHubCSharp.Controllers
 {
 
+
+
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {

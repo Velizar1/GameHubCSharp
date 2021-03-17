@@ -57,6 +57,7 @@ namespace GameHubCSharp.Controllers
             var gameEve = mapper.Map<GameEventViewModel>(gameEvent);
             gameEve.Owner = mapper.Map<PlayerViewModel>(playerService.FindPlayerById(gameEvent.OwnerId));
             gameEve.Owner.Username = playerService.FindPlayerById(gameEve.Owner.Id).User.UserName;
+           
             ViewData["valid"] = valid;
             return View(gameEve);
 
