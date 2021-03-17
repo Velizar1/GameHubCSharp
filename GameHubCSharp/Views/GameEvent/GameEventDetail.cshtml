@@ -9,10 +9,10 @@
             <div style="display: inline-block;width: 45%;height:70%;min-height: 19em">
                 <h6 style="font-size: 25px" class="card-title">Owner's nick : @Model.Owner.UsernameInGame</h6>
                 <p class="card-text">Devision : @Model.Devision</p>
-                <p class="card-text">Players needed : @(Model.NumberOfPlayers + 1 - Model.Players.Count(x=>x.Status == true))</p>
+                <p class="card-text">Players needed : @(Model.NumberOfPlayers + 1 - Model.Players.Count(x => x.Status == true))</p>
                 <p class="card-text">Starts on : @Model.StartDate</p>
                 <p class="card-text">Ends on : @Model.DueDate</p>
-                <p class="card-text">Discord link : @Model.DiscordUrl</p>
+                <p class="card-text">Discord link :@(Model.Players.Where(p => p.Username == User.Identity.Name).FirstOrDefault().Status == true ? Model.DiscordUrl : "")</p>
                 <p class="card-text" style="word-break:break-word">Description : @Model.Description</p>
             </div>
             <div style="display: inline-block;width: 45%;height: 70%;vertical-align:top;" class="text-left">
