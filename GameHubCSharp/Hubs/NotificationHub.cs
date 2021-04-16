@@ -57,7 +57,7 @@ namespace GameHubCSharp.Hubs
         {
             try
             {
-                ConnectionIdProvider.ids[Context.User.Identity.Name] = Context.UserIdentifier;
+                ConnectionIdProvider.ids[Context.User.Identity.Name] = Context.UserIdentifier;//ConectionId of Guests and Users
             }
             catch { }
             

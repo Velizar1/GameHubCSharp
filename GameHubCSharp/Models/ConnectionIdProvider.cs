@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.Models
 {
-    public class ConnectionIdProvider
+    public static class ConnectionIdProvider
     {
         public static Dictionary<string, string> ids = new Dictionary<string, string>();
         public static List<Notification> notifications = new List<Notification>();
