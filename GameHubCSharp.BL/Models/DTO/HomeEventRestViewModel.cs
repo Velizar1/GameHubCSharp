@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GameHubCSharp.Models.View
+namespace GameHubCSharp.BL.Models.DTO
 {
     public class HomeEventRestViewModel
     {

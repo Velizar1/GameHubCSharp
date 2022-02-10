@@ -1,5 +1,6 @@
-﻿using GameHubCSharp.DAL.Data;
-using GameHubCSharp.Services;
+﻿using GameHubCSharp.BL.Services.IServices;
+using GameHubCSharp.DAL.Data;
+
 using Microsoft.Extensions.Logging;
 using Quartz;
 using System;

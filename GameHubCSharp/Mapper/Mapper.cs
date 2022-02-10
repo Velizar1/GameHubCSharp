@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using GameHubCSharp.DAL.Data.Models;
-using GameHubCSharp.Models.View;
+using GameHubCSharp.BL.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

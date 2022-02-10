@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameHubCSharp.Models.View
+namespace GameHubCSharp.BL.Models.DTO
 {
     public class PlayerViewModel
     {

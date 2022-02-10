@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using GameHubCSharp.Models;
-using GameHubCSharp.Models.View;
+using GameHubCSharp.BL.Models.DTO;
 using GameHubCSharp.Services;
 using GameHubCSharp.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
