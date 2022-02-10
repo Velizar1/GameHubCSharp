@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using GameHubCSharp.DAL.Data;
 using GameHubCSharp.DAL.Data.Models;
-using GameHubCSharp.BL.Models.DTO;
-using GameHubCSharp.Services.IServices;
+using GameHubCSharp.BL.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using GameHubCSharp.BL.Models.DTO;
 
-namespace GameHubCSharp.Services
+namespace GameHubCSharp.BL.Services
 {
 
     public class GameEventService : IGameEventService

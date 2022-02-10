@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GameHubCSharp.Models.View
+namespace GameHubCSharp.BL.Models.DTO
 {
     public class AdminHomeViewModel
     {
@@ -20,7 +20,7 @@ namespace GameHubCSharp.Models.View
         public List<Game> Games { get; set; }
         public Post Post { get; set; }
         public Category Category { get; set; }
-        public List<Category> Categories { get; internal set; }
+        public List<Category> Categories { get; set; }
         public string Add { get; set; }
         public string Delete { get; set; }
     }

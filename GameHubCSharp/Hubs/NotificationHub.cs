@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using GameHubCSharp.DAL.Data;
 using GameHubCSharp.Models;
-using GameHubCSharp.Models.View;
+using GameHubCSharp.BL.Models.DTO;
 using GameHubCSharp.Services;
 using Microsoft.AspNetCore.SignalR;
 using System;

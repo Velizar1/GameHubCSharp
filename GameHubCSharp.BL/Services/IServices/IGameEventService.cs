@@ -2,7 +2,7 @@
 using GameHubCSharp.BL.Models.DTO;
 using System.Collections.Generic;
 
-namespace GameHubCSharp.Services
+namespace GameHubCSharp.BL.Services.IServices
 {
     public interface IGameEventService
     {

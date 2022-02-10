@@ -3,7 +3,7 @@ using GameHubCSharp.DAL.Data;
 using GameHubCSharp.DAL.Data.Models;
 using GameHubCSharp.Hubs;
 using GameHubCSharp.Models;
-using GameHubCSharp.Models.View;
+using GameHubCSharp.BL.Models.DTO;
 using GameHubCSharp.Services;
 using GameHubCSharp.Services.IServices;
 using Microsoft.AspNetCore.Mvc;

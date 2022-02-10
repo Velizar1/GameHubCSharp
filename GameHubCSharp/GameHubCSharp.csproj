@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\js\signalr\dist\browser\signalr.js" />
     <None Include="wwwroot\js\signalr\dist\browser\signalr.js.map" />
     <None Include="wwwroot\js\signalr\dist\browser\signalr.min.js" />

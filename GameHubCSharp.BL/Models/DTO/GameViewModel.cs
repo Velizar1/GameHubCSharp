@@ -1,4 +1,4 @@
-﻿namespace GameHubCSharp.Models.View
+﻿namespace GameHubCSharp.BL.Models.DTO
 {
     public class GameViewModel
     {
