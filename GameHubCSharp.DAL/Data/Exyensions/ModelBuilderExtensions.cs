@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.DAL.Data.Helpers
 {
-    public class ModelBuilderHelper
+    public static class ModelBuilderExtensions
     {
 
-        private static void BuildPlayer(ModelBuilder builder)
+        public static void BuildPlayer(this ModelBuilder builder)
         {
             builder.Entity<Player>(player =>
             {
@@ -26,7 +26,7 @@ namespace GameHubCSharp.DAL.Data.Helpers
         }
 
 
-        private static void BuildPost(ModelBuilder builder)
+        public static void BuildPost(this ModelBuilder builder)
         {
             builder.Entity<Post>(post =>
             {
@@ -40,21 +40,13 @@ namespace GameHubCSharp.DAL.Data.Helpers
         }
 
 
-        private static void BuildUser(ModelBuilder builder)
+        public static void BuildUser(this ModelBuilder builder)
         {
             builder.Entity<User>(user =>
             {
                 user.HasMany(n => n.Notifications)
                 .WithOne();
             });
-        }
-
-
-        public static void Build(ModelBuilder builder)
-        {
-            BuildPlayer(builder);
-            BuildPost(builder);
-            BuildUser(builder);
         }
     }
 }
