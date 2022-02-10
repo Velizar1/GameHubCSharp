@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace GameHubCSharp.Data.Models
+namespace GameHubCSharp.DAL.Data.Models
 {
     public class Notification : BaseModel
     {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GameHubCSharp.Data.Models
+namespace GameHubCSharp.DAL.Data.Models
 {
     public class BaseModel
     {

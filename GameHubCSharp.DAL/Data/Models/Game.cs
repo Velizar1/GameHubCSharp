@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GameHubCSharp.Data.Models
+namespace GameHubCSharp.DAL.Data.Models
 {
     public class Game : BaseModel
     {

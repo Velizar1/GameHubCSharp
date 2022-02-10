@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace GameHubCSharp.Data.Models
+namespace GameHubCSharp.DAL.Data.Models
 {
     public class GameEvent : BaseModel
     {
