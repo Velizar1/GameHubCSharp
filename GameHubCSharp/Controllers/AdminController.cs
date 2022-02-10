@@ -2,8 +2,8 @@
 using GameHubCSharp.DAL.Data;
 using GameHubCSharp.DAL.Data.Models;
 using GameHubCSharp.BL.Models.DTO;
-using GameHubCSharp.Services;
-using GameHubCSharp.Services.IServices;
+using GameHubCSharp.BL.Services;
+using GameHubCSharp.BL.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

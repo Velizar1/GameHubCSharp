@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using GameHubCSharp.DAL.Data;
 using GameHubCSharp.BL.Models.DTO;
-using GameHubCSharp.Services;
-using GameHubCSharp.Services.IServices;
+using GameHubCSharp.BL.Services;
+using GameHubCSharp.BL.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

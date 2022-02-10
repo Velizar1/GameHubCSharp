@@ -2,12 +2,13 @@
 using GameHubCSharp.DAL.Data;
 using GameHubCSharp.Models;
 using GameHubCSharp.BL.Models.DTO;
-using GameHubCSharp.Services;
+using GameHubCSharp.BL.Services;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameHubCSharp.BL.Services.IServices;
 
 namespace GameHubCSharp.Hubs
 {
