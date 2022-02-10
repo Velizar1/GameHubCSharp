@@ -32,7 +32,11 @@ function closeNav() {
 
 function openUserMenu(){
     
-    document.getElementById("userSidenav").style.width = "250px";
+    document.getElementById("userSidenav").style.width = "270px";
+    var nodes = document.getElementById('userSidenav').getElementsByTagName("div");
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].style.width = "250px";
+    }
 }
 function closeUserMenu() {
     document.getElementById("userSidenav").style.width = "0";

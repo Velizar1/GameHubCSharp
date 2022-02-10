@@ -68,7 +68,7 @@ namespace GameHubCSharp.Controllers
 
                
                 var result = await _userManager.CreateAsync(user, model.Password);
-
+               
                 var result1 = await _userManager.AddToRoleAsync(user, "User");
                 if (result.Succeeded)
                 {
