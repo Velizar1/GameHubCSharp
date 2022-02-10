@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using GameHubCSharp.Data.Models;
+using GameHubCSharp.DAL.Data.Models;
 using GameHubCSharp.Models.View;
 using System;
 using System.Collections.Generic;

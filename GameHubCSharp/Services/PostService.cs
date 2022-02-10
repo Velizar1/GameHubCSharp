@@ -1,5 +1,5 @@
-﻿using GameHubCSharp.Data;
-using GameHubCSharp.Data.Models;
+﻿using GameHubCSharp.DAL.Data;
+using GameHubCSharp.DAL.Data.Models;
 using GameHubCSharp.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 using System;

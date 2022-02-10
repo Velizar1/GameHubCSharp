@@ -1,4 +1,4 @@
-﻿using GameHubCSharp.Data;
+﻿using GameHubCSharp.DAL.Data;
 using GameHubCSharp.Services;
 using Microsoft.Extensions.Logging;
 using Quartz;
