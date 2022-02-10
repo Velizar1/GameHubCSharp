@@ -209,4 +209,8 @@
 	  <PackageReference Include="Quartz.Extensions.Hosting" Version="3.2.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GameHubCSharp.BL\GameHubCSharp.BL.csproj" />
+  </ItemGroup>
+
 </Project>

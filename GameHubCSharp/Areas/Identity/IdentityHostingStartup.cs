@@ -1,6 +1,4 @@
 ﻿using System;
-using GameHubCSharp.Data;
-using GameHubCSharp.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
