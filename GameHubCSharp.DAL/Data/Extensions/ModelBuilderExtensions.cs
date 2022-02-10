@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameHubCSharp.DAL.Data.Helpers
+namespace GameHubCSharp.DAL.Data.Extensions
 {
     public static class ModelBuilderExtensions
     {
