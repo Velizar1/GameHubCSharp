@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GameHubCSharp.Mapper
+namespace GameHubCSharp.BL.Mapper
 {
     public class Mapper : Profile
     {
