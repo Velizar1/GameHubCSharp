@@ -75,7 +75,7 @@ namespace GameHubCSharp.Controllers
                 var list = gameEventService.FindAll(page, pageSize).ToList();
                 var list2 = list.Select(x => {
                     var re = mapper.Map<HomeEventRestViewModel>(x);
-                    re.OwnerName = playerService.FindPlayerById(x.OwnerId.ToString()).UsernameInGame;
+                    re.OwnerName = playerService.FindPlayerById(x.OwnerId).UsernameInGame;
                     re.ImageUrl = x.Game.ImageUrl;
                     re.TakenPlaces = x.NumberOfPlayers;
                     return re;

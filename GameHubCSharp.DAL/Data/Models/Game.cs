@@ -5,14 +5,12 @@ namespace GameHubCSharp.DAL.Data.Models
     public class Game : BaseModel
     {
 
-        private string gameName;
-        private string imageUrl;
-
         [Required]
         [MinLength(1),MaxLength(20)]
-        public string GameName { get => gameName; set => gameName = value; }
+        public string GameName { get; set; }
+       
         [Required]
         [Url]
-        public string ImageUrl { get => imageUrl; set => imageUrl = value; }
+        public string ImageUrl { get; set; }
     }
 }

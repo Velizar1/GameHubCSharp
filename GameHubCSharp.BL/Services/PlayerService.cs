@@ -42,18 +42,18 @@ namespace GameHubCSharp.BL.Services
             return player;
         }
 
-        public Player DeletePlayer(string playerId)
+        public Player DeletePlayer(Guid playerId)
         {
-            var player = db.Players.FirstOrDefault(p => p.Id.ToString()==playerId);
+            var player = db.Players.FirstOrDefault(p => p.Id == playerId);
 
             db.Remove(player);
             db.SaveChanges();
             return player;
         }
 
-        public Player FindPlayerById(string id)
+        public Player FindPlayerById(Guid id)
         {
-            var player = db.Players.FirstOrDefault(p => p.Id.ToString() == id);
+            var player = db.Players.FirstOrDefault(p => p.Id == id);
             return player;
         }
 

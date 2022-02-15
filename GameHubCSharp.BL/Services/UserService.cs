@@ -18,7 +18,7 @@ namespace GameHubCSharp.BL.Services
         public Notification AddNotification(Notification notification,string userId)
         {
             var user = db.Users.Where(u => u.Id.ToString() == userId).First();
-            user.Notifications.Add(notification);
+            user.NotificationsRecived.Add(notification);
             db.SaveChanges();
             return notification;
         }
@@ -26,10 +26,10 @@ namespace GameHubCSharp.BL.Services
         public List<Notification> ChangeStatus(string userName)
         {
            var user = db.Users.FirstOrDefault(u => u.UserName == userName);
-            var nots = user.Notifications;
-            user.Notifications.ForEach(n=>n.IsRead=true);
+            var nots = user.NotificationsRecived;
+            user.NotificationsRecived.ToList().ForEach(n=>n.IsRead=true);
             db.SaveChanges();
-            return nots;
+            return nots.ToList();
         }
 
         public void Delete(string id)
@@ -46,7 +46,7 @@ namespace GameHubCSharp.BL.Services
 
         public List<Notification> FindAllNotifications(string userName)
         {
-            return db.Users.FirstOrDefault(u => u.UserName == userName).Notifications.OrderBy(x => x.CreatedAt).ToList();
+            return db.Users.FirstOrDefault(u => u.UserName == userName).NotificationsRecived.OrderBy(x => x.CreatedAt).ToList();
         }
 
 

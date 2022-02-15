@@ -49,7 +49,7 @@ namespace GameHubCSharp.BL.Services
 
         public void DeleteEvent(GameEventViewModel gameEvent)
         {
-            var gameEve = db.GameEvents.FirstOrDefault(g=>gameEvent.Id==g.Id.ToString());
+            var gameEve = db.GameEvents.FirstOrDefault(g=>gameEvent.Id==g.Id);
             foreach (var player in gameEve.Players)
             {
                 db.Remove(player);
