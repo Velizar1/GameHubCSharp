@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,24 +10,26 @@ namespace GameHubCSharp.DAL.Data.Models
     public class Player : BaseModel
     {
 
-        private User user;
-        private String usernameInGame;
-        private ICollection<GameEvent> gameEvents;
-        private bool status;
+        public Guid UserId { get; set; }
+
+        public bool Status { get; set; }
 
         [Required]
-        public virtual User User { get => user; set => user = value; }
-        [Required]
-        [MinLength(1),MaxLength(20)]
-        public string UsernameInGame { get => usernameInGame; set => usernameInGame = value; }
-        public virtual ICollection<GameEvent> GameEvents { get => gameEvents; set => gameEvents = value; }
-        public bool Status { get => status; set => status = value; }
+        [MinLength(1), MaxLength(20)]
+        public string UsernameInGame { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public virtual User User { get; set; }
+
+        public virtual ICollection<GameEvent> GameEventsOwn { get; set; }
+
+        public virtual ICollection<GameEvent> GameEventsParticipates { get; set; }
 
         public Player()
         {
-            GameEvents = new List<GameEvent>();
+            GameEventsOwn = new List<GameEvent>();
+            GameEventsParticipates = new List<GameEvent>();
         }
-
 
     }
 }

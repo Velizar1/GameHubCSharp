@@ -31,22 +31,22 @@ namespace GameHubCSharp.Hubs
         public async Task SendNotificationTo(string roomId)
         {
             var ownerId = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == roomId).OwnerId;
-            var player = db.Players.FirstOrDefault(x => x.Id.ToString() == ownerId);
-            var list = player.User.Notifications;
+            var player = db.Players.FirstOrDefault(x => x.Id == ownerId);
+            var list = player.User.NotificationsRecived;
             await this.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication", new
             {
                 Notifications = list.OrderByDescending(x=>x.CreatedAt).ToArray(),
-                NotCount = player.User.Notifications.Count(n => n.IsRead == false)
+                NotCount = player.User.NotificationsRecived.Count(n => n.IsRead == false)
             }) ;
         }
         public async Task SendNotificationToUser(string userId)
         {
             var user = db.Users.FirstOrDefault(x => x.Id.ToString() == userId); 
-            var list =user.Notifications;
+            var list =user.NotificationsRecived;
             await this.Clients.User(ConnectionIdProvider.ids[user.UserName]).SendAsync("ReceiveNotfication", new
             {
                 Notifications = list.OrderByDescending(x=>x.CreatedAt).ToArray(),
-                NotCount = user.Notifications.Count(n => n.IsRead == false)
+                NotCount = user.NotificationsRecived.Count(n => n.IsRead == false)
             });
         }
         public async Task NotificationCount(string user)
@@ -71,7 +71,7 @@ namespace GameHubCSharp.Hubs
             var list = gameEventService.FindAll().ToList();
             var list2 = list.Select(x => {
                 var re = mapper.Map<HomeEventRestViewModel>(x);
-                re.OwnerName = playerService.FindPlayerById(x.OwnerId.ToString()).UsernameInGame;
+                re.OwnerName = playerService.FindPlayerById(x.OwnerId).UsernameInGame;
                 re.ImageUrl = x.Game.ImageUrl;
                 re.TakenPlaces = x.NumberOfPlayers;
                 return re;

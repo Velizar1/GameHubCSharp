@@ -33,8 +33,9 @@ namespace GameHubCSharp.DAL.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.BuildPlayer();
-            builder.BuildPost();
+            builder.BuildCategory();
             builder.BuildUser();
+            builder.BuildNotification();
             base.OnModelCreating(builder);
         }
 

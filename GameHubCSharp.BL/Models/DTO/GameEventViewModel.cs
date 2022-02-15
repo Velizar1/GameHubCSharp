@@ -7,7 +7,7 @@ namespace GameHubCSharp.BL.Models.DTO
 {
     public class GameEventViewModel 
     {
-        private String id;
+        private Guid id;
         private String description;
         private int numberOfPlayers;
         private String devision;
@@ -19,7 +19,7 @@ namespace GameHubCSharp.BL.Models.DTO
         private PlayerViewModel owner;
         private ICollection<PlayerViewModel> players;
 
-        public string Id { get => id; set => id = value; }
+        public Guid Id { get => id; set => id = value; }
         public string Description { get => description; set => description = value; }
         public int NumberOfPlayers { get => numberOfPlayers; set => numberOfPlayers = value; }
         public string Devision { get => devision; set => devision = value; }

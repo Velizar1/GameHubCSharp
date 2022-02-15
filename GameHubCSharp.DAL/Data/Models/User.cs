@@ -8,10 +8,19 @@ namespace GameHubCSharp.DAL.Data.Models
 {
     public class User : IdentityUser<Guid>
     {
-        private int rating;
-        private Boolean deleted;
-        public bool Deleted { get => deleted; set => deleted = value; }
-        public int Rating { get => rating; set => rating = value; }
-        public virtual List<Notification> Notifications { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public int Rating { get; set; }
+
+        public virtual ICollection<Notification> NotificationsSend { get; set; }
+
+        public virtual ICollection<Notification> NotificationsRecived { get; set; }
+
+        public User()
+        {
+            NotificationsSend = new List<Notification>();
+            NotificationsRecived = new List<Notification>();
+        }
     }
 }

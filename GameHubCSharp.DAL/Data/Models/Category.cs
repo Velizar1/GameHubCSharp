@@ -7,9 +7,14 @@ namespace GameHubCSharp.DAL.Data.Models
 {
     public class Category : BaseModel
     {
-       
-        private ICollection<Post> posts;
+
         public string Type { get; set; }
-        public virtual ICollection<Post> Posts { get => posts; set => posts = value; }
+
+        public virtual ICollection<Post> Posts { get ; set ; }
+
+        public Category()
+        {
+            Posts = new List<Post>();
+        }
     }
 }

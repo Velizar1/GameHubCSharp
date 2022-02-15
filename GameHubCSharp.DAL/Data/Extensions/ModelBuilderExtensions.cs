@@ -15,37 +15,54 @@ namespace GameHubCSharp.DAL.Data.Extensions
         {
             builder.Entity<Player>(player =>
             {
-                player.HasMany(x => x.GameEvents)
-                .WithMany(x => x.Players);
+                player.HasMany(x => x.GameEventsOwn)
+                .WithOne(y => y.Owner)
+                .OnDelete(DeleteBehavior.NoAction);
 
+                player.HasMany(x => x.GameEventsParticipates)
+               .WithMany(y => y.Players);
 
-                player.HasOne(u => u.User)
-                .WithMany()
-                .OnDelete(DeleteBehavior.Cascade);
+                player.HasOne(x => x.User)
+                .WithOne()
+                .OnDelete(DeleteBehavior.NoAction);
             });
         }
 
-
-        public static void BuildPost(this ModelBuilder builder)
+        public static void BuildCategory(this ModelBuilder builder)
         {
-            builder.Entity<Post>(post =>
+            builder.Entity<Category>(category =>
             {
-                post.HasOne(a => a.Category)
-                .WithMany(b => b.Posts)
+                category.HasMany(x => x.Posts)
+                .WithOne(y => y.Category)
                 .OnDelete(DeleteBehavior.Cascade);
-
-                post.HasOne(a => a.Category)
-                    .WithMany(b => b.Posts);
             });
         }
-
 
         public static void BuildUser(this ModelBuilder builder)
         {
             builder.Entity<User>(user =>
             {
-                user.HasMany(n => n.Notifications)
-                .WithOne();
+                user.HasMany(x => x.NotificationsRecived)
+                .WithOne(y => y.Recipient)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                user.HasMany(x => x.NotificationsSend)
+               .WithOne(y => y.Sender)
+               .OnDelete(DeleteBehavior.Cascade);
+            });
+        }
+
+        public static void BuildNotification(this ModelBuilder builder)
+        {
+            builder.Entity<Notification>(notification =>
+            {
+                notification.HasOne(x => x.Sender)
+                .WithMany(y => y.NotificationsSend)
+                .OnDelete(DeleteBehavior.NoAction);
+
+                notification.HasOne(x => x.Recipient)
+               .WithMany(y => y.NotificationsRecived)
+               .OnDelete(DeleteBehavior.NoAction);
             });
         }
     }

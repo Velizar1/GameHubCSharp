@@ -79,9 +79,9 @@ namespace GameHubCSharp.Controllers
             var game = gameService.FindGameByName(gameEvent.GameName);
             gameEve.Game = game;
             var player = playerService.Add(new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = gameEvent.OwnerName });
-            gameEve.OwnerId = player.Id.ToString();
+            gameEve.OwnerId = player.Id;
 
-            player.GameEvents.Add(gameEve);
+            player.GameEventsOwn.Add(gameEve);
 
             gameEventService.Add(gameEve);
             return RedirectToAction("Home", "Home");
@@ -112,8 +112,8 @@ namespace GameHubCSharp.Controllers
                 {
 
                     Message = "Player " + userNick + " wants to join your event.",
-                    From = playerNew.User.UserName,
-                    To = owner.User.UserName,
+                    SenderId = playerNew.User.Id,
+                    RecipientId = owner.User.Id,
                     GameEvent = gameEvent,
                     IsRead = false
 
@@ -123,12 +123,12 @@ namespace GameHubCSharp.Controllers
 
                 //------------------------------------------SendNotificationTo(roomid)
                 var ownerId = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == gameEventId).OwnerId;
-                var player = db.Players.FirstOrDefault(x => x.Id.ToString() == ownerId);
-                var list = player.User.Notifications;
+                var player = db.Players.FirstOrDefault(x => x.Id == ownerId);
+                var list = player.User.NotificationsRecived;
                 await hub.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication", new
                 {
                     Notifications = list.OrderByDescending(x => x.CreatedAt).ToArray(),
-                    NotCount = player.User.Notifications.Count(n => n.IsRead == false)
+                    NotCount = player.User.NotificationsRecived.Count(n => n.IsRead == false)
                 });
                 //----------------------------------------
 
@@ -157,18 +157,18 @@ namespace GameHubCSharp.Controllers
                 var notification = new Notification()
                 {
                     Message = "Accepted by game event owner: " + owner.UsernameInGame,
-                    From = owner.User.UserName,
-                    To = playerInGameEvent.User.UserName,
+                    SenderId = owner.User.Id,
+                    RecipientId = playerInGameEvent.User.Id,
                     GameEvent = gameEvent,
                     IsRead = false
                 };
                 var curNotification = userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
 
-                var list = playerInGameEvent.User.Notifications;
+                var list = playerInGameEvent.User.NotificationsRecived;
                 await hub.Clients.User(ConnectionIdProvider.ids[playerInGameEvent.User.UserName]).SendAsync("ReceiveNotfication", new
                 {
                     Notifications = list.ToArray(),
-                    NotCount = playerInGameEvent.User.Notifications.Count(n => n.IsRead == false)
+                    NotCount = playerInGameEvent.User.NotificationsRecived.Count(n => n.IsRead == false)
                 });
 
                 
@@ -199,18 +199,18 @@ namespace GameHubCSharp.Controllers
                     var notification = new Notification()
                     {
                         Message = "Declined by game event owner: " + owner.UsernameInGame,
-                        From = owner.User.UserName,
-                        To = playerInGameEvent.User.UserName,
+                        SenderId = owner.User.Id,
+                        RecipientId = playerInGameEvent.User.Id,
                         GameEvent = gameEvent,
                         IsRead = false
                     }; 
                      userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
                 }
-                var list = playerInGameEvent.User.Notifications;
+                var list = playerInGameEvent.User.NotificationsRecived;
                 await hub.Clients.User(ConnectionIdProvider.ids[playerInGameEvent.User.UserName]).SendAsync("ReceiveNotfication", new
                 {
                     Notifications = list.ToArray(),
-                    NotCount = playerInGameEvent.User.Notifications.Count(n => n.IsRead == false)
+                    NotCount = playerInGameEvent.User.NotificationsRecived.Count(n => n.IsRead == false)
                 });
                 return RedirectToAction("GameEventDetail", obj);
             }

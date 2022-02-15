@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,25 +10,26 @@ namespace GameHubCSharp.DAL.Data.Models
     public class Post : BaseModel
     {
 
-        private User creator;
-        private string text;
-        private string imageUrl;
-        private string link;
-        private string topic;
-        private DateTime createdAt;
-        private Category category;
-        //private Guid categoryId;
+        public Guid CategoryId { get; set; }
+
+        public Guid UserId { get; set; }
 
         [Required]
-        public virtual User Creator { get => creator; set => creator = value; }
+        public string Text { get; set; }
+
+        public string ImageUrl { get; set; }
+
+        public string Link { get; set; }
+
         [Required]
-        public string Text { get => text; set => text = value; }
-        public string ImageUrl { get => imageUrl; set => imageUrl = value; }
-        public string Link { get => link; set => link = value; }
-        [Required]
-        public string Topic { get => topic; set => topic = value; }
-        public DateTime CreatedAt { get => createdAt; set => createdAt = value; }
-        public virtual Category Category { get => category; set => category = value; }
-      //  public virtual Guid CategoryId { get => categoryId; set => categoryId = value; }
+        public string Topic { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
+
+        [ForeignKey(nameof(CategoryId))]
+        public virtual Category Category { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public virtual User Creator { get; set; }
     }
 }

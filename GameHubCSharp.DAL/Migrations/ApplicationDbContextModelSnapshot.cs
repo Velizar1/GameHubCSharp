@@ -21,13 +21,13 @@ namespace GameHubCSharp.DAL.Migrations
 
             modelBuilder.Entity("GameEventPlayer", b =>
                 {
-                    b.Property<Guid>("GameEventsId")
+                    b.Property<Guid>("GameEventsParticipatesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PlayersId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("GameEventsId", "PlayersId");
+                    b.HasKey("GameEventsParticipatesId", "PlayersId");
 
                     b.HasIndex("PlayersId");
 
@@ -83,17 +83,18 @@ namespace GameHubCSharp.DAL.Migrations
                     b.Property<string>("DiscordUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DueDate")
+                    b.Property<DateTime?>("DueDate")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("GameId")
+                    b.Property<Guid>("GameId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("NumberOfPlayers")
                         .HasColumnType("int");
 
-                    b.Property<string>("OwnerId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -101,6 +102,8 @@ namespace GameHubCSharp.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GameId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("GameEvents");
                 });
@@ -114,10 +117,6 @@ namespace GameHubCSharp.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("From")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("GameEventId")
                         .HasColumnType("uniqueidentifier");
 
@@ -128,18 +127,19 @@ namespace GameHubCSharp.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("To")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("RecipientId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("SenderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GameEventId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("RecipientId");
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Notifications");
                 });
@@ -163,7 +163,8 @@ namespace GameHubCSharp.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Players");
                 });
@@ -174,14 +175,11 @@ namespace GameHubCSharp.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
@@ -197,11 +195,14 @@ namespace GameHubCSharp.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CreatorId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Posts");
                 });
@@ -219,14 +220,14 @@ namespace GameHubCSharp.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -415,7 +416,7 @@ namespace GameHubCSharp.DAL.Migrations
                 {
                     b.HasOne("GameHubCSharp.DAL.Data.Models.GameEvent", null)
                         .WithMany()
-                        .HasForeignKey("GameEventsId")
+                        .HasForeignKey("GameEventsParticipatesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -430,9 +431,19 @@ namespace GameHubCSharp.DAL.Migrations
                 {
                     b.HasOne("GameHubCSharp.DAL.Data.Models.Game", "Game")
                         .WithMany()
-                        .HasForeignKey("GameId");
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GameHubCSharp.DAL.Data.Models.Player", "Owner")
+                        .WithMany("GameEventsOwn")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Game");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("GameHubCSharp.DAL.Data.Models.Notification", b =>
@@ -443,19 +454,31 @@ namespace GameHubCSharp.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GameHubCSharp.DAL.Data.Models.User", null)
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId");
+                    b.HasOne("GameHubCSharp.DAL.Data.Models.User", "Recipient")
+                        .WithMany("NotificationsRecived")
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GameHubCSharp.DAL.Data.Models.User", "Sender")
+                        .WithMany("NotificationsSend")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("GameEvent");
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("GameHubCSharp.DAL.Data.Models.Player", b =>
                 {
                     b.HasOne("GameHubCSharp.DAL.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("GameHubCSharp.DAL.Data.Models.Player", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -466,11 +489,14 @@ namespace GameHubCSharp.DAL.Migrations
                     b.HasOne("GameHubCSharp.DAL.Data.Models.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("GameHubCSharp.DAL.Data.Models.User", "Creator")
                         .WithMany()
-                        .HasForeignKey("CreatorId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 
@@ -533,9 +559,16 @@ namespace GameHubCSharp.DAL.Migrations
                     b.Navigation("Posts");
                 });
 
+            modelBuilder.Entity("GameHubCSharp.DAL.Data.Models.Player", b =>
+                {
+                    b.Navigation("GameEventsOwn");
+                });
+
             modelBuilder.Entity("GameHubCSharp.DAL.Data.Models.User", b =>
                 {
-                    b.Navigation("Notifications");
+                    b.Navigation("NotificationsRecived");
+
+                    b.Navigation("NotificationsSend");
                 });
 #pragma warning restore 612, 618
         }
