@@ -1,18 +1,23 @@
 ﻿using GameHubCSharp.BL.Services.IServices;
 using GameHubCSharp.DAL.Data;
 using GameHubCSharp.DAL.Data.Models;
+using GameHubCSharp.DAL.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services
 {
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext db;
+        private readonly IRepository repository;
 
-        public UserService(ApplicationDbContext dbContext)
+        public UserService(ApplicationDbContext dbContext, IRepository repository)
         {
             this.db = dbContext;
+            this.repository = repository;
         }
 
         public Notification AddNotification(Notification notification,string userId)
@@ -23,30 +28,47 @@ namespace GameHubCSharp.BL.Services
             return notification;
         }
 
-        public List<Notification> ChangeStatus(string userName)
+        public async Task<List<Notification>> ChangeStatus(string userName)
         {
-           var user = db.Users.FirstOrDefault(u => u.UserName == userName);
-            var nots = user.NotificationsRecived;
-            user.NotificationsRecived.ToList().ForEach(n=>n.IsRead=true);
-            db.SaveChanges();
-            return nots.ToList();
+           //var user = db.Users.FirstOrDefault(u => u.UserName == userName);
+            var user = repository
+                .All<User>(x => x.UserName == userName)
+                .FirstOrDefault();
+
+            var notifications = repository
+                .All<Notification>(n => n.SenderId == user.Id);
+
+            foreach (var notification in notifications)
+            {
+                notification.IsRead = true;
+            }
+
+            await repository.SavechangesAsync();
+            return notifications.ToList();
         }
 
         public void Delete(string id)
         {
-            var user = db.Users.FirstOrDefault(x => x.Id.ToString() == id);
+            //var user = db.Users.FirstOrDefault(x => x.Id.ToString() == id);
+            var user = repository.All<User>(x=>x.Id.ToString() == id).FirstOrDefault();
             db.Remove(user);
             db.SaveChanges();
         }
 
         public List<User> FindAll()
         {
-            return db.Users.ToList();
+            //return db.Users.ToList();
+            return repository.All<User>().ToList();
         }
 
         public List<Notification> FindAllNotifications(string userName)
         {
-            return db.Users.FirstOrDefault(u => u.UserName == userName).NotificationsRecived.OrderBy(x => x.CreatedAt).ToList();
+            //return db.Users.FirstOrDefault(u => u.UserName == userName).Notifications.OrderBy(x => x.CreatedAt).ToList();
+            return repository.All<User>()
+                .FirstOrDefault(x => x.UserName == userName)
+                .Notifications
+                .OrderBy(x => x.CreatedAt)
+                .ToList();
         }
 
 

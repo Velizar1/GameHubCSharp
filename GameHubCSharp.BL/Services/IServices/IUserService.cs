@@ -1,5 +1,6 @@
 ﻿using GameHubCSharp.DAL.Data.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
@@ -10,7 +11,7 @@ namespace GameHubCSharp.BL.Services.IServices
         public List<User> FindAll();
         public void Delete(string id);
 
-        public List<Notification> ChangeStatus(string userName);
+        public Task<List<Notification>> ChangeStatus(string userName);
         public List<Notification> FindAllNotifications(string userName);
         public Notification AddNotification(Notification notification ,string userId);
     }

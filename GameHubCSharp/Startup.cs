@@ -17,7 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using GameHubCSharp.DAL.Repositories.Interfaces;
+using GameHubCSharp.DAL.Repositories;
 
 namespace GameHubCSharp
 {
@@ -71,8 +72,12 @@ namespace GameHubCSharp
            //TODO exception in roles 
            // services.AddIdentity<User, string>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddAutoMapper(typeof(Startup));
-
             services.AddControllersWithViews();
+
+            //Repositories
+            services.AddScoped<IRepository, Repository>();
+
+            //Services
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IGameEventService, GameEventService>();
             services.AddTransient<IPlayerService, PlayerService>();
