@@ -126,7 +126,7 @@ namespace GameHubCSharp.Controllers
         public IActionResult AddPost(string setCat,AdminHomeViewModel model)
         {
 
-            model.Post.Category = categoryService.FindByName(setCat);
+            model.Post.Category = categoryService.FindByType(setCat);
             model.Post.Creator = userService.FindUserByName(User.Identity.Name);
             model.Post.CreatedAt = DateTime.Now;
             postService.AddPost(model.Post);

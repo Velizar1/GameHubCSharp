@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
-    public interface IPostService
+    public interface IPostService : IBaseService
     {
         
         public Post FindPostById(string Id);

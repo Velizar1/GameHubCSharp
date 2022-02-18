@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
-    public interface ICategoryService
+    public interface ICategoryService : IBaseService
     {
-        public Task AddAsync(Category category);
-        public Task DeleteAsync(string id);
-        public List<Category> FindAll();
-        public Category FindByName(string type);
-        public Category FindById(string id);
+        public Task Add(Category category);
+        public Task Delete(Category category);
+        public Task<List<Category>> FindAll();
+        public Task<Category> FindByType(string type);
+        public Task<Category> FindById(Guid id);
     }
 }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
-    public interface IUserService
+    public interface IUserService : IBaseService
     {
         public User FindUserById(string userId);
         public User FindUserByName(string userId);

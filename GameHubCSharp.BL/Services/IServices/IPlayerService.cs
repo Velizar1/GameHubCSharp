@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
-    public interface IPlayerService
+    public interface IPlayerService : IBaseService
     {
         public Task<Player> DeleteAsync(Guid playerId);
         public Player FindById(Guid id);

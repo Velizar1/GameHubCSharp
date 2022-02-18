@@ -6,54 +6,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameHubCSharp.DAL.Repositories.Interfaces;
+using GameHubCSharp.DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameHubCSharp.BL.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ApplicationDbContext db;
         private readonly IRepository repository;
 
-        public CategoryService(ApplicationDbContext db, IRepository repository)
+        public CategoryService(Repository _repository)
         {
-            this.db = db;
-            this.repository = repository;
+            repository = _repository;
         }
-        public async Task AddAsync(Category category)
+
+        public async Task Add(Category category)
         {
             await repository.CreateAsync(category);
-            await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task Delete(Category category)
         {
-            var category = repository
-                .All<Category>()
-                .FirstOrDefault(x => x.Id.ToString() == id);
-
             await repository.DeleteAsync(category);
-            await repository.SaveChangesAsync();
         }
 
-        public List<Category> FindAll()
+        public async Task<List<Category>> FindAll()
         {
-            return repository
-                .All<Category>()
-                .ToList();
+            return await repository.AllReadOnly<Category>()
+                .ToListAsync();
         }
 
-        public Category FindById(string id)
+        public async Task<Category> FindById(Guid id)
         {
-            return repository
-                .All<Category>()
-                .FirstOrDefault(x => x.Id.ToString() == id);
+            return await repository.AllReadOnly<Category>()
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Category FindByName(string type)
+        public async Task<Category> FindByType(string type)
         {
-            return repository
-                .All<Category>()
-                .FirstOrDefault(x => x.Type == type);
+            return await repository.AllReadOnly<Category>()
+                .FirstOrDefaultAsync(x => x.Type == type);
+        }
+
+        public async Task SaveChanges()
+        {
+            int modifiedEntriesCount = await repository.SavechangesAsync();
+
+            if (modifiedEntriesCount == 0)
+            {
+                //return number of saved entries
+            }
         }
     }
 }

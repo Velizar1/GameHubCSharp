@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
-    public interface IGameService
+    public interface IGameService : IBaseService
     {
         public Game FindGameByName(string name);
         public Game FindGameById(string id);

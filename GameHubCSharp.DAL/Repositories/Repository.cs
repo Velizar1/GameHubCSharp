@@ -60,5 +60,10 @@ namespace GameHubCSharp.DAL.Repositories
         {
             return await context.SaveChangesAsync(); // Catch later
         }
+
+        public async Task DeleteRangeAsync<T>(params T[] data) where T : class
+        {
+            context.Set<T>().RemoveRange(data);
+        }
     }
 }

@@ -6,121 +6,93 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameHubCSharp.BL.Models.DTO;
-using GameHubCSharp.DAL.Repositories.Interfaces;
 using System.Threading.Tasks;
+using GameHubCSharp.DAL.Repositories.Interfaces;
+using GameHubCSharp.DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameHubCSharp.BL.Services
 {
 
     public class GameEventService : IGameEventService
     {
-        private readonly IMapper mapper;
-        private readonly ApplicationDbContext db;
-        private readonly IPlayerService playerService;
-        private readonly INotificationService notificationService;
         private readonly IRepository repository;
 
-        public GameEventService(ApplicationDbContext db,
-            IPlayerService playerService,
-            IRepository repository,
-            IMapper mapper = null,
-            INotificationService notificationService = null
-            )
+        public GameEventService(IRepository _repository)
         {
-            this.db = db;
-            this.playerService = playerService;
-            this.mapper = mapper;
-            this.notificationService = notificationService;
-            this.repository = repository;
+            repository = _repository;
         }
 
-        public async Task AddAsync(GameEvent gameEvent)
+        public async Task<List<GameEvent>> FindEventsByGameName(string gameName, int? pageNumber, int? pageSize)
+        {
+            return await repository.AllReadOnly<GameEvent>()
+                 .Include(x => x.Game)
+                 .Where(x => x.Game.GameName == gameName)
+                 .OrderBy(x => x.StartDate)
+                 .Skip((pageNumber ?? 1 - 1) * pageSize ?? 1)
+                 .Take(pageSize ?? 1)
+                 .ToListAsync();
+        }
+
+        public async Task<GameEvent> FindEventById(Guid id)
+        {
+            return await repository.AllReadOnly<GameEvent>()
+                 .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task Add(GameEvent gameEvent)
         {
             await repository.CreateAsync(gameEvent);
-            await repository.SaveChangesAsync();
         }
 
-        public async Task AddAsync(Player playerNew, string gameEventId)
+        public async Task<List<GameEvent>> FindAll(int? pageNumber, int? pageSize)
         {
-            var gameEvent =  this.FindEventById(gameEventId);
-            gameEvent.Players.Add(playerNew);
-            await repository.SaveChangesAsync();
+            return await repository.AllReadOnly<GameEvent>()
+                .OrderBy(x => x.StartDate)
+                .Skip((pageNumber ?? 1 - 1) * pageSize ?? 1)
+                .Take(pageSize ?? 1)
+                .ToListAsync();
         }
 
-        public async Task DeleteAllExpiredGameEventsAsync()
+        public async Task DeleteEvent(Guid id)
         {
-            var now = DateTime.Now;
-            var list = repository.All<GameEvent>(g => g.DueDate <= now);
-            db.GameEvents.RemoveRange(list);
-            await repository.SaveChangesAsync();
+            var gameEvent = await repository.AllReadOnly<GameEvent>()
+                  .FirstOrDefaultAsync(x => x.Id == id);
+            await repository.DeleteAsync(gameEvent);
         }
 
-        public async Task DeleteAsync(GameEventViewModel gameEvent)
+        public async Task AddPlayer(Player player, Guid gameEventId)
         {
-            var gameEve = repository
-                .All<GameEvent>()
-                .FirstOrDefault(g=>gameEvent.Id==g.Id);
-            foreach (var player in gameEve.Players)
+            var gameEvent = await repository.All<GameEvent>()
+                .Include(x=>x.Players)
+                .FirstOrDefaultAsync(x => x.Id == gameEventId);
+            if (!gameEvent.Players.Contains(player))
             {
-                await repository.DeleteAsync(player);
+                gameEvent.Players.Add(player);
             }
-            var notifications = this.notificationService.GetForEvent(gameEve);
-            foreach (var nott in notifications)
-            {
-                await repository.DeleteAsync(nott);
-            }
-            await repository.DeleteAsync(gameEve);
-            await repository.SaveChangesAsync();
         }
 
-        public ICollection<GameEvent> FindAll()
+        public async Task<Player> FindPlayerByNick(string userNick, Guid gameEventId)
         {
-            return repository
-                .All<GameEvent>()
-                .ToList();
+            return await repository.AllReadOnly<GameEvent>()
+                .Include(x => x.Players)
+                .Where(x => x.Id == gameEventId)
+                .Select(x => x.Players.FirstOrDefault(y => y.UsernameInGame.Equals(userNick)))
+                .FirstOrDefaultAsync();
         }
 
-        public ICollection<GameEvent> FindAll(int page, int pageSize)
+        public async Task DeleteAllExpiredGameEvents()
         {
-            return repository
-                .All<GameEvent>()
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
+
+            var expiredEvents = repository.AllReadOnly<GameEvent>()
+                .Where(g => g.DueDate <= DateTime.Now);
+            await repository.DeleteRangeAsync(expiredEvents);
+
         }
 
-        public ICollection<GameEvent> FindEventsByGame(string game)
+        public async Task SaveChanges()
         {
-           return repository
-                .All<GameEvent>()
-                .Where(g => g.Game.GameName == game)
-                .ToList();
-        }
-
-        public ICollection<GameEvent> FindEventsByGame(string game, int page, int pageSize)
-        {
-            return repository
-                .All<GameEvent>()
-                .Where(g => g.Game.GameName == game)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-        }
-
-        public GameEvent FindEventById(string id)
-        {
-            return repository
-                .All<GameEvent>()
-                .FirstOrDefault(g => g.Id.ToString() == id);
-        }
-
-        public Player FindPlayerByNick(string userNick, string gameEventId)
-        {
-            return repository
-                .All<GameEvent>()
-                .FirstOrDefault(g => g.Id.ToString() == gameEventId)
-                .Players
-                .FirstOrDefault(p => p.UsernameInGame == userNick);
+            await repository.SavechangesAsync();
         }
     }
 }
