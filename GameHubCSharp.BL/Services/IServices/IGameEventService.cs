@@ -1,6 +1,7 @@
 ﻿using GameHubCSharp.DAL.Data.Models;
 using GameHubCSharp.BL.Models.DTO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
@@ -8,13 +9,13 @@ namespace GameHubCSharp.BL.Services.IServices
     {
         public ICollection<GameEvent> FindEventsByGame(string game);
         public ICollection<GameEvent> FindEventsByGame(string game,int page,int pageSize);
-        public GameEvent FindEventsById(string id);
-        public void Add(GameEvent gameEvent);
+        public GameEvent FindEventById(string id);
+        public Task AddAsync(GameEvent gameEvent);
         public ICollection<GameEvent> FindAll();
         public ICollection<GameEvent> FindAll(int page,int pageSize);
-        public void DeleteEvent(GameEventViewModel gameEvent);
-        public void AddPlayer(Player playerNew, string gameEventId);
+        public Task DeleteAsync(GameEventViewModel gameEvent);
+        public Task AddAsync(Player playerNew, string gameEventId);
         public Player FindPlayerByNick(string userNick, string gameEventId);
-        public void DeleteAllExpiredGameEvents();
+        public Task DeleteAllExpiredGameEventsAsync();
     }
 }

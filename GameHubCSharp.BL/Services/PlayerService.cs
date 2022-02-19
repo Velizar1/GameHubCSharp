@@ -1,6 +1,7 @@
 ﻿using GameHubCSharp.BL.Services.IServices;
 using GameHubCSharp.DAL.Data;
 using GameHubCSharp.DAL.Data.Models;
+using GameHubCSharp.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,56 +11,59 @@ namespace GameHubCSharp.BL.Services
 {
     public class PlayerService : IPlayerService
     {
-        private ApplicationDbContext db;
+        private readonly IRepository repository;
 
-        public PlayerService(ApplicationDbContext dbContext)
+        public PlayerService(IRepository repository)
         {
-            this.db = dbContext;
+            this.repository = repository;
         }
 
-        public Player Add(Player player)
+        public async Task<Player> AddAsync(Player player)
         {
-            db.Players.Add(player);
-            //db.SaveChanges();
+            await repository.CreateAsync(player);
+            await repository.SaveChangesAsync();
 
-            return player;
-        }
-
-        public Player ChangeStatus(string name, bool status)
-        {
-            var player = db.Players.FirstOrDefault(p => p.UsernameInGame == name);
-            player.Status = status;
-            db.SaveChanges();
             return player;
         }
 
         public async Task<Player> ChangeStatusAsync(string name, bool status)
         {
-            var player = db.Players.FirstOrDefault(p => p.UsernameInGame == name);
+            var player = repository
+                .All<Player>()
+                .FirstOrDefault(p => p.UsernameInGame == name);
+
             player.Status = status;
 
-            await db.SaveChangesAsync();
+            await repository.SaveChangesAsync();
             return player;
         }
 
-        public Player DeletePlayer(Guid playerId)
+        public async Task<Player> DeleteAsync(Guid playerId)
         {
-            var player = db.Players.FirstOrDefault(p => p.Id == playerId);
+            var player = repository
+                .All<Player>()
+                .FirstOrDefault(p => p.Id == playerId);
 
-            db.Remove(player);
-            db.SaveChanges();
+            await repository.DeleteAsync(player);
+            await repository.SaveChangesAsync();
+
             return player;
         }
 
-        public Player FindPlayerById(Guid id)
+        public Player FindById(Guid id)
         {
-            var player = db.Players.FirstOrDefault(p => p.Id == id);
+            var player = repository
+                .All<Player>()
+                .FirstOrDefault(p => p.Id == id);
+
             return player;
         }
 
         public Player FindPlayerByNick(string userNick)
         {
-            return db.Players.Where(x => x.UsernameInGame == userNick).FirstOrDefault();
+            return repository
+                .All<Player>().
+                FirstOrDefault(x => x.UsernameInGame == userNick);
         }
     }
 }

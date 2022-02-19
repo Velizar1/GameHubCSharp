@@ -56,7 +56,7 @@ namespace GameHubCSharp.DAL.Repositories
             return data;
         }
 
-        public async Task<int> SavechangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
             return await context.SaveChangesAsync(); // Catch later
         }

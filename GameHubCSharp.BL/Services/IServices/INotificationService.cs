@@ -8,8 +8,8 @@ namespace GameHubCSharp.BL.Services.IServices
 {
     public interface INotificationService
     {
-        public Notification Add(Notification notification);
-        public Notification Delete(Notification notification);
+        public Task<Notification> AddAsync(Notification notification);
+        public Task<Notification> DeleteAsync(Notification notification);
         public List<Notification> GetForEvent(GameEvent gameEvent);
 
        

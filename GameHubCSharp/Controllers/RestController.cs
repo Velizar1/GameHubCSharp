@@ -49,7 +49,7 @@ namespace GameHubCSharp.Controllers
         public IActionResult Find(string id, string type)
         {
             if (type == "GameEvent")
-                return Ok(gameEventService.FindEventsById(id));
+                return Ok(gameEventService.FindEventById(id));
 
             else if (type == "Game")
                 return Ok(gameService.FindGameById(id));

@@ -6,28 +6,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameHubCSharp.DAL.Repositories.Interfaces;
 
 namespace GameHubCSharp.BL.Services
 {
     public class PostService : IPostService
     {
-        private readonly ApplicationDbContext db;
+        private readonly IRepository repository;
 
-        public PostService(ApplicationDbContext db)
+        public PostService(IRepository repository)
         {
-            this.db = db;
+            this.repository = repository;
         }
 
-        public Post AddPost(Post post)
+        public async Task<Post> AddPostAsync(Post post)
         {
-            db.Posts.Add(post);
-            db.SaveChanges();
+            await repository.CreateAsync(post);
+            await repository.SaveChangesAsync();
             return post;
         }
 
         public int Count()
         {
-            return db.Posts.Count();
+            return repository
+                .All<Post>()
+                .Count();
         }
 
         public int Count(string category)
@@ -36,50 +39,73 @@ namespace GameHubCSharp.BL.Services
             {
                 return Count();
             }
-            return db.Posts.Where(p=>p.Category.Type==category).Count();
+
+            return repository
+                .All<Post>(p => p.Category.Type == category)
+                .Count()
         }
 
-        public List<Post> FindAll(int index,int size,string category)
+        public List<Post> FindAll(int index, int size, string category)
         {
             if (category != "")
             {
-                return db.Posts.Where(p=>p.Category.Type==category).Skip((index - 1) * size).Take(size).ToList();
+                return repository
+                    .All<Post>(p => p.Category.Type == category)
+                    .Skip((index - 1) * size)
+                    .Take(size)
+                    .ToList();
             }
-            return db.Posts.Skip((index - 1) * size).Take(size).ToList();
+
+            return repository
+                .All<Post>()
+                .Skip((index - 1) * size)
+                .Take(size)
+                .ToList();
         }
 
         public List<Post> FindAll()
         {
-            return db.Posts.ToList();
+            return repository
+                .All<Post>()
+                .ToList();
         }
 
         public Post FindPostById(string Id)
         {
-            return db.Posts.FirstOrDefault(p => p.Id.ToString() == Id);
+            return repository
+                .All<Post>()
+                .FirstOrDefault(p => p.Id.ToString() == Id);
         }
 
         public Post FindPostByTopic(string topic)
         {
-            return db.Posts.FirstOrDefault(p => p.Topic == topic);
+            return repository
+                .All<Post>()
+                .FirstOrDefault(p => p.Topic == topic);
         }
 
         public ICollection<Post> FindPostsByCreator(User creator)
         {
-            return db.Posts.Where(p => p.Creator.Id == creator.Id).ToList();
+            return repository
+                .All<Post>(p => p.Creator.Id == creator.Id)
+                .ToList();
         }
 
 
-        public void RemovePost(Post post)
+        public async Task RemoveAsync(Post post)
         {
-            db.Posts.Remove(post);
-            db.SaveChanges();
+            await repository.DeleteAsync(post);
+            await repository.SaveChangesAsync();
         }
 
-        public void RemovePostById(string id)
+        public async Task RemovePostByIdAsync(string id)
         {
-            var post = db.Posts.FirstOrDefault(post => post.Id.ToString() == id);
-            db.Posts.Remove(post);
-            db.SaveChanges();
+            var post = repository
+                .All<Post>()
+                .FirstOrDefault(post => post.Id.ToString() == id);
+
+            await repository.DeleteAsync(post);
+            await repository.SaveChangesAsync()
         }
     }
 }

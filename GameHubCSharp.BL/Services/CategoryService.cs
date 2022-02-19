@@ -5,43 +5,55 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameHubCSharp.DAL.Repositories.Interfaces;
 
 namespace GameHubCSharp.BL.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly ApplicationDbContext db;
+        private readonly IRepository repository;
 
-        public CategoryService(ApplicationDbContext db)
+        public CategoryService(ApplicationDbContext db, IRepository repository)
         {
             this.db = db;
+            this.repository = repository;
         }
-        public void Add(Category category)
+        public async Task AddAsync(Category category)
         {
-            db.Categories.Add(category);
-            db.SaveChanges();
+            await repository.CreateAsync(category);
+            await repository.SaveChangesAsync();
         }
 
-        public void Delete(string id)
+        public async Task DeleteAsync(string id)
         {
-            var cat = db.Categories.FirstOrDefault(x => x.Id.ToString() == id);
-            db.Categories.Remove(cat);
-            db.SaveChanges();
+            var category = repository
+                .All<Category>()
+                .FirstOrDefault(x => x.Id.ToString() == id);
+
+            await repository.DeleteAsync(category);
+            await repository.SaveChangesAsync();
         }
 
         public List<Category> FindAll()
         {
-            return db.Categories.ToList();
+            return repository
+                .All<Category>()
+                .ToList();
         }
 
         public Category FindById(string id)
         {
-            return db.Categories.FirstOrDefault(x => x.Id.ToString() == id);
+            return repository
+                .All<Category>()
+                .FirstOrDefault(x => x.Id.ToString() == id);
         }
 
         public Category FindByName(string type)
         {
-            return db.Categories.FirstOrDefault(x => x.Type == type);
+            return repository
+                .All<Category>()
+                .FirstOrDefault(x => x.Type == type);
         }
     }
 }

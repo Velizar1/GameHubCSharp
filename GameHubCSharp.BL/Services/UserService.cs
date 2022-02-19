@@ -11,26 +11,34 @@ namespace GameHubCSharp.BL.Services
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext db;
         private readonly IRepository repository;
 
         public UserService(ApplicationDbContext dbContext, IRepository repository)
         {
-            this.db = dbContext;
             this.repository = repository;
         }
 
-        public Notification AddNotification(Notification notification,string userId)
+        public async Task<Notification> AddNotificationAsync(Notification notification, string userId)
         {
-            var user = db.Users.Where(u => u.Id.ToString() == userId).First();
+            //var user = db.Users.Where(u => u.Id.ToString() == userId).First();
+            //user.NotificationsRecived.Add(notification);
+            //db.SaveChanges();
+            //return notification;
+
+            var user = repository
+                .All<User>(u => u.Id.ToString() == userId)
+                .FirstOrDefault();
+
             user.NotificationsRecived.Add(notification);
-            db.SaveChanges();
+
+            await repository.SaveChangesAsync();
+
             return notification;
         }
 
-        public async Task<List<Notification>> ChangeStatus(string userName)
+        public async Task<List<Notification>> ChangeStatusAsync(string userName)
         {
-           //var user = db.Users.FirstOrDefault(u => u.UserName == userName);
+            //var user = db.Users.FirstOrDefault(u => u.UserName == userName);
             var user = repository
                 .All<User>(x => x.UserName == userName)
                 .FirstOrDefault();
@@ -43,22 +51,26 @@ namespace GameHubCSharp.BL.Services
                 notification.IsRead = true;
             }
 
-            await repository.SavechangesAsync();
+            await repository.SaveChangesAsync();
             return notifications.ToList();
         }
 
-        public void Delete(string id)
+        public async Task DeleteAsync(string id)
         {
             //var user = db.Users.FirstOrDefault(x => x.Id.ToString() == id);
-            var user = repository.All<User>(x=>x.Id.ToString() == id).FirstOrDefault();
-            db.Remove(user);
-            db.SaveChanges();
+            var user = repository
+                .All<User>(x => x.Id.ToString() == id)
+                .FirstOrDefault();
+
+            await repository.DeleteAsync(user);
+            await repository.SaveChangesAsync();
         }
 
         public List<User> FindAll()
         {
-            //return db.Users.ToList();
-            return repository.All<User>().ToList();
+            return repository
+                .All<User>()
+                .ToList();
         }
 
         public List<Notification> FindAllNotifications(string userName)
@@ -66,7 +78,7 @@ namespace GameHubCSharp.BL.Services
             //return db.Users.FirstOrDefault(u => u.UserName == userName).Notifications.OrderBy(x => x.CreatedAt).ToList();
             return repository.All<User>()
                 .FirstOrDefault(x => x.UserName == userName)
-                .Notifications
+                .NotificationsRecived
                 .OrderBy(x => x.CreatedAt)
                 .ToList();
         }
@@ -74,14 +86,18 @@ namespace GameHubCSharp.BL.Services
 
         public User FindUserById(string userId)
         {
-            var user = db.Users.Where(x => x.Id.ToString() == userId).First();
+            var user = repository
+                .All<User>(u => u.Id.ToString() == userId)
+                .FirstOrDefault();
 
             return user;
         }
 
         public User FindUserByName(string userName)
         {
-            var user = db.Users.Where(x => x.UserName == userName).First();
+            var user = repository
+                .All<User>(u => u.UserName == userName)
+                .FirstOrDefault();
 
             return user;
         }

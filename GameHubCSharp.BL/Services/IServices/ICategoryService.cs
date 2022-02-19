@@ -8,8 +8,8 @@ namespace GameHubCSharp.BL.Services.IServices
 {
     public interface ICategoryService
     {
-        public void Add(Category category);
-        public void Delete(string id);
+        public Task AddAsync(Category category);
+        public Task DeleteAsync(string id);
         public List<Category> FindAll();
         public Category FindByName(string type);
         public Category FindById(string id);
