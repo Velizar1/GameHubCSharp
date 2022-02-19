@@ -8,16 +8,15 @@ namespace GameHubCSharp.BL.Services.IServices
 {
     public interface IPostService : IBaseService
     {
-        
-        public Post FindPostById(string Id);
+
+        public Post FindPostById(Guid Id);
         public Post FindPostByTopic(string topic);
-        public ICollection<Post> FindPostsByCreator(User creator);
+        public List<Post> FindPostsByCreator(User creator);
         public Task<Post> AddPostAsync(Post post);
-        public Task RemoveAsync(Post post);
-        public Task RemovePostByIdAsync(string id);
+        public Task RemovePostAsync(Post post);
+        public Task RemovePostByIdAsync(Guid id);
         public List<Post> FindAll();
-        public int Count();
-        public int Count(string category);
-        public List<Post> FindAll(int index,int pagesize,string category);
+        public int Count(string category = "");
+        public List<Post> FindAll(int? index, int pagesize, string category = "");
     }
 }

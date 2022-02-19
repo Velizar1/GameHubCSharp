@@ -9,41 +9,35 @@ using GameHubCSharp.DAL.Repositories.Interfaces;
 
 namespace GameHubCSharp.BL.Services
 {
-    public class NotificationService : INotificationService
+    public class NotificationService : BaseService, INotificationService
     {
-        private readonly IRepository repository;
 
-        public NotificationService(IRepository repository)
+        public NotificationService(IRepository _repository) : base(_repository)
         {
-            this.repository = repository;
+
         }
 
         public async Task<Notification> AddAsync(Notification notification)
         {
             await repository.CreateAsync(notification);
-            await repository.SaveChangesAsync();
             return notification;
         }
 
         public async Task<Notification> DeleteAsync(Notification notification)
         {
-            var notiff = repository
-                .All<Notification>()
+            var notif = repository.All<Notification>()
                 .FirstOrDefault(n => n.Id == notification.Id);
 
-            if (notiff != null)
+            if (notif != null)
             {
-                await repository.DeleteAsync(notiff);
-                await repository.SaveChangesAsync();
-                return notiff;
+                await repository.DeleteAsync(notif); 
             }
-            return null;
+            return notif;
         }
 
         public List<Notification> GetForEvent(GameEvent gameEvent)
         {
-            return repository
-                .All<Notification>()
+            return repository.AllReadOnly<Notification>()
                 .Where(n => n.GameEvent.Id == gameEvent.Id)
                 .ToList();
         }

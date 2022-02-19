@@ -8,6 +8,6 @@ namespace GameHubCSharp.BL.Services.IServices
 {
     public interface IBaseService
     {
-        Task SaveChanges();
+        Task SaveChangesAsync();
     }
 }

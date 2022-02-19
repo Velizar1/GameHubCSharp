@@ -65,5 +65,6 @@ namespace GameHubCSharp.DAL.Repositories
         {
             context.Set<T>().RemoveRange(data);
         }
+
     }
 }

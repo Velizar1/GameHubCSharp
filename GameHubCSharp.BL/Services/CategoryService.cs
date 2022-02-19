@@ -11,51 +11,37 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameHubCSharp.BL.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService : BaseService, ICategoryService
     {
-        private readonly IRepository repository;
+        public CategoryService(IRepository _repository) : base(_repository) { }
 
-        public CategoryService(Repository _repository)
-        {
-            repository = _repository;
-        }
-
-        public async Task Add(Category category)
+        public async Task AddAsync(Category category)
         {
             await repository.CreateAsync(category);
         }
 
-        public async Task Delete(Category category)
+        public async Task DeleteAsync(Category category)
         {
             await repository.DeleteAsync(category);
         }
 
-        public async Task<List<Category>> FindAll()
+        public List<Category> FindAll()
         {
-            return await repository.AllReadOnly<Category>()
-                .ToListAsync();
+            return repository.AllReadOnly<Category>()
+                .ToList();
         }
 
-        public async Task<Category> FindById(Guid id)
+        public Category FindById(Guid id)
         {
-            return await repository.AllReadOnly<Category>()
-                .FirstOrDefaultAsync(x => x.Id == id);
+            return repository.AllReadOnly<Category>()
+                .FirstOrDefault(x => x.Id == id);
         }
 
-        public async Task<Category> FindByType(string type)
+        public Category FindByType(string type)
         {
-            return await repository.AllReadOnly<Category>()
-                .FirstOrDefaultAsync(x => x.Type == type);
+            return repository.AllReadOnly<Category>()
+                .FirstOrDefault(x => x.Type == type);
         }
 
-        public async Task SaveChanges()
-        {
-            int modifiedEntriesCount = await repository.SavechangesAsync();
-
-            if (modifiedEntriesCount == 0)
-            {
-                //return number of saved entries
-            }
-        }
     }
 }

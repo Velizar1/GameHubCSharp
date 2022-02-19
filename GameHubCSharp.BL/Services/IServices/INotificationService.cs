@@ -12,7 +12,5 @@ namespace GameHubCSharp.BL.Services.IServices
         public Task<Notification> DeleteAsync(Notification notification);
         public List<Notification> GetForEvent(GameEvent gameEvent);
 
-       
-
     }
 }

@@ -83,7 +83,7 @@ namespace GameHubCSharp.Controllers
                     .ToList();
                 return Ok(list2.OrderBy(x=>x.StartDate));
             }
-            var events = gameEventService.FindEventsByGameName(game,page,pageSize);
+            var events = gameEventService.FindEventsByGameNameAsync(game,page,pageSize);
             List<HomeEventRestViewModel> games = new List<HomeEventRestViewModel>();
             if (events.Count == 0) return NotFound();
             foreach (var el in events)

@@ -10,102 +10,70 @@ using GameHubCSharp.DAL.Repositories.Interfaces;
 
 namespace GameHubCSharp.BL.Services
 {
-    public class PostService : IPostService
+    public class PostService : BaseService, IPostService
     {
-        private readonly IRepository repository;
 
-        public PostService(IRepository repository)
+        public PostService(IRepository _repository) : base(_repository)
         {
-            this.repository = repository;
+
         }
 
         public async Task<Post> AddPostAsync(Post post)
         {
             await repository.CreateAsync(post);
-            await repository.SaveChangesAsync();
             return post;
         }
 
-        public int Count()
+        public int Count(string category = "")
         {
-            return repository
-                .All<Post>()
+            return repository.AllReadOnly<Post>(p => p.Category.Type == (category == "" ? p.Category.Type : category))
                 .Count();
         }
 
-        public int Count(string category)
+        public List<Post> FindAll(int? index, int size, string category = "")
         {
-            if (category == "")
-            {
-                return Count();
-            }
-
-            return repository
-                .All<Post>(p => p.Category.Type == category)
-                .Count()
-        }
-
-        public List<Post> FindAll(int index, int size, string category)
-        {
-            if (category != "")
-            {
-                return repository
-                    .All<Post>(p => p.Category.Type == category)
-                    .Skip((index - 1) * size)
-                    .Take(size)
-                    .ToList();
-            }
-
-            return repository
-                .All<Post>()
-                .Skip((index - 1) * size)
+            return repository.AllReadOnly<Post>(p => p.Category.Type == (category == "" ? p.Category.Type : category))
+                .Skip((index ?? 1 - 1) * size)
                 .Take(size)
                 .ToList();
         }
 
         public List<Post> FindAll()
         {
-            return repository
-                .All<Post>()
+            return repository.AllReadOnly<Post>()
                 .ToList();
         }
 
-        public Post FindPostById(string Id)
+        public Post FindPostById(Guid Id)
         {
-            return repository
-                .All<Post>()
-                .FirstOrDefault(p => p.Id.ToString() == Id);
+            return repository.AllReadOnly<Post>()
+                .FirstOrDefault(p => p.Id == Id);
         }
 
         public Post FindPostByTopic(string topic)
         {
-            return repository
-                .All<Post>()
+            return repository.AllReadOnly<Post>()
                 .FirstOrDefault(p => p.Topic == topic);
         }
 
-        public ICollection<Post> FindPostsByCreator(User creator)
+        public List<Post> FindPostsByCreator(User creator)
         {
-            return repository
-                .All<Post>(p => p.Creator.Id == creator.Id)
+            return repository.AllReadOnly<Post>(p => p.Creator.Id == creator.Id)
                 .ToList();
         }
 
-
-        public async Task RemoveAsync(Post post)
+        public async Task RemovePostAsync(Post post)
         {
             await repository.DeleteAsync(post);
-            await repository.SaveChangesAsync();
         }
 
-        public async Task RemovePostByIdAsync(string id)
+        public async Task RemovePostByIdAsync(Guid id)
         {
-            var post = repository
-                .All<Post>()
-                .FirstOrDefault(post => post.Id.ToString() == id);
+            var post = repository.All<Post>()
+                .FirstOrDefault(post => post.Id == id);
 
             await repository.DeleteAsync(post);
-            await repository.SaveChangesAsync()
         }
+
     }
 }

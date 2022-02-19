@@ -107,7 +107,7 @@ namespace GameHubCSharp.Controllers
             var totalPages = (int)Math.Ceiling(count / (double)pageSize);
             ViewData["HasNext"] = (pageNumber ?? 1) < totalPages ? "" : "disabled";
             ViewData["HasPrev"] = (pageNumber ?? 1) > 1 ? "" : "disabled";
-            ViewData["Categories"] = categorySevice.FindAll();
+            ViewData["Categories"] = categorySevice.FindAllAsync();
            
             return View(model);
         }

@@ -9,22 +9,19 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services
 {
-    public class HomeService : IHomeService 
+    public class HomeService : BaseService, IHomeService
     {
-        private readonly IRepository repository;
 
-        public HomeService(IRepository repository)
+        public HomeService(IRepository _repository) : base(_repository)
         {
-            this.repository = repository;
+
         }
 
         public ICollection<Game> FindAllGames()
         {
-            var games = repository
-                .All<Game>()
+            return repository.AllReadOnly<Game>()
                 .ToList();
 
-            return games;
         }
     }
 }

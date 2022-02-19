@@ -9,13 +9,12 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services
 {
-    public class PlayerService : IPlayerService
+    public class PlayerService : BaseService, IPlayerService
     {
-        private readonly IRepository repository;
 
-        public PlayerService(IRepository repository)
+        public PlayerService(IRepository _repository) : base(_repository)
         {
-            this.repository = repository;
+
         }
 
         public async Task<Player> AddAsync(Player player)
