@@ -10,6 +10,7 @@ namespace GameHubCSharp.BL.Services.IServices
     {
         public Task AddAsync(Category category);
         public Task DeleteAsync(Category category);
+        public Task DeleteAsync(Guid id);
         public List<Category> FindAll();
         public Category FindByType(string type);
         public Category FindById(Guid id);

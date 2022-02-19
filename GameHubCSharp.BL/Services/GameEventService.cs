@@ -53,6 +53,12 @@ namespace GameHubCSharp.BL.Services
                 .ToList();
         }
 
+        public List<GameEvent> FindAll()
+        {
+            return repository.AllReadOnly<GameEvent>()
+                .ToList();
+        }
+
         public async Task DeleteEventAsync(Guid id)
         {
             var gameEvent = await repository.AllReadOnly<GameEvent>()

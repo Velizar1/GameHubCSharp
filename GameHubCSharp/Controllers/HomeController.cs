@@ -60,7 +60,7 @@ namespace GameHubCSharp.Controllers
         public IActionResult Home()
         {
             try {
-                ConnectionIdProvider.notifications = userService.FindAllNotifications(User.Identity.Name);
+                ConnectionIdProvider.notifications = userService.FindAllNotificationsByUserName(User.Identity.Name);
             }
             catch
             {
@@ -107,7 +107,7 @@ namespace GameHubCSharp.Controllers
             var totalPages = (int)Math.Ceiling(count / (double)pageSize);
             ViewData["HasNext"] = (pageNumber ?? 1) < totalPages ? "" : "disabled";
             ViewData["HasPrev"] = (pageNumber ?? 1) > 1 ? "" : "disabled";
-            ViewData["Categories"] = categorySevice.FindAllAsync();
+            ViewData["Categories"] = categorySevice.FindAll();
            
             return View(model);
         }

@@ -46,7 +46,7 @@ namespace GameHubCSharp.Controllers
         }
 
         [HttpGet("/findToDelete")]
-        public IActionResult Find(string id, string type)
+        public IActionResult Find(Guid id, string type)
         {
             if (type == "GameEvent")
                 return Ok(gameEventService.FindEventById(id));
@@ -75,7 +75,7 @@ namespace GameHubCSharp.Controllers
                 var list = gameEventService.FindAll(page, pageSize).ToList();
                 var list2 = list.Select(x => {
                     var re = mapper.Map<HomeEventRestViewModel>(x);
-                    re.OwnerName = playerService.FindPlayerById(x.OwnerId).UsernameInGame;
+                    re.OwnerName = playerService.FindById(x.OwnerId).UsernameInGame;
                     re.ImageUrl = x.Game.ImageUrl;
                     re.TakenPlaces = x.NumberOfPlayers;
                     return re;
@@ -83,7 +83,7 @@ namespace GameHubCSharp.Controllers
                     .ToList();
                 return Ok(list2.OrderBy(x=>x.StartDate));
             }
-            var events = gameEventService.FindEventsByGameNameAsync(game,page,pageSize);
+            var events = gameEventService.FindEventsByGameName(game,page,pageSize);
             List<HomeEventRestViewModel> games = new List<HomeEventRestViewModel>();
             if (events.Count == 0) return NotFound();
             foreach (var el in events)
@@ -92,7 +92,7 @@ namespace GameHubCSharp.Controllers
                 homeEventRestView.Devision = el.Devision;
                 homeEventRestView.ImageUrl = el.Game.ImageUrl;
                 homeEventRestView.Id = el.Id.ToString();
-                homeEventRestView.OwnerName = playerService.FindPlayerById(el.OwnerId).UsernameInGame;
+                homeEventRestView.OwnerName = playerService.FindById(el.OwnerId).UsernameInGame;
                 homeEventRestView.TakenPlaces = el.NumberOfPlayers;
                 homeEventRestView.StartDate = el.StartDate;
                 games.Add(homeEventRestView);

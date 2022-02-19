@@ -13,6 +13,7 @@ namespace GameHubCSharp.BL.Services.IServices
         public Task DeleteAsync(Guid id);
         public Task<List<Notification>> ChangeNotificationStatusToReadAsync(Guid userId);
         public List<Notification> FindAllNotificationsByUserId(Guid userId);
+        public List<Notification> FindAllNotificationsByUserName(string name);
         public Task<Notification> AddNotificationAsync(Notification notification ,Guid userId);
     }
 }

@@ -73,6 +73,17 @@ namespace GameHubCSharp.BL.Services
                 .ToList();
         }
 
+        public List<Notification> FindAllNotificationsByUserName(string name)
+        {
+            return repository.AllReadOnly<User>()
+                .Include(x => x.NotificationsRecived)
+                .Where(x => x.UserName == name)
+                .Select(x => x.NotificationsRecived
+                             .OrderBy(x => x.CreatedAt))
+                .FirstOrDefault()
+                .ToList();
+        }
+
         public User FindUserById(Guid userId)
         {
             return repository.AllReadOnly<User>(u => u.Id == userId)

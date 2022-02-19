@@ -47,7 +47,7 @@ namespace GameHubCSharp.Controllers
         }
 
         [HttpGet("/game/detail/")]
-        public IActionResult GameEventDetail(string id, bool? valid = true)
+        public IActionResult GameEventDetail(Guid id, bool? valid = true)
         {
             var gameEvent = gameEventService.FindEventById(id);
             if (gameEvent == null)
@@ -55,8 +55,8 @@ namespace GameHubCSharp.Controllers
                 return RedirectToAction("Error", "Home");
             }
             var gameEve = mapper.Map<GameEventViewModel>(gameEvent);
-            gameEve.Owner = mapper.Map<PlayerViewModel>(playerService.FindPlayerById(gameEvent.OwnerId));
-            gameEve.Owner.Username = playerService.FindPlayerById(gameEve.Owner.Id).User.UserName;
+            gameEve.Owner = mapper.Map<PlayerViewModel>(playerService.FindById(gameEvent.OwnerId));
+            gameEve.Owner.Username = playerService.FindById(gameEve.Owner.Id).User.UserName;
            
             ViewData["valid"] = valid;
             return View(gameEve);
@@ -72,42 +72,42 @@ namespace GameHubCSharp.Controllers
 
 
         [HttpPost]
-        public IActionResult GameEventAdd(GameEventAddViewModel gameEvent)
+        public async Task<IActionResult> GameEventAdd(GameEventAddViewModel gameEvent)
         {
 
             var gameEve = mapper.Map<GameEvent>(gameEvent);
-            var game = gameService.FindGameByNameAsync(gameEvent.GameName);
+            var game = gameService.FindGameByName(gameEvent.GameName);
             gameEve.Game = game;
-            var player = playerService.Add(new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = gameEvent.OwnerName });
+            var player = await playerService.AddAsync(new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = gameEvent.OwnerName });
             gameEve.OwnerId = player.Id;
 
             player.GameEventsOwn.Add(gameEve);
 
-            gameEventService.AddAsync(gameEve);
+            await gameEventService.AddAsync(gameEve);
             return RedirectToAction("Home", "Home");
         }
 
         [HttpPost]
-        public IActionResult GameEventDelete(GameEventViewModel gameEvent)
+        public async Task<IActionResult> GameEventDelete(GameEventViewModel gameEvent)
         {
-            gameEventService.DeleteEvent(gameEvent);
+            await gameEventService.DeleteEventAsync(gameEvent.Id);
             return RedirectToAction("Home", "Home");
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> GameEventAddPlayer(string userNick, string gameEventId)
+        public async Task<IActionResult> GameEventAddPlayer(string userNick, Guid gameEventId)
         {
             object obj = new { id = gameEventId };
             var playerInGameEvent = gameEventService.FindPlayerByNick(userNick, gameEventId);
 
             var gameEvent = gameEventService.FindEventById(gameEventId);
-            var owner = playerService.FindPlayerById(gameEvent.OwnerId);
+            var owner = playerService.FindById(gameEvent.OwnerId);
 
             if (playerInGameEvent == null)
             {
                 Player playerNew = new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = userNick };
-                gameEventService.AddPlayer(playerNew, gameEventId);
+                await gameEventService.AddPlayerAsync(playerNew, gameEventId);
                 var notification = new Notification()
                 {
 
@@ -119,10 +119,10 @@ namespace GameHubCSharp.Controllers
 
                 };
 
-                var curNotification = userService.AddNotification(notification, owner.User.Id.ToString());
+                var curNotification = await userService.AddNotificationAsync(notification, owner.User.Id);
 
                 //------------------------------------------SendNotificationTo(roomid)
-                var ownerId = db.GameEvents.FirstOrDefault(x => x.Id.ToString() == gameEventId).OwnerId;
+                var ownerId = db.GameEvents.FirstOrDefault(x => x.Id == gameEventId).OwnerId;
                 var player = db.Players.FirstOrDefault(x => x.Id == ownerId);
                 var list = player.User.NotificationsRecived;
                 await hub.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication", new
@@ -142,13 +142,13 @@ namespace GameHubCSharp.Controllers
 
         }
 
-        public async Task<IActionResult> Accept(string playerName, string roomId)
+        public async Task<IActionResult> Accept(string playerName, Guid roomId)
         {
             object obj = new { id = roomId };
             var playerInGameEvent = gameEventService.FindPlayerByNick(playerName, roomId);
 
             var gameEvent = gameEventService.FindEventById(roomId);
-            var owner = playerService.FindPlayerById(gameEvent.OwnerId);
+            var owner = playerService.FindById(gameEvent.OwnerId);
 
             if (playerInGameEvent != null)
             {
@@ -162,7 +162,7 @@ namespace GameHubCSharp.Controllers
                     GameEvent = gameEvent,
                     IsRead = false
                 };
-                var curNotification = userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
+                var curNotification = await userService.AddNotificationAsync(notification, playerInGameEvent.User.Id);
 
                 var list = playerInGameEvent.User.NotificationsRecived;
                 await hub.Clients.User(ConnectionIdProvider.ids[playerInGameEvent.User.UserName]).SendAsync("ReceiveNotfication", new
@@ -183,13 +183,13 @@ namespace GameHubCSharp.Controllers
 
         }
 
-        public async Task<IActionResult> Decline(string playerName, string roomId)
+        public async Task<IActionResult> Decline(string playerName, Guid roomId)
         {
             object obj = new { id = roomId };
             var playerInGameEvent = gameEventService.FindPlayerByNick(playerName, roomId);
 
             var gameEvent = gameEventService.FindEventById(roomId);
-            var owner = playerService.FindPlayerById(gameEvent.OwnerId);
+            var owner = playerService.FindById(gameEvent.OwnerId);
 
             if (playerInGameEvent != null)
             {
@@ -204,7 +204,7 @@ namespace GameHubCSharp.Controllers
                         GameEvent = gameEvent,
                         IsRead = false
                     }; 
-                     userService.AddNotification(notification, playerInGameEvent.User.Id.ToString());
+                     await userService.AddNotificationAsync(notification, playerInGameEvent.User.Id);
                 }
                 var list = playerInGameEvent.User.NotificationsRecived;
                 await hub.Clients.User(ConnectionIdProvider.ids[playerInGameEvent.User.UserName]).SendAsync("ReceiveNotfication", new

@@ -49,10 +49,10 @@ namespace GameHubCSharp.Hubs
                 NotCount = user.NotificationsRecived.Count(n => n.IsRead == false)
             });
         }
-        public async Task NotificationCount(string user)
+        public async Task NotificationCount(Guid userId)
         {
-            var nots = userService.ChangeStatus(user);
-            await this.Clients.User(ConnectionIdProvider.ids[user]).SendAsync("UpdateNotifications", new { Notifications = nots.OrderByDescending(x=>x.CreatedAt).ToArray() });
+            var nots = await userService.ChangeNotificationStatusToReadAsync(userId); // Change to user name
+            await this.Clients.User(ConnectionIdProvider.ids[userId.ToString()]).SendAsync("UpdateNotifications", new { Notifications = nots.OrderByDescending(x=>x.CreatedAt).ToArray() });
         }
         public override Task OnConnectedAsync()
         {
@@ -71,7 +71,7 @@ namespace GameHubCSharp.Hubs
             var list = gameEventService.FindAll().ToList();
             var list2 = list.Select(x => {
                 var re = mapper.Map<HomeEventRestViewModel>(x);
-                re.OwnerName = playerService.FindPlayerById(x.OwnerId).UsernameInGame;
+                re.OwnerName = playerService.FindById(x.OwnerId).UsernameInGame;
                 re.ImageUrl = x.Game.ImageUrl;
                 re.TakenPlaces = x.NumberOfPlayers;
                 return re;

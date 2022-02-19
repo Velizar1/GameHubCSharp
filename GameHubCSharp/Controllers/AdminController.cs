@@ -55,7 +55,7 @@ namespace GameHubCSharp.Controllers
             var users = userService.FindAll();
             var posts = postService.FindAll();
             var games = gameService.FindAll();
-            var categories = categoryService.FindAllAsync();
+            var categories = categoryService.FindAll();
             var model = new AdminHomeViewModel() { Users = users, GameEvents = events.ToList(), Posts = posts, Games = games, Categories = categories };
 
             model.Add = addType;
@@ -67,69 +67,69 @@ namespace GameHubCSharp.Controllers
         }
 
         [HttpGet]
-        public IActionResult DeleteUser(string id, string addType = "Game", string deleteType = "User")
+        public async Task<IActionResult> DeleteUser(Guid id, string addType = "Game", string deleteType = "User")
         {
             deleteType = deleteType.Split("Proxy")[0];
-            userService.Delete(id);
+            await userService.DeleteAsync(id);
             return RedirectToAction("AdminHome", "Admin");
         }
 
         [HttpGet]
-        public IActionResult DeleteCategory(string id, string addType = "Game", string deleteType = "User")
+        public async Task<IActionResult> DeleteCategory(Guid id, string addType = "Game", string deleteType = "User")
         {
             deleteType = deleteType.Split("Proxy")[0];
-            categoryService.Delete(id);
+            await categoryService.DeleteAsync(id);
             return RedirectToAction("AdminHome", "Admin",new { AddType = addType , DeleteType = deleteType });
         }
 
         [HttpGet]
-        public IActionResult DeleteEvent(string id, string addType = "Game", string deleteType = "User")
+        public async Task<IActionResult> DeleteEvent(Guid id, string addType = "Game", string deleteType = "User")
         {
             deleteType = deleteType.Split("Proxy")[0];
             var eventt = mapper.Map<GameEventViewModel>(gameEventService.FindEventById(id));
             if (eventt != null && eventt.Id != null)
-                gameEventService.DeleteEvent(eventt);
+                await gameEventService.DeleteEventAsync(eventt.Id);
             return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
         [HttpGet]
-        public IActionResult DeleteGame(string id, string addType = "Game", string deleteType = "User")
+        public async Task<IActionResult> DeleteGame(Guid id, string addType = "Game", string deleteType = "User")
         {
             deleteType = deleteType.Split("Proxy")[0];
-            gameService.Delete(id);
+            await gameService.DeleteAsync(id);
             return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
         [HttpGet]
-        public IActionResult DeletePost(string id, string addType = "Game", string deleteType = "User")
+        public async Task<IActionResult> DeletePost(Guid id, string addType = "Game", string deleteType = "User")
         {
             deleteType = deleteType.Split("Proxy")[0];
-            postService.RemovePostById(id);
+            await postService.RemovePostByIdAsync(id);
             return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
         [HttpPost]
-        public IActionResult AddCategory(AdminHomeViewModel model)
+        public async Task<IActionResult> AddCategory(AdminHomeViewModel model)
         {
-            categoryService.AddAsync(model.Category);
+            await categoryService.AddAsync(model.Category);
             return RedirectToAction("AdminHome","Admin");
         }
 
         [HttpPost]
-        public IActionResult AddGame(AdminHomeViewModel model)
+        public async Task<IActionResult> AddGame(AdminHomeViewModel model)
         {
-            gameService.Add(mapper.Map<Game>(model.GameViewModel));
+            await gameService.AddAsync(mapper.Map<Game>(model.GameViewModel));
             return RedirectToAction("AdminHome", "Admin");
         }
 
         [HttpPost]
-        public IActionResult AddPost(string setCat,AdminHomeViewModel model)
+        public async Task<IActionResult> AddPost(string setCat,AdminHomeViewModel model)
         {
 
-            model.Post.Category = categoryService.FindByTypeAsync(setCat);
+            model.Post.Category = categoryService.FindByType(setCat);
             model.Post.Creator = userService.FindUserByName(User.Identity.Name);
             model.Post.CreatedAt = DateTime.Now;
-            postService.AddPost(model.Post);
+            await postService.AddPostAsync(model.Post);
             return RedirectToAction("AdminHome", "Admin");
         }
 

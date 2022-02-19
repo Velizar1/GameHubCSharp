@@ -25,6 +25,13 @@ namespace GameHubCSharp.BL.Services
             await repository.DeleteAsync(category);
         }
 
+        public async Task DeleteAsync(Guid id)
+        {
+            var category = repository.All<Category>(x => x.Id == id)
+                .FirstOrDefault();
+            await repository.DeleteAsync(category);
+        }
+
         public List<Category> FindAll()
         {
             return repository.AllReadOnly<Category>()
