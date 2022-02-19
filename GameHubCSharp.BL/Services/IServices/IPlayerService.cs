@@ -6,11 +6,10 @@ namespace GameHubCSharp.BL.Services.IServices
 {
     public interface IPlayerService
     {
-        public Player DeletePlayer(Guid playerId);
-        public Player FindPlayerById(Guid id);
-        public Player Add(Player player);
+        public Task<Player> DeleteAsync(Guid playerId);
+        public Player FindById(Guid id);
+        public Task<Player> AddAsync(Player player);
         public Player FindPlayerByNick(string userNick);
         public Task<Player> ChangeStatusAsync(string name, bool status);
-        public Player ChangeStatus(string name, bool status);
     }
 }

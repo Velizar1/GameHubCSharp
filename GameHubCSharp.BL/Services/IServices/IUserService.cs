@@ -9,10 +9,10 @@ namespace GameHubCSharp.BL.Services.IServices
         public User FindUserById(string userId);
         public User FindUserByName(string userId);
         public List<User> FindAll();
-        public void Delete(string id);
+        public Task DeleteAsync(string id);
 
-        public Task<List<Notification>> ChangeStatus(string userName);
+        public Task<List<Notification>> ChangeStatusAsync(string userName);
         public List<Notification> FindAllNotifications(string userName);
-        public Notification AddNotification(Notification notification ,string userId);
+        public Task<Notification> AddNotificationAsync(Notification notification ,string userId);
     }
 }

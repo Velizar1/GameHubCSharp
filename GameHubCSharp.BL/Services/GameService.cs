@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameHubCSharp.DAL.Repositories.Interfaces;
 
 namespace GameHubCSharp.BL.Services
 {
@@ -12,42 +13,52 @@ namespace GameHubCSharp.BL.Services
     {
         private readonly ApplicationDbContext db;
         private readonly IGameEventService gameEventService;
+        private readonly IRepository repository;
 
-        public GameService(ApplicationDbContext db,IGameEventService gameEventService)
+        public GameService(ApplicationDbContext db,IGameEventService gameEventService, IRepository repository)
         {
             this.db = db;
             this.gameEventService = gameEventService;
+            this.repository = repository;
         }
 
-        public void Add(Game game)
+        public async Task AddAsync(Game game)
         {
-            db.Games.Add(game);
-            db.SaveChanges();
+            await repository.CreateAsync(game);
+            await repository.SaveChangesAsync();
         }
 
-        public void Delete(string id)
+        public async Task DeleteAsync(string id)
         {
             var game = FindGameById(id);
-            var events = gameEventService.FindAll().Where(x => x.Game.Id == game.Id);
+            var events = gameEventService
+                .FindAll()
+                .Where(x => x.Game.Id == game.Id);
 
             db.RemoveRange(events);
-            db.Remove(game);
-            db.SaveChanges();
+            await repository.DeleteAsync(game);
+            await repository.SaveChangesAsync();
         }
 
         public List<Game> FindAll()
         {
-            return db.Games.ToList();
+            return repository
+                .All<Game>()
+                .ToList();
         }
 
         public Game FindGameById(string id)
         {
-            return db.Games.FirstOrDefault(g => g.Id.ToString() == id);
+            return repository
+                .All<Game>()
+                .FirstOrDefault(g => g.Id.ToString() == id);
         }
 
         public Game FindGameByName(string name)
         {
-            return db.Games.FirstOrDefault(x => x.GameName == name);
+            return repository
+                .All<Game>()
+                .FirstOrDefault(x => x.GameName == name);
         }
     }
 }

@@ -5,32 +5,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameHubCSharp.DAL.Repositories.Interfaces;
 
 namespace GameHubCSharp.BL.Services
 {
     public class NotificationService : INotificationService
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly IRepository repository;
 
-        public NotificationService(ApplicationDbContext dbContext)
+        public NotificationService(IRepository repository)
         {
-            this.dbContext = dbContext;
+            this.repository = repository;
         }
 
-        public Notification Add(Notification notification)
+        public async Task<Notification> AddAsync(Notification notification)
         {
-            dbContext.Notifications.Add(notification);
-            dbContext.SaveChanges();
+            await repository.CreateAsync(notification);
+            await repository.SaveChangesAsync();
             return notification;
         }
 
-        public Notification Delete(Notification notification)
+        public async Task<Notification> DeleteAsync(Notification notification)
         {
-            var notiff = dbContext.Notifications.Where(n => n.Id == notification.Id).FirstOrDefault();
+            var notiff = repository
+                .All<Notification>()
+                .FirstOrDefault(n => n.Id == notification.Id);
+
             if (notiff != null)
             {
-                dbContext.Remove(notiff);
-                dbContext.SaveChanges();
+                await repository.DeleteAsync(notiff);
+                await repository.SaveChangesAsync();
                 return notiff;
             }
             return null;
@@ -38,7 +42,10 @@ namespace GameHubCSharp.BL.Services
 
         public List<Notification> GetForEvent(GameEvent gameEvent)
         {
-            return dbContext.Notifications.Where(n => n.GameEvent.Id == gameEvent.Id).ToList();
+            return repository
+                .All<Notification>()
+                .Where(n => n.GameEvent.Id == gameEvent.Id)
+                .ToList();
         }
     }
 }

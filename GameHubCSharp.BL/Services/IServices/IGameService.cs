@@ -10,8 +10,8 @@ namespace GameHubCSharp.BL.Services.IServices
     {
         public Game FindGameByName(string name);
         public Game FindGameById(string id);
-        public void Add(Game game);
-        public void Delete(string id);
+        public Task AddAsync(Game game);
+        public Task DeleteAsync(string id);
         public List<Game> FindAll();
 
     }

@@ -86,7 +86,7 @@ namespace GameHubCSharp.Controllers
         public IActionResult DeleteEvent(string id, string addType = "Game", string deleteType = "User")
         {
             deleteType = deleteType.Split("Proxy")[0];
-            var eventt = mapper.Map<GameEventViewModel>(gameEventService.FindEventsById(id));
+            var eventt = mapper.Map<GameEventViewModel>(gameEventService.FindEventById(id));
             if (eventt != null && eventt.Id != null)
                 gameEventService.DeleteEvent(eventt);
             return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });

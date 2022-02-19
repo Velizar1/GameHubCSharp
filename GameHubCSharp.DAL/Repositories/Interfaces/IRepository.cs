@@ -12,7 +12,7 @@ namespace GameHubCSharp.DAL.Repositories.Interfaces
         Task<T> UpdateAsync<T>(T data) where T : class;
         Task DeleteAsync<T>(T data) where T : class;
         Task<T> CreateAsync<T>(T data) where T : class;
-        Task<int> SavechangesAsync();
+        Task<int> SaveChangesAsync();
         IQueryable<T> All<T>() where T : class;
         IQueryable<T> AllReadOnly<T>() where T : class;
         IQueryable<T> All<T>(Expression<Func<T, bool>> expression) where T : class;

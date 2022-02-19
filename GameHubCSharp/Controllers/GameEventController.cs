@@ -49,7 +49,7 @@ namespace GameHubCSharp.Controllers
         [HttpGet("/game/detail/")]
         public IActionResult GameEventDetail(string id, bool? valid = true)
         {
-            var gameEvent = gameEventService.FindEventsById(id);
+            var gameEvent = gameEventService.FindEventById(id);
             if (gameEvent == null)
             {
                 return RedirectToAction("Error", "Home");
@@ -101,7 +101,7 @@ namespace GameHubCSharp.Controllers
             object obj = new { id = gameEventId };
             var playerInGameEvent = gameEventService.FindPlayerByNick(userNick, gameEventId);
 
-            var gameEvent = gameEventService.FindEventsById(gameEventId);
+            var gameEvent = gameEventService.FindEventById(gameEventId);
             var owner = playerService.FindPlayerById(gameEvent.OwnerId);
 
             if (playerInGameEvent == null)
@@ -147,7 +147,7 @@ namespace GameHubCSharp.Controllers
             object obj = new { id = roomId };
             var playerInGameEvent = gameEventService.FindPlayerByNick(playerName, roomId);
 
-            var gameEvent = gameEventService.FindEventsById(roomId);
+            var gameEvent = gameEventService.FindEventById(roomId);
             var owner = playerService.FindPlayerById(gameEvent.OwnerId);
 
             if (playerInGameEvent != null)
@@ -188,7 +188,7 @@ namespace GameHubCSharp.Controllers
             object obj = new { id = roomId };
             var playerInGameEvent = gameEventService.FindPlayerByNick(playerName, roomId);
 
-            var gameEvent = gameEventService.FindEventsById(roomId);
+            var gameEvent = gameEventService.FindEventById(roomId);
             var owner = playerService.FindPlayerById(gameEvent.OwnerId);
 
             if (playerInGameEvent != null)
