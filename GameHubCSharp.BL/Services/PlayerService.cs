@@ -20,8 +20,6 @@ namespace GameHubCSharp.BL.Services
         public async Task<Player> AddAsync(Player player)
         {
             await repository.CreateAsync(player);
-            await repository.SaveChangesAsync();
-
             return player;
         }
 
@@ -33,7 +31,6 @@ namespace GameHubCSharp.BL.Services
 
             player.Status = status;
 
-            await repository.SaveChangesAsync();
             return player;
         }
 
@@ -44,15 +41,13 @@ namespace GameHubCSharp.BL.Services
                 .FirstOrDefault(p => p.Id == playerId);
 
             await repository.DeleteAsync(player);
-            await repository.SaveChangesAsync();
-
             return player;
         }
 
         public Player FindById(Guid id)
         {
             var player = repository
-                .All<Player>()
+                .AllReadOnly<Player>()
                 .FirstOrDefault(p => p.Id == id);
 
             return player;
@@ -61,8 +56,8 @@ namespace GameHubCSharp.BL.Services
         public Player FindPlayerByNick(string userNick)
         {
             return repository
-                .All<Player>().
-                FirstOrDefault(x => x.UsernameInGame == userNick);
+                .AllReadOnly<Player>()
+                .FirstOrDefault(x => x.UsernameInGame == userNick);
         }
     }
 }
