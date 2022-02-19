@@ -55,7 +55,7 @@ namespace GameHubCSharp.Controllers
             var users = userService.FindAll();
             var posts = postService.FindAll();
             var games = gameService.FindAll();
-            var categories = categoryService.FindAll();
+            var categories = categoryService.FindAllAsync();
             var model = new AdminHomeViewModel() { Users = users, GameEvents = events.ToList(), Posts = posts, Games = games, Categories = categories };
 
             model.Add = addType;
@@ -111,7 +111,7 @@ namespace GameHubCSharp.Controllers
         [HttpPost]
         public IActionResult AddCategory(AdminHomeViewModel model)
         {
-            categoryService.Add(model.Category);
+            categoryService.AddAsync(model.Category);
             return RedirectToAction("AdminHome","Admin");
         }
 
@@ -126,7 +126,7 @@ namespace GameHubCSharp.Controllers
         public IActionResult AddPost(string setCat,AdminHomeViewModel model)
         {
 
-            model.Post.Category = categoryService.FindByName(setCat);
+            model.Post.Category = categoryService.FindByTypeAsync(setCat);
             model.Post.Creator = userService.FindUserByName(User.Identity.Name);
             model.Post.CreatedAt = DateTime.Now;
             postService.AddPost(model.Post);

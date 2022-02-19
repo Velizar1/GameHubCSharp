@@ -6,54 +6,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameHubCSharp.DAL.Repositories.Interfaces;
+using GameHubCSharp.DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameHubCSharp.BL.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService : BaseService, ICategoryService
     {
-        private readonly ApplicationDbContext db;
-        private readonly IRepository repository;
+        public CategoryService(IRepository _repository) : base(_repository) { }
 
-        public CategoryService(ApplicationDbContext db, IRepository repository)
-        {
-            this.db = db;
-            this.repository = repository;
-        }
         public async Task AddAsync(Category category)
         {
             await repository.CreateAsync(category);
-            await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(Category category)
         {
-            var category = repository
-                .All<Category>()
-                .FirstOrDefault(x => x.Id.ToString() == id);
-
             await repository.DeleteAsync(category);
-            await repository.SaveChangesAsync();
         }
 
         public List<Category> FindAll()
         {
-            return repository
-                .All<Category>()
+            return repository.AllReadOnly<Category>()
                 .ToList();
         }
 
-        public Category FindById(string id)
+        public Category FindById(Guid id)
         {
-            return repository
-                .All<Category>()
-                .FirstOrDefault(x => x.Id.ToString() == id);
+            return repository.AllReadOnly<Category>()
+                .FirstOrDefault(x => x.Id == id);
         }
 
-        public Category FindByName(string type)
+        public Category FindByType(string type)
         {
-            return repository
-                .All<Category>()
+            return repository.AllReadOnly<Category>()
                 .FirstOrDefault(x => x.Type == type);
         }
+
     }
 }

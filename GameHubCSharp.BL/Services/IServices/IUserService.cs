@@ -1,18 +1,18 @@
 ﻿using GameHubCSharp.DAL.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
-    public interface IUserService
+    public interface IUserService : IBaseService
     {
-        public User FindUserById(string userId);
-        public User FindUserByName(string userId);
+        public User FindUserById(Guid userId);
+        public User FindUserByName(string userName);
         public List<User> FindAll();
-        public Task DeleteAsync(string id);
-
-        public Task<List<Notification>> ChangeStatusAsync(string userName);
-        public List<Notification> FindAllNotifications(string userName);
-        public Task<Notification> AddNotificationAsync(Notification notification ,string userId);
+        public Task DeleteAsync(Guid id);
+        public Task<List<Notification>> ChangeNotificationStatusToReadAsync(Guid userId);
+        public List<Notification> FindAllNotificationsByUserId(Guid userId);
+        public Task<Notification> AddNotificationAsync(Notification notification ,Guid userId);
     }
 }

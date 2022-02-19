@@ -76,14 +76,14 @@ namespace GameHubCSharp.Controllers
         {
 
             var gameEve = mapper.Map<GameEvent>(gameEvent);
-            var game = gameService.FindGameByName(gameEvent.GameName);
+            var game = gameService.FindGameByNameAsync(gameEvent.GameName);
             gameEve.Game = game;
             var player = playerService.Add(new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = gameEvent.OwnerName });
             gameEve.OwnerId = player.Id;
 
             player.GameEventsOwn.Add(gameEve);
 
-            gameEventService.Add(gameEve);
+            gameEventService.AddAsync(gameEve);
             return RedirectToAction("Home", "Home");
         }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
-    public interface IHomeService
+    public interface IHomeService : IBaseService
     {
         public ICollection<Game> FindAllGames();
     }

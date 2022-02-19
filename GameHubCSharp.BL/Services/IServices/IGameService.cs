@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
-    public interface IGameService
+    public interface IGameService : IBaseService
     {
         public Game FindGameByName(string name);
-        public Game FindGameById(string id);
+        public Game FindGameById(Guid id);
         public Task AddAsync(Game game);
-        public Task DeleteAsync(string id);
+        public Task DeleteAsync(Guid id);
         public List<Game> FindAll();
 
     }

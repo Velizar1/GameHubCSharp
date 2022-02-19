@@ -9,17 +9,11 @@ using GameHubCSharp.DAL.Repositories.Interfaces;
 
 namespace GameHubCSharp.BL.Services
 {
-    public class GameService : IGameService
+    public class GameService : BaseService, IGameService
     {
-        private readonly ApplicationDbContext db;
-        private readonly IGameEventService gameEventService;
-        private readonly IRepository repository;
 
-        public GameService(ApplicationDbContext db,IGameEventService gameEventService, IRepository repository)
-        {
-            this.db = db;
-            this.gameEventService = gameEventService;
-            this.repository = repository;
+        public GameService(IRepository _repository) : base(_repository)
+        {     
         }
 
         public async Task AddAsync(Game game)
@@ -28,36 +22,33 @@ namespace GameHubCSharp.BL.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(Guid id)
         {
             var game = FindGameById(id);
-            var events = gameEventService
-                .FindAll()
-                .Where(x => x.Game.Id == game.Id);
+            var events = repository.AllReadOnly<GameEvent>()
+                .Where(x => x.Game.Id == game.Id)
+                .ToList();
 
-            db.RemoveRange(events);
+            await repository.DeleteRangeAsync(events);
             await repository.DeleteAsync(game);
             await repository.SaveChangesAsync();
         }
 
         public List<Game> FindAll()
         {
-            return repository
-                .All<Game>()
+            return repository.AllReadOnly<Game>()
                 .ToList();
         }
 
-        public Game FindGameById(string id)
+        public Game FindGameById(Guid id)
         {
-            return repository
-                .All<Game>()
-                .FirstOrDefault(g => g.Id.ToString() == id);
+            return repository.AllReadOnly<Game>()
+                .FirstOrDefault(g => g.Id == id);
         }
 
         public Game FindGameByName(string name)
         {
-            return repository
-                .All<Game>()
+            return repository.AllReadOnly<Game>()
                 .FirstOrDefault(x => x.GameName == name);
         }
     }

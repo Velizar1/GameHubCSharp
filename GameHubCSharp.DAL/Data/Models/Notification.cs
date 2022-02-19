@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.DAL.Data.Models
 {
-    public class Notification : BaseModel
+    public class Notification : BaseModel, IEquatable<Notification>
     {
 
         public Guid GameEventId { get; set; }
-       
+
         [Required]
         public Guid SenderId { get; set; }
 
@@ -41,6 +41,13 @@ namespace GameHubCSharp.DAL.Data.Models
         public Notification()
         {
             CreatedAt = DateTime.Now;
+        }
+
+        public bool Equals(Notification other)
+        {
+            return SenderId.Equals(other.SenderId) &&
+                   RecipientId.Equals(other.RecipientId) &&
+                   Message.Equals(other.Message);
         }
     }
 }

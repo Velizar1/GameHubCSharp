@@ -26,7 +26,7 @@ namespace GameHubCSharp.Models.SchedulerMIdels
         }
         public Task Execute(IJobExecutionContext context)
         {
-            eventService.DeleteAllExpiredGameEvents();
+            eventService.DeleteAllExpiredGameEventsAsync();
             logger.LogInformation($"{DateTime.Now.Minute}");
             return Task.CompletedTask;
         }
