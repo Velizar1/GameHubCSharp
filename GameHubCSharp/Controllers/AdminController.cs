@@ -14,14 +14,9 @@ using System.Threading.Tasks;
 
 namespace GameHubCSharp.Controllers
 {
-
-
-
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-
-
         private IUserService userService;
         private IGameEventService gameEventService;
         private IHomeService homeService;
@@ -56,7 +51,7 @@ namespace GameHubCSharp.Controllers
             var posts = postService.FindAll();
             var games = gameService.FindAll();
             var categories = categoryService.FindAll();
-            var model = new AdminHomeViewModel() { Users = users, GameEvents = events.ToList(), Posts = posts, Games = games, Categories = categories };
+            var model = new AdminViewModel() { Users = users, GameEvents = events.ToList(), Posts = posts, Games = games, Categories = categories };
 
             model.Add = addType;
             model.Delete = deleteType;
@@ -109,24 +104,24 @@ namespace GameHubCSharp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCategory(AdminHomeViewModel model)
+        public async Task<IActionResult> AddCategory(AdminViewModel model)
         {
             await categoryService.AddAsync(model.Category);
             return RedirectToAction("AdminHome","Admin");
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddGame(AdminHomeViewModel model)
+        public async Task<IActionResult> AddGame(AdminViewModel model)
         {
-            await gameService.AddAsync(mapper.Map<Game>(model.GameViewModel));
+            await gameService.AddAsync(mapper.Map<Game>(model.Game));
             return RedirectToAction("AdminHome", "Admin");
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPost(string setCat,AdminHomeViewModel model)
+        public async Task<IActionResult> AddPost(string setCat,AdminViewModel model)
         {
 
-            model.Post.Category = categoryService.FindByType(setCat);
+            model.Post.CategoryId = categoryService.FindByType(setCat);
             model.Post.Creator = userService.FindUserByName(User.Identity.Name);
             model.Post.CreatedAt = DateTime.Now;
             await postService.AddPostAsync(model.Post);

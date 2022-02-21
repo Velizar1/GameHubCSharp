@@ -97,7 +97,7 @@ namespace GameHubCSharp.Controllers
             model = postService.FindAll(pageNumber ?? 1, pageSize, (categoryName??"")).Select(p =>
             {
                 var viewCat = mapper.Map<PostViewModel>(p);
-                viewCat.Category = p.Category.Type;
+                viewCat.CategoryId = p.Category.Type;
                 return viewCat;
             }).ToList();
 

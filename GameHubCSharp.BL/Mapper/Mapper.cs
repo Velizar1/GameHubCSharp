@@ -15,8 +15,8 @@ namespace GameHubCSharp.BL.Mapper
             CreateMap<GameEvent, GameEventViewModel>();
             CreateMap<GameEventViewModel, GameEvent>();
 
-            CreateMap<GameEventAddViewModel, GameEvent>();
-            CreateMap<GameEvent, GameEventAddViewModel>();
+            CreateMap<GameEventViewModel, GameEvent>();
+            CreateMap<GameEvent, GameEventViewModel>();
 
             CreateMap<GameEvent, HomeEventRestViewModel>();
             CreateMap<HomeEventRestViewModel, GameEvent>();
@@ -24,7 +24,7 @@ namespace GameHubCSharp.BL.Mapper
             CreateMap<Game, GameViewModel>();
             CreateMap<GameViewModel, Game>();
             
-            CreateMap<Player, PlayerViewModel>().ForMember(x => x.Username
+            CreateMap<Player, PlayerViewModel>().ForMember(x => x.UserId
             , m => m.MapFrom(src => src.User.UserName));// with options for binding Username to User.UserNamep
             CreateMap<PlayerViewModel, Player>();
 

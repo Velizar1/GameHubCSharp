@@ -1,5 +1,5 @@
 ﻿@using GameHubCSharp.BL.Models.DTO
-@model AdminHomeViewModel
+@model AdminViewModel
 
 <h1 class="text-white">Choose What To Add :</h1>
 <select class="browser-default mt-2" style="width: 15em;"
@@ -21,11 +21,11 @@
                 <div class="text-danger" asp-validation-summary="All"></div>
                 <label style="color: white;">GameName</label>
                 <div>
-                    <input asp-for="GameViewModel.GameName" class="form-control ">
+                    <input asp-for="Game.GameName" class="form-control ">
                 </div>
                 <label style="color: white;">ImageUrl</label>
                 <div>
-                    <input asp-for="GameViewModel.ImageUrl" class="form-control ">
+                    <input asp-for="Game.ImageUrl" class="form-control ">
                 </div>
             </div>
         </div>
@@ -191,7 +191,7 @@
                 <tr>
                     <th scope="row">@i</th>
                     <td>@cur.Id</td>
-                    <td>@cur.Game.GameName</td>
+                    <td>@cur.GameId.GameName</td>
                     <td><button id="logout-button" class="bg-danger text-white p-2" onclick="location.href = '/Admin/DeleteEvent/@cur.Id?deleteType=@cur.GetType().Name'">Delete</button></td>
 
                 </tr>

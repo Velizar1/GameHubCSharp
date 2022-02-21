@@ -55,8 +55,8 @@ namespace GameHubCSharp.Controllers
                 return RedirectToAction("Error", "Home");
             }
             var gameEve = mapper.Map<GameEventViewModel>(gameEvent);
-            gameEve.Owner = mapper.Map<PlayerViewModel>(playerService.FindById(gameEvent.OwnerId));
-            gameEve.Owner.Username = playerService.FindById(gameEve.Owner.Id).User.UserName;
+            gameEve.OwnerId = mapper.Map<PlayerViewModel>(playerService.FindById(gameEvent.OwnerId));
+            gameEve.OwnerId.Username = playerService.FindById(gameEve.OwnerId.Id).User.UserName;
            
             ViewData["valid"] = valid;
             return View(gameEve);
@@ -72,13 +72,13 @@ namespace GameHubCSharp.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> GameEventAdd(GameEventAddViewModel gameEvent)
+        public async Task<IActionResult> GameEventAdd(GameEventViewModel gameEvent)
         {
 
             var gameEve = mapper.Map<GameEvent>(gameEvent);
             var game = gameService.FindGameByName(gameEvent.GameName);
             gameEve.Game = game;
-            var player = await playerService.AddAsync(new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = gameEvent.OwnerName });
+            var player = await playerService.AddAsync(new Player() { User = userService.FindUserByName(User.Identity.Name), UsernameInGame = gameEvent.OwnerId });
             gameEve.OwnerId = player.Id;
 
             player.GameEventsOwn.Add(gameEve);
