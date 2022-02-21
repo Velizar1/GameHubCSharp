@@ -15,6 +15,8 @@ namespace GameHubCSharp.BL.Services.IServices
         public List<GameEvent> FindAll();
         public Task DeleteEventAsync(Guid id);
         public Task AddPlayerAsync(Player player, Guid gameEventId);
+        public string FindMostPlayedGame();
+        public long FindAllCount();
         public Player FindPlayerByNick(string userNick, Guid gameEventId);
         public Task DeleteAllExpiredGameEventsAsync();
     }

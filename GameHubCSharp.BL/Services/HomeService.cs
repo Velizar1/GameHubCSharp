@@ -21,7 +21,6 @@ namespace GameHubCSharp.BL.Services
         {
             return repository.AllReadOnly<Game>()
                 .ToList();
-
         }
     }
 }

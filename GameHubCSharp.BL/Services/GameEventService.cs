@@ -93,5 +93,14 @@ namespace GameHubCSharp.BL.Services
             await repository.DeleteRangeAsync(expiredEvents);
         }
 
+        public string FindMostPlayedGame()
+        {
+            return repository.AllReadOnly<GameEvent>()
+                .Include(x=>x.Game)
+                .GroupBy(x => x.Game.GameName)
+                .OrderByDescending(x => x.Count())
+                .First()
+                .Key;
+        }
     }
 }
