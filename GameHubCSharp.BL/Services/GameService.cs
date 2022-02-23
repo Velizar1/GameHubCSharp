@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameHubCSharp.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GameHubCSharp.BL.Services
 {
@@ -38,6 +39,21 @@ namespace GameHubCSharp.BL.Services
         {
             return repository.AllReadOnly<Game>()
                 .ToList();
+        }
+        public List<SelectListItem> FindAllSelectList()
+        {
+            return repository.AllReadOnly<Game>()
+                .Select(x => new SelectListItem()
+                {
+                    Text = x.Id.ToString(),
+                    Value=x.GameName
+                })
+                .ToList();
+        }
+        public int FindAllCount()
+        {
+            return repository.AllReadOnly<Game>()
+                .Count();
         }
 
         public Game FindGameById(Guid id)

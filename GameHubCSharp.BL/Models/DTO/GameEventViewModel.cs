@@ -10,6 +10,7 @@ namespace GameHubCSharp.BL.Models.DTO
         public Guid Id { get ; set; }
         public Guid GameId { get; set; }
         public Guid OwnerId { get; set; }
+        public string OwnerNickName { get; set; }
         public string Description { get ; set ; }
         public int NumberOfPlayers { get ; set ; }
         public string Devision { get ; set ; }

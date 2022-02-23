@@ -24,16 +24,16 @@ namespace GameHubCSharp.BL.Services
             return post;
         }
 
-        public int Count(string category = "")
+        public int Count(string categoryType = "")
         {
-            return repository.AllReadOnly<Post>(p => p.Category.Type == (category == "" ? p.Category.Type : category))
+            return repository.AllReadOnly<Post>(p => p.Category.Type == (categoryType == "" ? p.Category.Type : categoryType))
                 .Count();
         }
 
         public List<Post> FindAll(int? index, int size, string category = "")
         {
             return repository.AllReadOnly<Post>(p => p.Category.Type == (category == "" ? p.Category.Type : category))
-                .Skip((index ?? 1 - 1) * size)
+                .Skip(((index ?? 1) - 1) * size)
                 .Take(size)
                 .ToList();
         }

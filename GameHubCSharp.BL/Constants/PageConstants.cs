@@ -9,5 +9,6 @@ namespace GameHubCSharp.BL.Constants
     public static class PageConstants
     {
         public const int PageSize = 4;
+        public const int DefautPageNumber = 1;
     }
 }

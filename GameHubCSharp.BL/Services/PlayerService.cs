@@ -19,8 +19,7 @@ namespace GameHubCSharp.BL.Services
 
         public async Task<Player> AddAsync(Player player)
         {
-            await repository.CreateAsync(player);
-            return player;
+             return await repository.CreateAsync(player);
         }
 
         public async Task<Player> ChangeStatusAsync(string name, bool status)

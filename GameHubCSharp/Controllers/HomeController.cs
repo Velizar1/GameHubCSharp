@@ -86,24 +86,21 @@ namespace GameHubCSharp.Controllers
         [HttpGet]
         public IActionResult News(int? pageNumber, string categoryName, string currentFilter, string searchString)
         {
-            var count = postService.Count(categoryName ?? "");
-            List<PostViewModel> model;
-            ViewData["Category"] = categoryName;
-            model = postService.FindAll(pageNumber ?? PageConstants.DefautPageNumber, PageConstants.PageSize, (categoryName ?? "")).Select(p =>
-              {
-                  var viewCat = mapper.Map<PostViewModel>(p);
-                  viewCat.CategoryId = p.Category.Id;
+
+            var model = postService.FindAll(pageNumber ?? PageConstants.DefautPageNumber, PageConstants.PageSize, (categoryName ?? ""))
+                .Select(p =>
+                {
+                  var viewCat = mapper.Map<PostViewModel>(p); 
+                    //check logic
+                    //viewCat.CategoryId = p.Category.Id;
                   return viewCat;
-              }).ToList();
+                })
+                .ToList();
 
+            var count = postService.Count(categoryName ?? "");
 
-
-            ViewData["PageNumber"] = pageNumber ?? PageConstants.DefautPageNumber;
-            var totalPages = (int)Math.Ceiling(count / (double)PageConstants.PageSize);
-            ViewData["HasNext"] = (pageNumber ?? PageConstants.DefautPageNumber) < totalPages ? "" : "disabled";
-            ViewData["HasPrev"] = (pageNumber ?? PageConstants.DefautPageNumber) > PageConstants.DefautPageNumber ? "" : "disabled";
-            ViewData["Categories"] = categorySevice.FindAll();
-
+            SetPageViewData(pageNumber, count);
+            SetCategoryViewData(categoryName);
             return View(model);
         }
 
@@ -132,6 +129,20 @@ namespace GameHubCSharp.Controllers
                 }
                 ViewData["GameNames"] = gameService.FindAll().Select(x => x.GameName).ToList();
             }
+
+        }
+        private void SetCategoryViewData(string categoryName)
+        {
+            ViewData["Category"] = categoryName;
+            ViewData["Categories"] = categorySevice.FindAll();
+        }
+        private void SetPageViewData(int? pageNumber, int count)
+        {
+
+            ViewData["PageNumber"] = pageNumber ?? PageConstants.DefautPageNumber;
+            var totalPages = (int)Math.Ceiling(count / (double)PageConstants.PageSize);
+            ViewData["HasNext"] = (pageNumber ?? PageConstants.DefautPageNumber) < totalPages ? "" : "disabled";
+            ViewData["HasPrev"] = (pageNumber ?? PageConstants.DefautPageNumber) > PageConstants.DefautPageNumber ? "" : "disabled";
 
         }
     }

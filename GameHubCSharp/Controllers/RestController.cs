@@ -91,7 +91,7 @@ namespace GameHubCSharp.Controllers
                 HomeEventRestViewModel homeEventRestView = new HomeEventRestViewModel();
                 homeEventRestView.Devision = el.Devision;
                 homeEventRestView.ImageUrl = el.Game.ImageUrl;
-                homeEventRestView.Id = el.Id.ToString();
+                homeEventRestView.Id = el.Id;
                 homeEventRestView.OwnerName = playerService.FindById(el.OwnerId).UsernameInGame;
                 homeEventRestView.TakenPlaces = el.NumberOfPlayers;
                 homeEventRestView.StartDate = el.StartDate;

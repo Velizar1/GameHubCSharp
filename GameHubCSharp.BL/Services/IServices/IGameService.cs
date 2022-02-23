@@ -1,4 +1,5 @@
 ﻿using GameHubCSharp.DAL.Data.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace GameHubCSharp.BL.Services.IServices
         public Task AddAsync(Game game);
         public Task DeleteAsync(Guid id);
         public List<Game> FindAll();
-
+        public List<SelectListItem> FindAllSelectList();
+        public int FindAllCount();
     }
 }
