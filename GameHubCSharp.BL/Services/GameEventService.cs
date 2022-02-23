@@ -102,5 +102,11 @@ namespace GameHubCSharp.BL.Services
                 .First()
                 .Key;
         }
+
+        public long FindAllCount()
+        {
+            return repository.AllReadOnly<GameEvent>()
+                .Count();
+        }
     }
 }

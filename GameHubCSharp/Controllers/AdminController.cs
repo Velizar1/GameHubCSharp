@@ -46,12 +46,13 @@ namespace GameHubCSharp.Controllers
         }
         public IActionResult AdminHome(string addType = "Game",string deleteType = "User")
         {
-            var events = gameEventService.FindAll();
+            //set ViewData
+          /*  var events = gameEventService.FindAll();
             var users = userService.FindAll();
             var posts = postService.FindAll();
             var games = gameService.FindAll();
-            var categories = categoryService.FindAll();
-            var model = new AdminViewModel() { Users = users, GameEvents = events.ToList(), Posts = posts, Games = games, Categories = categories };
+            var categories = categoryService.FindAll();*/
+            var model = new AdminViewModel() { };
 
             model.Add = addType;
             model.Delete = deleteType;
@@ -106,7 +107,7 @@ namespace GameHubCSharp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategory(AdminViewModel model)
         {
-            await categoryService.AddAsync(model.Category);
+            await categoryService.AddAsync(mapper.Map<Category>(model.Category));
             return RedirectToAction("AdminHome","Admin");
         }
 
@@ -121,10 +122,11 @@ namespace GameHubCSharp.Controllers
         public async Task<IActionResult> AddPost(string setCat,AdminViewModel model)
         {
 
-            model.Post.CategoryId = categoryService.FindByType(setCat);
-            model.Post.Creator = userService.FindUserByName(User.Identity.Name);
+            model.Post.CategoryId = categoryService.FindByType(setCat).Id;
+            model.Post.CreatorId = (await userManager.GetUserAsync(User)).Id;
             model.Post.CreatedAt = DateTime.Now;
-            await postService.AddPostAsync(model.Post);
+            await postService.AddPostAsync(mapper.Map<Post>(model.Post));
+            await postService.SaveChangesAsync();
             return RedirectToAction("AdminHome", "Admin");
         }
 
