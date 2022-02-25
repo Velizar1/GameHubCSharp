@@ -48,20 +48,19 @@ namespace GameHubCSharp.Controllers
         [HttpGet("/findToDelete")]
         public IActionResult Find(Guid id, string type)
         {
-            if (type == "GameEvent")
-                return Ok(gameEventService.FindEventById(id));
-
-            else if (type == "Game")
-                return Ok(gameService.FindGameById(id));
-
-            else if (type == "Post")
-                return Ok(postService.FindPostById(id));
-
-            else if (type == "Category")
-                return Ok(categoryService.FindById(id));
-
-            else if (type == "User")
-                return Ok(userService.FindUserById(id));
+            switch (type)
+            {
+                case "GameEvent":
+                    return Ok(gameEventService.FindEventById(id));
+                case "Game":
+                    return Ok(gameService.FindGameById(id));
+                case "Post":
+                    return Ok(postService.FindPostById(id));
+                case "Category":
+                    return Ok(categoryService.FindById(id));
+                case "User":
+                    return Ok(userService.FindUserById(id));
+            }
 
             return NotFound();
         }

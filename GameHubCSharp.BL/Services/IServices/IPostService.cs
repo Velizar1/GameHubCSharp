@@ -14,7 +14,7 @@ namespace GameHubCSharp.BL.Services.IServices
         public List<Post> FindPostsByCreator(User creator);
         public Task<Post> AddPostAsync(Post post);
         public Task RemovePostAsync(Post post);
-        public Task RemovePostByIdAsync(Guid id);
+        public Task DeleteAsync(Guid id);
         public List<Post> FindAll();
         public int Count(string category = "");
         public List<Post> FindAll(int? index, int pagesize, string category = "");

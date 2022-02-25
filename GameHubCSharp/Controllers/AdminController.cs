@@ -44,20 +44,22 @@ namespace GameHubCSharp.Controllers
             this.userManager = userManager;
             this.db = db;
         }
-        public IActionResult AdminHome(string addType = "Game",string deleteType = "User")
+        public IActionResult AdminHome(string addType = "Game", string deleteType = "User")
         {
             //set ViewData
-          /*  var events = gameEventService.FindAll();
+            var events = gameEventService.FindAll();
             var users = userService.FindAll();
             var posts = postService.FindAll();
             var games = gameService.FindAll();
-            var categories = categoryService.FindAll();*/
-            var model = new AdminViewModel() { };
+            var categories = categoryService.FindAll();
 
-            model.Add = addType;
-            model.Delete = deleteType;
+            ViewData["events"] = events;
+            ViewData["users"] = users;
+            ViewData["posts"] = posts;
+            ViewData["games"] = games;
+            ViewData["categories"] = categories;
 
-
+            var model = new AdminViewModel() { Add = addType, Delete = deleteType };
 
             return View(model);
         }
@@ -65,17 +67,17 @@ namespace GameHubCSharp.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteUser(Guid id, string addType = "Game", string deleteType = "User")
         {
-            deleteType = deleteType.Split("Proxy")[0];
-            await userService.DeleteAsync(id);
+            await DeleteAsync(userService, id, deleteType);
             return RedirectToAction("AdminHome", "Admin");
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> DeleteCategory(Guid id, string addType = "Game", string deleteType = "User")
         {
-            deleteType = deleteType.Split("Proxy")[0];
-            await categoryService.DeleteAsync(id);
-            return RedirectToAction("AdminHome", "Admin",new { AddType = addType , DeleteType = deleteType });
+            await DeleteAsync(categoryService, id, deleteType);
+            return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
         [HttpGet]
@@ -84,23 +86,21 @@ namespace GameHubCSharp.Controllers
             deleteType = deleteType.Split("Proxy")[0];
             var eventt = mapper.Map<GameEventViewModel>(gameEventService.FindEventById(id));
             if (eventt != null && eventt.Id != null)
-                await gameEventService.DeleteEventAsync(eventt.Id);
+                await gameEventService.DeleteAsync(eventt.Id);
             return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
         [HttpGet]
         public async Task<IActionResult> DeleteGame(Guid id, string addType = "Game", string deleteType = "User")
         {
-            deleteType = deleteType.Split("Proxy")[0];
-            await gameService.DeleteAsync(id);
+            await DeleteAsync(gameService, id, deleteType);
             return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
         [HttpGet]
         public async Task<IActionResult> DeletePost(Guid id, string addType = "Game", string deleteType = "User")
         {
-            deleteType = deleteType.Split("Proxy")[0];
-            await postService.RemovePostByIdAsync(id);
+            await DeleteAsync(postService, id, deleteType);
             return RedirectToAction("AdminHome", "Admin", new { AddType = addType, DeleteType = deleteType });
         }
 
@@ -108,7 +108,7 @@ namespace GameHubCSharp.Controllers
         public async Task<IActionResult> AddCategory(AdminViewModel model)
         {
             await categoryService.AddAsync(mapper.Map<Category>(model.Category));
-            return RedirectToAction("AdminHome","Admin");
+            return RedirectToAction("AdminHome", "Admin");
         }
 
         [HttpPost]
@@ -119,7 +119,7 @@ namespace GameHubCSharp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPost(string setCat,AdminViewModel model)
+        public async Task<IActionResult> AddPost(string setCat, AdminViewModel model)
         {
 
             model.Post.CategoryId = categoryService.FindByType(setCat).Id;
@@ -130,11 +130,16 @@ namespace GameHubCSharp.Controllers
             return RedirectToAction("AdminHome", "Admin");
         }
 
-    
+
         public IActionResult RedirectTo(string url)
         {
             return RedirectPermanent(url);
         }
 
+        public async Task DeleteAsync(dynamic service, Guid id, string deleteType)
+        {
+            deleteType = deleteType.Split("Proxy")[0];
+            await userService.DeleteAsync(id);
+        }
     }
 }

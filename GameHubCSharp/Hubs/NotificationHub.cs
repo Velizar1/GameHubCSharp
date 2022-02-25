@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
+using GameHubCSharp.BL.Models.DTO;
+using GameHubCSharp.BL.Services.IServices;
 using GameHubCSharp.DAL.Data;
 using GameHubCSharp.Models;
-using GameHubCSharp.BL.Models.DTO;
-using GameHubCSharp.BL.Services;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameHubCSharp.BL.Services.IServices;
 
 namespace GameHubCSharp.Hubs
 {
@@ -20,7 +18,13 @@ namespace GameHubCSharp.Hubs
         private readonly IMapper mapper;
         private readonly IPlayerService playerService;
 
-        public NotificationHub(ApplicationDbContext db, IUserService userService, IGameEventService gameEventService, IMapper mapper, IPlayerService playerService)
+
+        //----Notifications------------------
+        public NotificationHub(ApplicationDbContext db,
+            IUserService userService,
+            IGameEventService gameEventService,
+            IMapper mapper,
+            IPlayerService playerService)
         {
             this.db = db;
             this.userService = userService;
@@ -35,41 +39,47 @@ namespace GameHubCSharp.Hubs
             var list = player.User.NotificationsRecived;
             await this.Clients.User(ConnectionIdProvider.ids[player.User.UserName]).SendAsync("ReceiveNotfication", new
             {
-                Notifications = list.OrderByDescending(x=>x.CreatedAt).ToArray(),
+                Notifications = list.OrderByDescending(x => x.CreatedAt).ToArray(),
                 NotCount = player.User.NotificationsRecived.Count(n => n.IsRead == false)
-            }) ;
+            });
         }
         public async Task SendNotificationToUser(string userId)
         {
-            var user = db.Users.FirstOrDefault(x => x.Id.ToString() == userId); 
-            var list =user.NotificationsRecived;
+            var user = db.Users.FirstOrDefault(x => x.Id.ToString() == userId);
+            var list = user.NotificationsRecived;
             await this.Clients.User(ConnectionIdProvider.ids[user.UserName]).SendAsync("ReceiveNotfication", new
             {
-                Notifications = list.OrderByDescending(x=>x.CreatedAt).ToArray(),
+                Notifications = list.OrderByDescending(x => x.CreatedAt).ToArray(),
                 NotCount = user.NotificationsRecived.Count(n => n.IsRead == false)
             });
         }
         public async Task NotificationCount(Guid userId)
         {
             var nots = await userService.ChangeNotificationStatusToReadAsync(userId); // Change to user name
-            await this.Clients.User(ConnectionIdProvider.ids[userId.ToString()]).SendAsync("UpdateNotifications", new { Notifications = nots.OrderByDescending(x=>x.CreatedAt).ToArray() });
+            await this.Clients.User(ConnectionIdProvider.ids[userId.ToString()]).SendAsync("UpdateNotifications", new { Notifications = nots.OrderByDescending(x => x.CreatedAt).ToArray() });
         }
         public override Task OnConnectedAsync()
         {
-            try
-            {
+            if (ConnectionIdProvider.ids[Context.User.Identity.Name] == null)
                 ConnectionIdProvider.ids[Context.User.Identity.Name] = Context.UserIdentifier;//ConectionId of Guests and Users
-            }
-            catch { }
-            
+
             return base.OnConnectedAsync();
         }
 
-        /////////////
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            ConnectionIdProvider.ids.Clear();
+            ConnectionIdProvider.notifications.Clear();
+            ConnectionIdProvider.events.Clear();
+            return base.OnDisconnectedAsync(exception);
+        }
+
+        //---------GameEvents---------------
         public async Task UpdateEvents()
         {
             var list = gameEventService.FindAll().ToList();
-            var list2 = list.Select(x => {
+            var list2 = list.Select(x =>
+            {
                 var re = mapper.Map<HomeEventRestViewModel>(x);
                 re.OwnerName = playerService.FindById(x.OwnerId).UsernameInGame;
                 re.ImageUrl = x.Game.ImageUrl;
@@ -79,7 +89,7 @@ namespace GameHubCSharp.Hubs
                 .ToList();
             await this.Clients.All.SendAsync("UpdateEventList", new
             {
-                GameEvents = list2.ToArray().OrderBy(x=>x.StartDate)
+                GameEvents = list2.ToArray().OrderBy(x => x.StartDate)
             });
         }
     }

@@ -28,7 +28,6 @@ namespace GameHubCSharp.BL.Services
             if (!user.NotificationsRecived.Contains(notification))
             {
                 user.NotificationsRecived.Add(notification);
-                await repository.SaveChangesAsync();
             }
 
             return notification;
@@ -43,7 +42,6 @@ namespace GameHubCSharp.BL.Services
                 notification.IsRead = true;
             }
 
-            await repository.SaveChangesAsync();
             return notifications.ToList();
         }
 

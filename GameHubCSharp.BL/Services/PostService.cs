@@ -67,7 +67,7 @@ namespace GameHubCSharp.BL.Services
             await repository.DeleteAsync(post);
         }
 
-        public async Task RemovePostByIdAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var post = repository.All<Post>()
                 .FirstOrDefault(post => post.Id == id);

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
-using GameHubCSharp.Models;
+using GameHubCSharp.BL.Constants;
 using GameHubCSharp.BL.Models.DTO;
-using GameHubCSharp.BL.Services;
 using GameHubCSharp.BL.Services.IServices;
+using GameHubCSharp.DAL.Data.Models;
+using GameHubCSharp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -12,9 +14,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using GameHubCSharp.BL.Constants;
-using Microsoft.AspNetCore.Identity;
-using GameHubCSharp.DAL.Data.Models;
 
 namespace GameHubCSharp.Controllers
 {
@@ -62,18 +61,12 @@ namespace GameHubCSharp.Controllers
             return View();
         }
 
-        [HttpGet("/home")]
+        [HttpGet]
         public async Task<IActionResult> Home()
         {
-            try
-            {
-                //July
+            if(ConnectionIdProvider.notifications == null)
                 ConnectionIdProvider.notifications = userService.FindAllNotificationsByUserId((await userManager.GetUserAsync(User)).Id);
-            }
-            catch
-            {
-
-            }
+            
 
             var gameEventsCount = gameEventService.FindAllCount();
             var gamesCount = gameService.FindAllCount();
@@ -90,10 +83,10 @@ namespace GameHubCSharp.Controllers
             var model = postService.FindAll(pageNumber ?? PageConstants.DefautPageNumber, PageConstants.PageSize, (categoryName ?? ""))
                 .Select(p =>
                 {
-                  var viewCat = mapper.Map<PostViewModel>(p); 
+                    var viewCat = mapper.Map<PostViewModel>(p);
                     //check logic
                     //viewCat.CategoryId = p.Category.Id;
-                  return viewCat;
+                    return viewCat;
                 })
                 .ToList();
 

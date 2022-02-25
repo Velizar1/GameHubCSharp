@@ -1,4 +1,5 @@
-﻿using GameHubCSharp.DAL.Data;
+﻿using GameHubCSharp.BL.Services.IServices;
+using GameHubCSharp.DAL.Data;
 using GameHubCSharp.DAL.Data.Models;
 using GameHubCSharp.Hubs;
 using GameHubCSharp.Models;
@@ -16,21 +17,18 @@ namespace GameHubCSharp.Controllers
     {
         private SignInManager<User> _signManager;
         private RoleManager<IdentityRole<Guid>> _roleManager;
-        private readonly IHubContext<NotificationHub> hub;
-        private readonly ApplicationDbContext db;
+        private readonly IUserService userService;
         private UserManager<User> _userManager;
 
         public UserController(UserManager<User> userManager,
-            SignInManager<User> signManager,
-            ApplicationDbContext db, 
+            SignInManager<User> signManager, 
             RoleManager<IdentityRole<Guid>> roleManager,
-            IHubContext<NotificationHub> hub)
+            IUserService userService)
         {
             _userManager = userManager;
             _signManager = signManager;
-            this.db = db;
             _roleManager = roleManager;
-            this.hub = hub;
+            this.userService = userService;
         }
         [HttpPost("/register")]
         public async Task<IActionResult> Registration(RegistartionViewModel model)
@@ -110,7 +108,9 @@ namespace GameHubCSharp.Controllers
             {
                 //var result = await _signManager.PasswordSignInAsync(model.UserName,
                 //   model.Password, model.RememberMe,false);
-                var user = db.Users.FirstOrDefault(x => x.UserName == model.UserName);
+                var user = userService
+                    .FindAll()
+                    .FirstOrDefault(x => x.UserName == model.UserName);
 
                 var check = await _userManager.CheckPasswordAsync(user, model.Password);
 
