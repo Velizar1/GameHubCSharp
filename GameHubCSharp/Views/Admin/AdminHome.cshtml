@@ -1,6 +1,9 @@
 ﻿@using GameHubCSharp.BL.Models.DTO
 @model AdminViewModel
 
+@{
+}
+
 <h1 class="text-white">Choose What To Add :</h1>
 <select class="browser-default mt-2" style="width: 15em;"
         aria-placeholder="Filter"
@@ -42,10 +45,13 @@
 
                 <label class="text-white" asp-for="Category"></label>
                 <select class="custom-select d-block" name="SetCat">
-                    @for (int i = 0; i < Model.Categories.Count; i++)
+
+
+                    @for (int i = 0; i < ViewBag.categories.Count; i++)
                     {
-                        <option>@Model.Categories[i].Type</option>
+                        <option>ViewBag.categories[i].Type</option>
                     }
+
                 </select>
                 <label asp-for="Post.Topic" style="color: white;"></label>
                 <div>
@@ -160,9 +166,9 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Users.ToList().Count; i++)
+            @for (int i = 0; i <  ViewBag.users.Count; i++)
             {
-                var cur = Model.Users.ToList()[i];
+                var cur =  ViewBag.users[i];
 
                 <tr>
                     <th scope="row">@i</th>
@@ -184,9 +190,9 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.GameEvents.ToList().Count; i++)
+            @for (int i = 0; i < ViewBag.events.Count; i++)
             {
-                var cur = Model.GameEvents.ToList()[i];
+                var cur = ViewBag.events[i];
 
                 <tr>
                     <th scope="row">@i</th>
@@ -208,9 +214,9 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Games.ToList().Count; i++)
+            @for (int i = 0; i <  ViewBag.games.Count; i++)
             {
-                var cur = Model.Games.ToList()[i];
+                var cur =  ViewBag.games[i];
 
                 <tr>
                     <th scope="row">@i</th>
@@ -232,9 +238,9 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Categories.ToList().Count; i++)
+            @for (int i = 0; i <  ViewBag.categories.Count; i++)
             {
-                var cur = Model.Categories.ToList()[i];
+                var cur =  ViewBag.categories[i];
 
                 <tr>
                     <th scope="row">@i</th>
@@ -247,7 +253,7 @@
         </tbody>
     </table>
 
-    @*Posts*@
+    @* ViewBag.posts*@
     <table id="p" class="table table-dark container mt-4" style="">
         <thead>
             <tr>
@@ -258,9 +264,9 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Posts.ToList().Count; i++)
+            @for (int i = 0; i <  ViewBag.posts.Count; i++)
             {
-                var cur = Model.Posts.ToList()[i];
+                var cur =  ViewBag.posts[i];
 
                 <tr>
                     <th scope="row">@i</th>

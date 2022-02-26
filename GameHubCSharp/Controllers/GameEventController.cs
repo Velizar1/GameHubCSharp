@@ -58,7 +58,7 @@ namespace GameHubCSharp.Controllers
             var gameEventVM = mapper.Map<GameEventViewModel>(gameEvent);
 
             ViewData["valid"] = valid;
-            return View(gameEventVM);
+            return View(gameEvent);
 
         }
 

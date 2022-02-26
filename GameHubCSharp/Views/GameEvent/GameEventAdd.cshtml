@@ -8,7 +8,7 @@
                 <label class="name">Game Event</label>
                 <select asp-for="GameName" class="custom-select" name="gameName" required>
                     <option value="">Chose your game</option>
-                    @foreach (var gameName in (List<string>)ViewData["GameNames"])
+                    @foreach (var gameName in ViewBag.GameNames)
                     {
                         <option value="@gameName">@gameName</option>
                     }

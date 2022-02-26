@@ -1,5 +1,9 @@
-﻿@model GameHubCSharp.BL.Models.DTO.GameEventViewModel
+﻿@model GameHubCSharp.DAL.Data.Models.GameEvent
 
+@{
+var players = Model.Players;
+
+}
 
 <div style="margin-bottom: 100px;margin-top: 5%"
      class="btn-container-style text-center d-inline-block modal-dialog-scrollable outside-div">
@@ -9,15 +13,14 @@
             <div style="display: inline-block;width: 45%;height:70%;min-height: 19em">
                 <h6 style="font-size: 25px" class="card-title">Owner's nick : @Model.Owner.UsernameInGame</h6>
                 <p class="card-text">Devision : @Model.Devision</p>
-                <p class="card-text">Players needed : @(Model.NumberOfPlayers + 1 - Model.Players.Count(x => x.Status == true))</p>
+                <p class="card-text">Players needed : @(Model.NumberOfPlayers + 1 - players.Count(x => x.Status == true))</p>
                 <p class="card-text">Starts on : @Model.StartDate</p>
                 <p class="card-text">Ends on : @Model.DueDate</p>
                 <p class="card-text">
                     Discord link :
                     @{
                         string temp = "";
-
-                        var cur = Model.Players.Where(p => p.Username == User.Identity.Name);
+                        var cur = players.Where(p => p.User.UserName == User.Identity.Name);
                         if (cur.Count() != 0 && cur.First().Status == true)
                         {
                             temp = Model.DiscordUrl;
@@ -31,15 +34,15 @@
             <div style="display: inline-block;width: 45%;height: 70%;vertical-align:top;" class="text-left">
                 <h6 style="font-size: 25px" class="card-text">Players for this event:</h6>
                 <ul>
-                    @foreach (var player in Model.Players)
+                    @foreach (var player in players)
                     {
-                        if (User.Identity.Name != Model.Owner.Username)
+                        if (User.Identity.Name != Model.Owner.User.UserName)
                         {
                             if (player.Status)
                             {
                                 <li style="font-size: 20px;" class="card-text ml-4">
                                     @player.UsernameInGame
-                                    @if (User.Identity.Name == player.Username)
+                                    @if (User.Identity.Name == player.User.UserName)
                                     {
                                         <div class="ml-sm-5 d-inline-block float-right ">
                                             <a asp-route-playerName="@player.UsernameInGame" asp-route-roomId="@Model.Id" asp-action="Decline" asp-controller="GameEvent"> <i class="far fa-times-circle fa-lg ml-2" style="color:red"></i></a>
@@ -51,7 +54,7 @@
                         }
                         else
                         {
-                            if (User.Identity.Name != player.Username)
+                            if (User.Identity.Name != player.User.UserName)
                             {
                                 <li style="font-size: 20px;" class="card-text ml-4">
                                     @player.UsernameInGame
@@ -70,7 +73,7 @@
                 </ul>
 
             </div>
-            @if (Model.Owner.Username == User.Identity.Name)
+            @if (Model.Owner.User.UserName == User.Identity.Name)
             {
 
                 <div style="position:relative;" id="last">
@@ -85,12 +88,13 @@
                     </form>
                 </div>
             }
-            else if (Model.NumberOfPlayers + 1 - Model.Players.Count(x => x.Status == true) > 0)
+            else if (Model.NumberOfPlayers + 1 - players.Count(x => x.Status == true) > 0)
             {
-                var list = Model.Players.Where(p => p.Username == User.Identity.Name).ToList();
+
+                var list = players.Where(p => p.User.UserName == User.Identity.Name).ToList();
                 @if (list.Count == 0)
                 {
-                    @Html.PartialAsync("_AddPlayerPartial");
+                    @Html.PartialAsync("_AddPlayerPartial", Model);
                 }
             }
 

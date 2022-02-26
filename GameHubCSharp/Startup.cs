@@ -71,7 +71,7 @@ namespace GameHubCSharp
                 .AddEntityFrameworkStores<ApplicationDbContext>();
            //TODO exception in roles 
            // services.AddIdentity<User, string>().AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(GameHubCSharp.BL.Mapper.Mapper));
             services.AddControllersWithViews();
 
             //Repositories

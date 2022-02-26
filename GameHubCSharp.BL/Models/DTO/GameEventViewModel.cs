@@ -17,6 +17,8 @@ namespace GameHubCSharp.BL.Models.DTO
         public DateTime StartDate { get ; set ; }
         public DateTime DueDate { get; set ; }
         public string DiscordUrl { get ; set ; }
+        public string GameName { get; set; }
+        public string OwnerName { get; set; }
 
     }
 }

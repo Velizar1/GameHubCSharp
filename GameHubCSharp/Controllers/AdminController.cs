@@ -139,7 +139,7 @@ namespace GameHubCSharp.Controllers
         public async Task DeleteAsync(dynamic service, Guid id, string deleteType)
         {
             deleteType = deleteType.Split("Proxy")[0];
-            await userService.DeleteAsync(id);
+            await gameService.DeleteAsync(id);
         }
     }
 }

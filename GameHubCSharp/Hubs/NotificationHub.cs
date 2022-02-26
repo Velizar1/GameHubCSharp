@@ -60,19 +60,18 @@ namespace GameHubCSharp.Hubs
         }
         public override Task OnConnectedAsync()
         {
-            if (ConnectionIdProvider.ids[Context.User.Identity.Name] == null)
                 ConnectionIdProvider.ids[Context.User.Identity.Name] = Context.UserIdentifier;//ConectionId of Guests and Users
 
             return base.OnConnectedAsync();
         }
 
-        public override Task OnDisconnectedAsync(Exception exception)
-        {
-            ConnectionIdProvider.ids.Clear();
-            ConnectionIdProvider.notifications.Clear();
-            ConnectionIdProvider.events.Clear();
-            return base.OnDisconnectedAsync(exception);
-        }
+        //public override Task OnDisconnectedAsync(Exception exception)
+        //{
+        //    ConnectionIdProvider.ids.Clear();
+        //    ConnectionIdProvider.notifications.Clear();
+        //    ConnectionIdProvider.events.Clear();
+        //    return base.OnDisconnectedAsync(exception);
+        //}
 
         //---------GameEvents---------------
         public async Task UpdateEvents()
