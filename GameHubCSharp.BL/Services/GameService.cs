@@ -30,7 +30,12 @@ namespace GameHubCSharp.BL.Services
                 .Where(x => x.Game.Id == game.Id)
                 .ToList();
 
-            await repository.DeleteRangeAsync(events);
+            foreach (var _event in events)
+            {
+                await repository.DeleteAsync(_event);
+            }
+
+            //await repository.DeleteRangeAsync(events);
             await repository.DeleteAsync(game);
             await repository.SaveChangesAsync();
         }
