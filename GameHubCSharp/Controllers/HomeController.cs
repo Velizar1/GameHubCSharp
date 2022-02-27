@@ -64,7 +64,7 @@ namespace GameHubCSharp.Controllers
         [HttpGet]
         public async Task<IActionResult> Home()
         {
-            if(ConnectionIdProvider.notifications == null)
+       //     if(ConnectionIdProvider.notifications == null)
                 ConnectionIdProvider.notifications = userService.FindAllNotificationsByUserId((await userManager.GetUserAsync(User)).Id);
             
 

@@ -3,6 +3,7 @@ using GameHubCSharp.BL.Models.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
 
 namespace GameHubCSharp.BL.Services.IServices
 {
@@ -12,7 +13,8 @@ namespace GameHubCSharp.BL.Services.IServices
         public GameEvent FindEventById(Guid id);
         public Task AddAsync(GameEvent gameEvent);
         public List<GameEvent> FindAll(int? pageNumber, int? pageSize);
-        public List<GameEvent> FindAll();
+        public List<GameEvent> FindAll(bool tracked);
+        public IQueryable<GameEvent> FindAllAsQuerable(bool tracked);
         public Task DeleteAsync(Guid id);
         public Task AddPlayerAsync(Player player, Guid gameEventId);
         public string FindMostPlayedGame();

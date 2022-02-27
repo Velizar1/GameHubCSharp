@@ -53,10 +53,20 @@ namespace GameHubCSharp.BL.Services
                 .ToList();
         }
 
-        public List<GameEvent> FindAll()
+        public List<GameEvent> FindAll(bool tracked = false)
         {
+            if (tracked) 
+                return repository.All<GameEvent>()
+                    .ToList();
             return repository.AllReadOnly<GameEvent>()
                 .ToList();
+        }
+
+        public IQueryable<GameEvent> FindAllAsQuerable( bool tracked)
+        {
+            if (tracked)
+                return repository.All<GameEvent>();
+            return repository.AllReadOnly<GameEvent>();
         }
 
         public async Task DeleteAsync(Guid id)
@@ -96,7 +106,8 @@ namespace GameHubCSharp.BL.Services
         public string FindMostPlayedGame()
         {
             return repository.AllReadOnly<GameEvent>()
-                .Include(x=>x.Game)
+                .Include(x => x.Game)
+                .AsEnumerable() //to fix later
                 .GroupBy(x => x.Game.GameName)
                 .OrderByDescending(x => x.Count())
                 .First()

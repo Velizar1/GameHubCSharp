@@ -60,16 +60,16 @@ namespace GameHubCSharp.BL.Services
                 .ToList();
         }
 
-        public List<Notification> FindAllNotificationsByUserId(Guid id)
-        {
-            return repository.AllReadOnly<User>()
-                .Include(x => x.NotificationsRecived)
-                .Where(x => x.Id == id)
-                .Select(x => x.NotificationsRecived
-                             .OrderBy(x => x.CreatedAt))
-                .FirstOrDefault()
-                .ToList();
-        }
+        //public List<Notification> FindAllNotificationsByUserId(Guid id)
+        //{
+        //    return repository.AllReadOnly<User>()
+        //        .Include(x => x.NotificationsRecived)
+        //        .Where(x => x.Id == id)
+        //        .Select(x => x.NotificationsRecived
+        //                     .OrderBy(x => x.CreatedAt))
+        //        .FirstOrDefault()
+        //        .ToList();
+        //}
 
         public List<Notification> FindAllNotificationsByUserName(string name)
         {
@@ -82,6 +82,15 @@ namespace GameHubCSharp.BL.Services
                 .ToList();
         }
 
+        public List<Notification> FindAllNotificationsByUserId(Guid id)
+        {
+            //return db.Users.FirstOrDefault(u => u.UserName == userName).Notifications.OrderBy(x => x.CreatedAt).ToList();
+            return repository.All<User>()
+                .FirstOrDefault(x => x.Id == id)
+                .NotificationsRecived
+                .OrderBy(x => x.CreatedAt)
+                .ToList();
+        }
         public User FindUserById(Guid userId)
         {
             return repository.AllReadOnly<User>(u => u.Id == userId)

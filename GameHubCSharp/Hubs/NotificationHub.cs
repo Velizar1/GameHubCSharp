@@ -76,7 +76,7 @@ namespace GameHubCSharp.Hubs
         //---------GameEvents---------------
         public async Task UpdateEvents()
         {
-            var list = gameEventService.FindAll().ToList();
+            var list = gameEventService.FindAll(false).ToList();
             var list2 = list.Select(x =>
             {
                 var re = mapper.Map<HomeEventRestViewModel>(x);

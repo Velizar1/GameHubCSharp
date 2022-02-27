@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameHubCSharp.Controllers
 {
@@ -47,7 +48,8 @@ namespace GameHubCSharp.Controllers
         public IActionResult AdminHome(string addType = "Game", string deleteType = "User")
         {
             //set ViewData
-            var events = gameEventService.FindAll();
+            var events = gameEventService.FindAllAsQuerable(true)
+                .Include(x=>x.Game).ToList();
             var users = userService.FindAll();
             var posts = postService.FindAll();
             var games = gameService.FindAll();
