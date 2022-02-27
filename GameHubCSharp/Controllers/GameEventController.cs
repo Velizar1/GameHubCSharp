@@ -75,11 +75,13 @@ namespace GameHubCSharp.Controllers
         {
 
             var gameEvent = mapper.Map<GameEvent>(gameEventVM);
+            var game = gameService.FindGameByName(gameEventVM.GameName);
+            gameEvent.Game = game;
 
             var player = await playerService.AddAsync(new Player()
             {
-                UserId = gameEventVM.OwnerId,
-                UsernameInGame = gameEventVM.OwnerNickName,
+                UserId = userService.FindUserByName(User.Identity.Name).Id,
+                UsernameInGame = gameEventVM.OwnerName,
             });
 
             gameEvent.OwnerId = player.Id;

@@ -58,7 +58,17 @@ namespace GameHubCSharp.DAL.Repositories
 
         public async Task<int> SaveChangesAsync()
         {
-            return await context.SaveChangesAsync(); // Catch later
+            try
+            {
+return await context.SaveChangesAsync(); 
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine('n');
+               
+            }
+            // Catch later
+            return 1;
         }
 
         public async Task DeleteRangeAsync<T>(params T[] data) where T : class

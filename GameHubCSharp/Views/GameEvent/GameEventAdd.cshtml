@@ -10,7 +10,7 @@
                     <option value="">Chose your game</option>
                     @foreach (var gameName in ViewBag.GameNames)
                     {
-                        <option value="@gameName">@gameName</option>
+                        <option value="@gameName.Value">@gameName.Value</option>
                     }
 
                 </select>
