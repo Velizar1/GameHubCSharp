@@ -49,8 +49,8 @@ namespace GameHubCSharp
                 options.AddPolicy("Allow",
                                   builder =>
                                   {
-                                      builder.
-                                      AllowAnyOrigin()
+                                      builder
+                                      .AllowAnyOrigin()
                                       .AllowAnyMethod()
                                       .AllowAnyHeader();
                                   });
